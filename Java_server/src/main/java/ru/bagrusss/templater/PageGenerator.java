@@ -3,6 +3,7 @@ package ru.bagrusss.templater;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,6 +19,8 @@ public class PageGenerator {
     private static final String HTML_DIR = "tml";
     private static final Configuration SERVER_CONFIGS = new Configuration();
 
+    @Nullable
+    @SuppressWarnings("ObjectToString")
     public static String getPage(String filename, Map<String, Object> data) {
         Writer stream = new StringWriter();
         try {
