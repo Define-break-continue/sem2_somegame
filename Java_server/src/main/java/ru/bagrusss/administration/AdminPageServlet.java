@@ -1,7 +1,7 @@
 package ru.bagrusss.administration;
 
 import ru.bagrusss.main.TimeHelper;
-import templater.PageGenerator;
+import ru.bagrusss.templater.PageGenerator;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;

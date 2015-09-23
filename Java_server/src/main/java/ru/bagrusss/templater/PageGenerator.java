@@ -1,4 +1,4 @@
-package templater;
+package ru.bagrusss.templater;
 
 import freemarker.template.Configuration;
 import freemarker.template.Template;
