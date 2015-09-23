@@ -22,10 +22,12 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
+        <module name="Java_server" />
         <module name="L1.3" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="Java_server" target="1.8" />
       <module name="L1.3" target="1.8" />
     </bytecodeTargetLevel>
   </component>

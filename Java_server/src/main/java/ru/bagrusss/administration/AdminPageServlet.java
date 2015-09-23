@@ -1,6 +1,6 @@
-package admin;
+package ru.bagrusss.administration;
 
-import example.TimeHelper;
+import ru.bagrusss.main.TimeHelper;
 import templater.PageGenerator;
 
 import javax.servlet.ServletException;

@@ -1,6 +1,6 @@
-package example;
+package ru.bagrusss.main;
 
-import admin.AdminPageServlet;
+import ru.bagrusss.administration.AdminPageServlet;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.HandlerList;

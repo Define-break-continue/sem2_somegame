@@ -1,4 +1,4 @@
-package example;
+package ru.bagrusss.main;
 
 public class TimeHelper {
 	public static void sleep(int period){
