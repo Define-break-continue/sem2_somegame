@@ -4,10 +4,15 @@ package ru.bagrusss.models;
  * Created by vladislav.
  */
 
-public class UserModel {
+public class UserProfile {
     private String userPassword;
     private String userLogin;
     private String userEmail;
+    public UserProfile(String login, String password, String email){
+        userLogin=login;
+        userEmail=email;
+        userPassword=password;
+    }
 
     public String getUserEmail() {
         return userEmail;
