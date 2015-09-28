@@ -2,23 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fff105db-39f9-45f1-bf90-23c6af7bf45d" name="Default" comment="">
-<<<<<<< HEAD
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/annotations.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Java_server.iml" afterPath="$PROJECT_DIR$/Java_server.iml" />
-=======
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/tml/signup.html" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/tml/signupstatus.html" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/Java_server.jar" afterPath="$PROJECT_DIR$/target/Java_server.jar" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/ru/bagrusss/frontend/MainPageServlet.class" afterPath="$PROJECT_DIR$/target/classes/ru/bagrusss/frontend/MainPageServlet.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/ru/bagrusss/frontend/SignInServlet.class" afterPath="$PROJECT_DIR$/target/classes/ru/bagrusss/frontend/SignInServlet.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/ru/bagrusss/frontend/SignUpServlet.class" afterPath="$PROJECT_DIR$/target/classes/ru/bagrusss/frontend/SignUpServlet.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/ru/bagrusss/servces/AccountService.java" afterPath="$PROJECT_DIR$/src/main/java/ru/bagrusss/servces/AccountService.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/ru/bagrusss/frontend/SignInServlet.java" afterPath="$PROJECT_DIR$/src/main/java/ru/bagrusss/frontend/SignInServlet.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/ru/bagrusss/frontend/SignUpServlet.java" afterPath="$PROJECT_DIR$/src/main/java/ru/bagrusss/frontend/SignUpServlet.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tml/authform.tml" afterPath="$PROJECT_DIR$/tml/authform.tml" />
->>>>>>> 3719821b83f1d79cf5f5fd2c5c4968fa074b7c1e
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="L1.3.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -43,14 +26,6 @@
       <file leaf-file-name="pom.xml" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pom.xml">
           <provider selected="true" editor-type-id="text-editor">
-<<<<<<< HEAD
-            <state vertical-scroll-proportion="0.0">
-=======
-            <state vertical-scroll-proportion="-0.0">
->>>>>>> 3719821b83f1d79cf5f5fd2c5c4968fa074b7c1e
-              <caret line="58" column="21" selection-start-line="58" selection-start-column="21" selection-end-line="58" selection-end-column="21" />
-              <folding />
-            </state>
           </provider>
         </entry>
       </file>
