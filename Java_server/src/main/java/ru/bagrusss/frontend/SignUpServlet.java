@@ -36,10 +36,13 @@ public class SignUpServlet extends HttpServlet {
         String password = req.getParameter("password");
         JSONObject responseText = new JSONObject();
         resp.setStatus(HttpServletResponse.SC_OK);
-        String result, message;
-        if (accountService.addUser(name, new UserProfile(name, password, email))) {
+        String result;
+        String message;
+        UserProfile user=new UserProfile(name, password, email);
+        if (accountService.addUser(name, user)) {
             result = "OK";
             message="User successfuly created!";
+            accountService.doSaveUser(req, user);
         } else {
             result = "FAIL";
             message="User already exist! Try agan.";
