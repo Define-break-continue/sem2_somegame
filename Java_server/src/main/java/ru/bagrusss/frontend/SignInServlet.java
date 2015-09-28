@@ -12,7 +12,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 public class SignInServlet extends HttpServlet {
@@ -33,7 +32,7 @@ public class SignInServlet extends HttpServlet {
                       @NotNull HttpServletResponse response) throws ServletException, IOException {
         response.setStatus(HttpServletResponse.SC_OK);
         if (request.getParameter(PARAM_LOGOUT) != null) {
-            doLoguot(request);
+            doLogout(request);
             JSONObject respText=new JSONObject();
             try {
                 respText.put("status", HttpServletResponse.SC_OK);
@@ -44,7 +43,7 @@ public class SignInServlet extends HttpServlet {
             response.getWriter().println(respText.toString());
             return;
         }
-        response.getWriter().println(PageGenerator.getPage("authform.tml", null));
+        response.getWriter().println(PageGenerator.getPage("signin.html", null));
     }
 
 
@@ -70,11 +69,10 @@ public class SignInServlet extends HttpServlet {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
         response.getWriter().println(responseText.toString());
     }
 
-    void doLoguot(@NotNull HttpServletRequest request) {
+    void doLogout(@NotNull HttpServletRequest request) {
         accountService.removeSession(request.getSession().getId());
     }
 
