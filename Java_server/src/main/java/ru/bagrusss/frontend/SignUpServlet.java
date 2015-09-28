@@ -2,6 +2,8 @@ package ru.bagrusss.frontend;
 
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONException;
+import org.json.JSONObject;
 import ru.bagrusss.models.UserProfile;
 import ru.bagrusss.servces.AccountService;
 import ru.bagrusss.templater.PageGenerator;
@@ -11,12 +13,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 public class SignUpServlet extends HttpServlet {
     private AccountService accountService;
-    public static final String URL="/signup";
+    public static final String URL = "/signup";
+
     public SignUpServlet(AccountService accountService) {
         this.accountService = accountService;
     }
@@ -24,22 +25,29 @@ public class SignUpServlet extends HttpServlet {
     @Override
     public void doGet(@NotNull HttpServletRequest request,
                       @NotNull HttpServletResponse response) throws ServletException, IOException {
-        String name = request.getParameter("name");
-        String password = request.getParameter("password");
-
-        Map<String, Object> pageVariables = new HashMap<>();
-        if (accountService.addUser(name, new UserProfile(name, password, ""))) {
-            pageVariables.put("signUpStatus", "New user created");
-        } else {
-            pageVariables.put("signUpStatus", "User with name: " + name + " already exists");
-        }
-
-        response.getWriter().println(PageGenerator.getPage("signupstatus.html", pageVariables));
+        response.getWriter().println(PageGenerator.getPage("signup.html", null));
         response.setStatus(HttpServletResponse.SC_OK);
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+    protected void doPost(@NotNull HttpServletRequest req, @NotNull HttpServletResponse resp) throws ServletException, IOException {
+        String name = req.getParameter("name");
+        String email = req.getParameter("email");
+        String password = req.getParameter("password");
+        JSONObject responseText = new JSONObject();
+        resp.setStatus(HttpServletResponse.SC_OK);
+        String result;
+        if (accountService.addUser(name, new UserProfile(name, password, email))) {
+            result = "OK";
+        } else {
+            result = "FAIL";
+        }
+        try {
+            responseText.put("res", result);
+            responseText.put("status", HttpServletResponse.SC_OK);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        resp.getWriter().println(responseText.toString());
     }
 }
