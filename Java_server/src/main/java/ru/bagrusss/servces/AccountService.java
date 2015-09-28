@@ -55,7 +55,7 @@ public class AccountService {
     }
 
     @Nullable
-    public UserProfile getSessions(String sessionId) {
+    public UserProfile getSession(String sessionId) {
         return mSessions.get(sessionId);
     }
 

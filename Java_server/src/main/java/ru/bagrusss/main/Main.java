@@ -8,6 +8,7 @@ import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.jetbrains.annotations.NotNull;
+import ru.bagrusss.frontend.UserPageServlet;
 import ru.bagrusss.frontend.SignInServlet;
 import ru.bagrusss.frontend.SignUpServlet;
 import ru.bagrusss.servces.AccountService;
@@ -33,6 +34,7 @@ public class Main {
 
         context.addServlet(new ServletHolder(new SignInServlet(AccountService.getInstance())), SignInServlet.URL);
         context.addServlet(new ServletHolder(new SignUpServlet(AccountService.getInstance())), SignUpServlet.URL);
+        context.addServlet(new ServletHolder(new UserPageServlet()), UserPageServlet.URL);
 
         ResourceHandler resource_handler = new ResourceHandler();
         resource_handler.setDirectoriesListed(true);
