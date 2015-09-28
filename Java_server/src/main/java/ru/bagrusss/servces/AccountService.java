@@ -1,8 +1,11 @@
 package ru.bagrusss.servces;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.bagrusss.models.UserProfile;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,6 +45,10 @@ public class AccountService {
         mSessions.put(sessionId, userProfile);
     }
 
+    public UserProfile removeSession(String sessionId){
+        return mSessions.remove(sessionId);
+    }
+
     @Nullable
     public UserProfile getUser(String userName) {
         return mUsers.get(userName);
@@ -52,11 +59,20 @@ public class AccountService {
         return mSessions.get(sessionId);
     }
 
-    public long getCountActivatedUsers(){
+
+
+    public long getCountActivatedUsers() {
+        return mSessions.size();
+    }
+
+    public long getCountRegisteredUsers() {
         return mUsers.size();
     }
 
-    public long getCountRegisteredUsers(){
-        return mSessions.size();
+    public void doSaveUser(@NotNull HttpServletRequest request, @NotNull UserProfile user){
+        HttpSession session = request.getSession();
+        @NotNull
+        String userId = session.getId();
+        addSession(userId, user);
     }
 }
