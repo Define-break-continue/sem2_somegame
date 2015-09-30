@@ -16,7 +16,7 @@ import rus.bagrusss.servces.AccountService;
 public class Main {
 
     private static final String START_MESSAGE = "Run server at port ";
-    public static final String RESOURSE_DIR = "static";
+    public static final String RESOURSE_DIR = "public_html";
     public static final String ERROR_MESSAGE = "Use port as the first argument";
 
 
