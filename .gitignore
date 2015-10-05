@@ -1,3 +1,4 @@
 Java_server/target/
 Java_server/.idea/
 Java_server/classes/
+*.~
