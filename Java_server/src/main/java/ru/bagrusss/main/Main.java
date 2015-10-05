@@ -37,7 +37,7 @@ public class Main {
         context.addServlet(new ServletHolder(new UserPageServlet()), UserPageServlet.URL);
 
         ResourceHandler resource_handler = new ResourceHandler();
-        resource_handler.setDirectoriesListed(false);//разобраться
+        resource_handler.setDirectoriesListed(true);
         resource_handler.setResourceBase(RESOURSE_DIR);
 
         HandlerList handlers = new HandlerList();
