@@ -23,7 +23,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>rus.bagrusss.main.Main</mainClass>
+                            <mainClass>ru.bagrusss.main.Main</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>

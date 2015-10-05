@@ -1,6 +1,9 @@
-package rus.bagrusss.main;
+package ru.bagrusss.main;
 
-import rus.bagrusss.administration.AdminPageServlet;
+import ru.bagrusss.administration.AdminPageServlet;
+import ru.bagrusss.frontend.SignInServlet;
+import ru.bagrusss.frontend.UserPageServlet;
+import ru.bagrusss.servces.AccountService;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.HandlerList;
@@ -8,10 +11,7 @@ import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.jetbrains.annotations.NotNull;
-import rus.bagrusss.frontend.UserPageServlet;
-import rus.bagrusss.frontend.SignInServlet;
-import rus.bagrusss.frontend.SignUpServlet;
-import rus.bagrusss.servces.AccountService;
+import ru.bagrusss.frontend.SignUpServlet;
 
 public class Main {
 

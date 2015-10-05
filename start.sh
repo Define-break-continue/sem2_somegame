@@ -1,1 +1,1 @@
-java -classpath Java_server.jar Main 8080
+java -jar Java_server.jar 8080
