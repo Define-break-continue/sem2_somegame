@@ -1,2 +1,7 @@
 <fest:template xmlns:fest="http://fest.mail.ru">
+    <form class="login_form" method="POST" action="#login">
+        <input type="email" name="email" placeholder="E-mail" class="login_form_input"></input>
+        <input type="password" name="password" placeholder="Password" class="login_form_input"></input>
+        <input type="submit" text="Let's start!" class="login_form_button"></input>
+    </form>
 </fest:template>

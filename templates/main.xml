@@ -1,2 +1,14 @@
-<fest:template xmlns:fest="http://fest.mail.ru">
+<fest:template xmlns:fest="http://fest.mail.ru" context_name = "json">
+	<h1 class="main_title">
+		GAME WHICH IS TOO CLOSE TO THE TOP OF THE EPICITY
+	</h1>
+	<p class="main_menu_element">
+		<a href="#score" class="js-scoreboard">HIGHSCORES</a>
+	</p>
+	<p class="main_menu_element">
+		<a href="#game" class="js-game">PLAY!</a>
+	</p>
+	<p class="main_menu_element">
+		<a href="#login" class="js-login">LOG IN</a>
+	</p>
 </fest:template>

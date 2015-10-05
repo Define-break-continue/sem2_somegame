@@ -1,65 +1,54 @@
-module.exports = function (grunt) {
-
-    grunt.initConfig({
-        shell: {
-            options: {
-                stdout: true,
-                stderr: true
-            },
-            server: {
-                command: 'java -cp L1.2-1.0-jar-with-dependencies.jar main.Main 8080'
-            }
-        },
-        fest: {
-            templates: {
-                files: [{
-                    expand: true,
-                    cwd: 'templates',
-                    src: '*.xml',
-                    dest: 'public_html/js/tmpl'
-                }],
-                options: {
-                    template: function (data) {
-                        return grunt.template.process(
-                            'var <%= name %>Tmpl = <%= contents %> ;',
-                            {data: data}
-                        );
-                    }
-                }
-            }
-        },
-        watch: {
-            fest: {
-                files: ['templates/*.xml'],
-                tasks: ['fest'],
-                options: {
-                    interrupt: true,
-                    atBegin: true
-                }
-            },
-            server: {
-                files: [
-                    'public_html/js/**/*.js',
-                    'public_html/css/**/*.css'
-                ],
-                options: {
-                    livereload: true
-                }
-            }
-        },
-        concurrent: {
-            target: ['watch', 'shell'],
-            options: {
-                logConcurrentOutput: true
-            }
-        }
-    });
-
-    grunt.loadNpmTasks('grunt-contrib-watch');
-    grunt.loadNpmTasks('grunt-concurrent');
-    grunt.loadNpmTasks('grunt-shell');
-    grunt.loadNpmTasks('grunt-fest');
-
-    grunt.registerTask('default', ['concurrent']);
-
+module.exports = function ( grunt ) {
+	grunt.initConfig( {
+		shell: { 
+			server: { /* Подзадача */
+				command: 'java -cp L1.2-1.0-jar-with-dependencies.jar main.Main 8080'
+				/* запуск сервера */
+			}
+		},
+		fest: {
+			templates: { /* Цель */
+				files: [{
+					expand: true,
+					cwd: 'templates', /* исходная директория */
+					src: '*.xml', /* имена шаблонов */
+					dest: 'public_html/js/tmpl' /* результирующая директория */
+				}],
+				options: {
+					template: function ( data ) {
+						return grunt.template.process (
+							'var <%= name %>Tmpl = <%= contents %> ;',
+							{ data: data }
+						);
+					}
+				}
+			}
+		},
+		watch: {
+			fest: { /* Цель */
+				files: ['templates/*.xml'], /* следим за шаблонами */
+				tasks: ['fest'], /* перекомпилировать */
+				options: {
+					atBegin: true /* запустить задачу при старте */
+				}
+			},
+			server: {
+				files: [ 'public_html/js/**/*.js' ], // следим за JS
+				options: {
+					livereload: true // автоматическая перезагрузка
+				}
+			}
+		},
+		concurrent: {
+			target: ['watch', 'shell'],
+			options: {
+				logConcurrentOutput: true
+			}
+		}
+	} );
+	grunt.loadNpmTasks( 'grunt-shell' );
+	grunt.loadNpmTasks('grunt-concurrent');
+	grunt.loadNpmTasks( 'grunt-fest' );
+	grunt.loadNpmTasks( 'grunt-contrib-watch' );
+	grunt.registerTask( 'default', [ 'concurrent' ] );
 };
