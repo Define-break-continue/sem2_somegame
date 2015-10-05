@@ -24,6 +24,7 @@
             $page.find( '.js-login' ).on( 'click', showLoginScreen );
             $page.find( '.js-main' ).on( 'click', showMainScreen );
         }
+
         function hideScoreboardScreen() {
             $page.find( '.js-game' ).off( 'click', showGameScreen );
             $page.find( '.js-login' ).off( 'click', showLoginScreen );
@@ -39,6 +40,7 @@
             $page.find( '.js-login' ).on( 'click', showLoginScreen );
             $page.find( '.js-main' ).on( 'click', showMainScreen );
         }
+
         function hideGameScreen() {
             $page.find( '.js-scoreboard' ).off( 'click', showScoreboardScreen );
             $page.find( '.js-login' ).off( 'click', showLoginScreen );
@@ -54,6 +56,7 @@
             $page.find( '.js-game' ).on( 'click', showGameScreen );
             $page.find( '.js-main' ).on( 'click', showMainScreen );
         }
+
         function hideLoginScreen() {
             $page.find( '.js-scoreboard' ).off( 'click', showScoreboardScreen );
             $page.find( '.js-game' ).off( 'click', showGameScreen );
@@ -69,6 +72,7 @@
             $page.find( '.js-game' ).on( 'click', showGameScreen );
             $page.find( '.js-login' ).on( 'click', showLoginScreen );
         }
+
         function hideMainScreen() {
             $page.find( '.js-scoreboard' ).off( 'click', showScoreboardScreen );
             $page.find( '.js-game' ).off( 'click', showGameScreen );
