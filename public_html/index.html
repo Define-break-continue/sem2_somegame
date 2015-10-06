@@ -15,6 +15,24 @@
     <script>
         var $page = $('#page');
 
+        // отправка данных о входе на сервер
+        function sendLoginData() {
+            $.ajax( {
+                url: '/signin',
+                data: $('.login_form').serializeArray(),
+                type: 'POST',
+                dataType: 'json',
+                //success: function( json ) {
+                //    $( '#login' ).html( '<i>Data sent</i>' );
+                //}
+                error: function( json ) {
+                    alert( 'HOLY COW! AN ERROR OCCURED!!! RUN AWAY FROM HERE!!!' );
+                }
+            } );
+        }
+        $page.find( 'js-login-form-submit' ).on( 'click', sendLoginData );
+
+        // переключение экранов
         function showScoreboardScreen() {
             hideMainScreen();
             hideGameScreen();
@@ -52,6 +70,7 @@
             hideScoreboardScreen();
             hideGameScreen();
             $page.html( loginTmpl() );
+            $( '#login_message' ).html( '' );
             $page.find( '.js-scoreboard' ).on( 'click', showScoreboardScreen );
             $page.find( '.js-game' ).on( 'click', showGameScreen );
             $page.find( '.js-main' ).on( 'click', showMainScreen );
