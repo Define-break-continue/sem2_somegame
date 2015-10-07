@@ -41,7 +41,7 @@ public class AdminPageServlet extends HttpServlet {
     private void stopServer(int time){
         System.out.print((new StringBuilder(SHUTDOWN_MESSAGE)).append(time).append(" ms").toString());
         new Thread(() -> {
-            try{
+            try {
                 Thread.sleep(time);
             } catch (InterruptedException e) {
                 e.printStackTrace();
