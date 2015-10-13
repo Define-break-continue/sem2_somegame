@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by vladislav on 25.09.15.
+ * Сервлет страницы инфы о пользователе
  */
 
 public class UserPageServlet extends HttpServlet {

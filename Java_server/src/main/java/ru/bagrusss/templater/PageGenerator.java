@@ -26,7 +26,7 @@ public class PageGenerator {
     public static String getPage(@NotNull String filename, @Nullable Map<String, Object> data) {
         Writer stream = new StringWriter();
         try {
-            Template template = SERVER_CONFIGS != null ? SERVER_CONFIGS.getTemplate(HTML_DIR + File.separator + filename) : null;
+            Template template = SERVER_CONFIGS.getTemplate(HTML_DIR + File.separator + filename);
             if (template != null) {
                 template.process(data, stream);
             }

@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class AccountService {
+public final class AccountService implements AccountServiceInterface {
 
     private static AccountService s_instance;
     private final Map<String, UserProfile> mUsers;
@@ -21,19 +21,18 @@ public class AccountService {
         if (localInstance == null) {
             synchronized (AccountService.class) {
                 localInstance = s_instance;
-                if (localInstance == null) {
-                    s_instance = localInstance = new AccountService();
-                }
+                if (localInstance == null) s_instance = localInstance = new AccountService();
             }
         }
         return localInstance;
     }
 
-    public AccountService() {
+    private AccountService() {
         mUsers = new HashMap<>();
         mSessions = new HashMap<>();
     }
 
+    @Override
     public boolean addUser(String userName, UserProfile userProfile) {
         if (mUsers.containsKey(userName))
             return false;
@@ -41,19 +40,23 @@ public class AccountService {
         return true;
     }
 
+    @Override
     public void addSession(String sessionId, UserProfile userProfile) {
         mSessions.put(sessionId, userProfile);
     }
 
+    @Override
     public void removeSession(String sessionId){
         mSessions.remove(sessionId);
     }
 
+    @Override
     @Nullable
     public UserProfile getUser(String userName) {
         return mUsers.get(userName);
     }
 
+    @Override
     @Nullable
     public UserProfile getSession(String sessionId) {
         return mSessions.get(sessionId);
@@ -61,10 +64,12 @@ public class AccountService {
 
 
 
+    @Override
     public long getCountActivatedUsers() {
         return mSessions.size();
     }
 
+    @Override
     public long getCountRegisteredUsers() {
         return mUsers.size();
     }
