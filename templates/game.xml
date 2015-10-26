@@ -1,14 +1,14 @@
 <fest:template xmlns:fest="http://fest.mail.ru">
-    <div id="game_start_message_div">
-        <p class="game_message_p">Hey <fest:value>json.login</fest:value>! Prepare for the mosh!</p>
+    <div class="game__message">
+        <p class="game__message_start">Hey <fest:value>json.login</fest:value>! Prepare for the mosh!</p>
     </div>
 
-    <div id="game_score_message_div">
-        <p class="game_message_p" id="game_score_p"><fest:value>json.login</fest:value>: <span id="game_score_span">0</span> points</p>
+    <div class="game__score">
+        <p class="game__score_p"><fest:value>json.login</fest:value>: <span id="game__score__points">0</span> points</p>
     </div>
 
-    <div id="game_message_div">
-        <p class="game_victory_message_p">Congratulations! You've ate'em all!</p>
-        <p class="game_fail_message_p">Sorry, you are not a winner =(</p>
+    <div class="game__message">
+        <p class="game__message_victory">Congratulations! You've ate'em all!</p>
+        <p class="game__message_failure">Sorry, you are not a winner =(</p>
     </div>
 </fest:template>

@@ -1,25 +1,10 @@
 <fest:template xmlns:fest="http://fest.mail.ru">
-    <h1 class="main_title">
+    <h1 class="main-title">
         HIGHSCORES
     </h1>
-    <table class="highscores_table">
-        <tr class="highscores_first_tr">
-            <td class="left_td">Rank</td><td class="center_td">Username</td><td class="right_td">Scores</td>
+    <table class="highscores-table">
+        <tr class="highscores-table__first-tr">
+            <td class="highscores-table__left-td">Rank</td><td class="highscores-table__center-td">Username</td><td class="highscores-table__right-td">Scores</td>
         </tr>
-        <!--<fest:each iterate="json.sort( function( a, b ) {
-                                                          if ( a.score > b.score ) { return -1; }
-                                                          if ( a.score < b.score ) { return -1; }
-                                                          return 0;" index="i">
-            <tr class="highscores_usual_tr">
-                <td class="left_td"><fest:value>json[i].rank</fest:value></td>
-                <td class="center_td"><fest:value>json[i].username</fest:value></td>
-                <td class="right_td"><fest:value>json[i].score</fest:value></td>
-            </tr>
-        </fest:each>-->
-            <tr class="highscores_usual_tr">
-                <td class="left_td">1</td>
-                <td class="center_td">Mr. Big</td>
-                <td class="right_td">over9000</td>
-            </tr>-
     </table>
 </fest:template>

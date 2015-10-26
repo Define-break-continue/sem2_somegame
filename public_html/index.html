@@ -3,16 +3,17 @@
     <meta charset="utf-8" />
     <title>The Craziest Game Ever</title>
     <link rel="stylesheet" href="/css/main.css" />
-    <script src="/js/lib/jquery.js"></script>
+    <!--<script src="/js/lib/jquery.js"></script>
     <script src="/js/tmpl/main.js"></script>
     <script src="/js/tmpl/scoreboard.js"></script>
     <script src="/js/tmpl/game.js"></script>
-    <script src="/js/tmpl/login.js"></script>
+    <script src="/js/tmpl/login.js"></script>-->
+    <script data-main="js/main" src="js/lib/require.js"></script>
 </head><body>
 
-    <div id="page"></div>
+    <div id="page" class="page"></div>
 
-    <script>
+    <!--<script>
         var $page = $('#page');
 
         // отправка данных о входе на сервер
@@ -99,7 +100,7 @@
         }
 
         showMainScreen();
-    </script>
+    </script>-->
     
     <!-- Livereload -->
     <script src="//localhost:35729/livereload.js"></script>
