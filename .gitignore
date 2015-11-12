@@ -1,5 +1,6 @@
 Java_server/target/
-Java_server/.idea/
 Java_server/classes/
+.idea/workspace.xml
 *.*~
 frontend-stub/
+*.jar
