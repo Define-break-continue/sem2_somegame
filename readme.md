@@ -18,7 +18,6 @@ POST запросы должны отправлять параметры в фо
 
 ```json
 {
-    "methodId": 25,
     "method":"edit",
     "params": {
         "key":"value",
@@ -48,7 +47,7 @@ URL для авторизации пользователя.
 
 
 ##/info
-URL для методов для получения информации.
+URL для методов для получения информации. Методы:
 
 * [scoreboard](https://github.com/Define-break-continue/sem2_somegame/tree/protocol/docs/info/scoreboard.md)
      `methodId` - 10
@@ -57,7 +56,7 @@ URL для методов для получения информации.
 
 
 ##/user
-URL для методов работы с учетной записью.
+URL для методов работы с учетной записью. Методы:
 
 * [changePass](https://github.com/Define-break-continue/sem2_somegame/tree/protocol/docs/user/changePass.md)
      `methodId` - 20
@@ -66,16 +65,18 @@ URL для методов работы с учетной записью.
 
 
 ##/game
-Url для обмена данными во время игры.
+Url для обмена данными во время игры. Методы:
 
 * [getField](https://github.com/Define-break-continue/sem2_somegame/tree/protocol/docs/game/getField.md)
      `methodId` - 30
 * [move](https://github.com/Define-break-continue/sem2_somegame/tree/protocol/docs/game/move.md)
      `methodId` - 31
+* [userinfo](https://github.com/Define-break-continue/sem2_somegame/tree/protocol/docs/info/leave.md)
+     `methodId` - 32
 
 
 ##/rooms
-URL для методов работы с комнатами.
+URL для методов работы с комнатами. Методы:
 
 * [create](https://github.com/Define-break-continue/sem2_somegame/tree/protocol/docs/rooms/create.md)
      `methodId` - 40
@@ -83,16 +84,12 @@ URL для методов работы с комнатами.
      `methodId` - 41
 * [info](https://github.com/Define-break-continue/sem2_somegame/tree/protocol/docs/rooms/info.md)
      `methodId` - 42
-* [join](https://github.com/Define-break-continue/sem2_somegame/tree/protocol/docs/rooms/join.md)
+* [changeJoin](https://github.com/Define-break-continue/sem2_somegame/tree/protocol/docs/rooms/join.md)
      `methodId` - 43
-* [leave](https://github.com/Define-break-continue/sem2_somegame/tree/protocol/docs/rooms/leave.md)
+* [changeReady](https://github.com/Define-break-continue/sem2_somegame/tree/protocol/docs/rooms/leave.md)
      `methodId` - 44
 * [list](https://github.com/Define-break-continue/sem2_somegame/tree/protocol/docs/rooms/list.md)
      `methodId` - 45
-* [ready](https://github.com/Define-break-continue/sem2_somegame/tree/protocol/docs/rooms/ready.md)
-     `methodId` - 46
-* [unReady](https://github.com/Define-break-continue/sem2_somegame/tree/protocol/docs/rooms/unReady.md)
-     `methodId` - 47
 
 
 ##/admin
