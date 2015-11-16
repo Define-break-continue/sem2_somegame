@@ -71,8 +71,11 @@ Url для обмена данными во время игры. Методы:
      `methodId` - 30
 * [move](https://github.com/Define-break-continue/sem2_somegame/tree/protocol/docs/game/move.md)
      `methodId` - 31
-* [userinfo](https://github.com/Define-break-continue/sem2_somegame/tree/protocol/docs/info/leave.md)
+* [leave](https://github.com/Define-break-continue/sem2_somegame/tree/protocol/docs/info/leave.md)
      `methodId` - 32
+* [start](https://github.com/Define-break-continue/sem2_somegame/tree/protocol/docs/info/start.md)
+     `methodId` - 33
+
 
 
 ##/rooms
@@ -86,7 +89,7 @@ URL для методов работы с комнатами. Методы:
      `methodId` - 42
 * [changeJoin](https://github.com/Define-break-continue/sem2_somegame/tree/protocol/docs/rooms/join.md)
      `methodId` - 43
-* [changeReady](https://github.com/Define-break-continue/sem2_somegame/tree/protocol/docs/rooms/leave.md)
+* [changeStatus](https://github.com/Define-break-continue/sem2_somegame/tree/protocol/docs/rooms/changeStatus.md)
      `methodId` - 44
 * [list](https://github.com/Define-break-continue/sem2_somegame/tree/protocol/docs/rooms/list.md)
      `methodId` - 45

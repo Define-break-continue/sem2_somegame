@@ -49,16 +49,19 @@
         "users":[
             {   "name":"Dmitry", 
                 "last_name":"Volishin",
-                "ready":true
+                "status":1
                 }, 
             {   "name":"Vasya", 
                 "last_name":"Pupkin",
-                "ready":true
+                "status":1
                 }, 
             {   "name":"Peter",
                 "last_name":"Zaitsev",
+                "status":0
                 }
         ]
     }
 }
 ```
+
+`status` состояние пользователя см. [changeStatus] (https://github.com/Define-break-continue/sem2_somegame/tree/protocol/docs/rooms/changeStatus.md)

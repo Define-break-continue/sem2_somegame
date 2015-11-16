@@ -36,28 +36,27 @@
     "code":"0",    
     "response": {
         "rooms_count":1,
-        "max_count":5,
-                "rooms":[{
-                         "roomId":100,
-                         "max_count":6,
-                         "users_count":3,
-                         "ready_users":2,
-                         "users":[{
-                                "name":"Dmitry", 
-                                "last_name":"Volishin",
-                                "ready":true
-                            }, 
-                                 {   
-                             "name":"Vasya", 
-                             "last_name":"Pupkin",
-                             "ready":true
-                            }, 
-                                {   
-                             "name":"Peter",
-                             "last_name":"Zaitsev",
-                            }
-                         ]                
-                }]
+         "rooms":[{
+             "roomId":100,
+             "max_users":6,
+             "count_users":3,
+             "ready_users":2,
+             "users":[{
+                        "name":"Helbert", 
+                        "last_name":"Shield",
+                        "ready":true
+                      }, 
+                      {   
+                         "name":"Vasya", 
+                         "last_name":"Pupkin",
+                         "ready":true
+                      }, 
+                      {   
+                         "name":"Harry",
+                         "last_name":"Potter",
+                      }
+             ]                
+         }]
     }
 }
 ```
