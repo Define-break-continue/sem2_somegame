@@ -1,0 +1,146 @@
+@form-content-clr: #F58A00;
+@form-glow-clr: #857BE7;
+@form-bg-clr: #000;
+@light-clr: #FFC930;
+@form-btn-bg-clr: linear-gradient(to bottom, @light-clr 50%, @form-content-clr);
+@main-content-clr: @form-content-clr;
+@main-element-bg-clr: @form-btn-bg-clr;
+@main-element-text-clr: #000;
+@main-element-width: 95%;
+@border-radius: 7px;
+
+
+input[type="text"]:valid, input[type="email"]:valid {
+    color: green;
+}
+
+#page {
+    margin: auto;
+    width: 50%;
+    min-width: 470px;
+}
+
+body {
+    background-color: #333;
+    color: white;
+    font-family: serif;
+}
+
+/* Login and Registration screens */
+
+.popup {
+    width: 360px;
+    margin: auto;
+    text-align: center;
+    border-radius: 20px;
+    background-color: @form-bg-clr;
+    border-color: @form-content-clr;
+    box-shadow: 0 0 70px 2px @form-glow-clr;
+}
+
+.popup__header {
+    font-size: 24px;
+    font-weight: bold;
+    color: @form-content-clr;
+    text-align: center;
+    text-shadow: 1px -1px 1px @light-clr;
+}
+
+.popup__input {
+    width: 314px;
+    padding: 10px;
+    border-radius: @border-radius;
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+.popup__button {
+    width: 180px;
+    padding: 12px;
+    border-radius: @border-radius;
+    font-size: 15px;
+    background: @form-btn-bg-clr;
+    margin-top: 3px;
+    margin-bottom: 5px;
+    border: solid 1px @form-content-clr;
+    box-shadow: 0 0 1px 1px @form-content-clr;
+}
+
+/* Main screen */
+
+.main {
+    .popup;
+    width: 450px;
+    padding-top: 5px;
+    padding-bottom: 20px;
+}
+
+.main__hr {
+    color: @main-content-clr;
+    width: @main-element-width;
+}
+
+.main__header {
+    .popup__header;
+    font-size: 26px;
+}
+
+.main__element {
+    width: @main-element-width;
+    border: none;
+    border-radius: @border-radius;
+    margin: 4px auto;
+    background: @main-element-bg-clr;
+    font-size: 20px;
+    text-align: center;
+    padding: 10px;
+    color: @main-element-text-clr;
+    border: solid 1px @main-content-clr;
+    box-shadow: 0 0 1px 1px @main-content-clr;
+}
+
+/* Scoreboard screen */
+
+.highscores {
+    .popup;
+}
+
+.highscores__header {
+    .main__header;
+}
+
+.highscores__table {
+    width: @main-element-width;
+    margin: auto;
+    border: solid 1px @light-clr;
+    border-radius: @border-radius;
+}
+
+.highscores__table__td {
+    border: solid 1px @form-bg-clr;
+    background-color: @light-clr;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    color: @form-bg-clr;
+}
+
+.highscores__table__left-td {
+    .highscores__table__td;
+    width: 20%;
+}
+
+.highscores__table__center-td {
+    .highscores__table__td;
+    width: 50%;
+}
+
+.highscores__table__right-td {
+    .highscores__table__td;
+    width: 30%;
+}
+
+.highscores__table__first {
+    background-color: @form-content-clr;
+    color: #fff;
+    font-style: italic;
+}

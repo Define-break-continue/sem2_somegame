@@ -19,11 +19,11 @@ define ( [
             this.$el.html( this.template() );
             var i = 1;
             ScoresCollection.forEach( function( data ) {
-                this.$('.highscores-table').append(
-                    '<tr class="highscores-table__usual-tr">\
-                        <td class="highscores-table__left-td">' + i.toString() + '</td>\
-                        <td class="highscores-table__center-td">' + data.get( 'login' ) + '</td>\
-                        <td class="highscores-table__right-td">' + data.get( 'score' ) + '</td>\
+                this.$('.highscores__table').append(
+                    '<tr class="highscores__table__usual-tr">\
+                        <td class="highscores__table__left-td">' + i.toString() + '</td>\
+                        <td class="highscores__table__center-td">' + data.get( 'login' ) + '</td>\
+                        <td class="highscores__table__right-td">' + data.get( 'score' ) + '</td>\
                     </tr>'
                 );
                 i++;

@@ -1,10 +1,12 @@
 <fest:template xmlns:fest="http://fest.mail.ru">
-    <h1 class="main-title">
-        HIGHSCORES
-    </h1>
-    <table class="highscores-table">
-        <tr class="highscores-table__first-tr">
-            <td class="highscores-table__left-td">Rank</td><td class="highscores-table__center-td">Username</td><td class="highscores-table__right-td">Scores</td>
-        </tr>
-    </table>
+    <fieldset class="highscores">
+        <h1 class="highscores__header">
+            HIGHSCORES
+        </h1>
+        <table class="highscores__table">
+            <tr class="highscores__table__first-tr">
+                <td class="highscores__table__left-td highscores__table__first">Rank</td><td class="highscores__table__center-td highscores__table__first">Username</td><td class="highscores__table__right-td highscores__table__first">Scores</td>
+            </tr>
+        </table>
+    </fieldset>
 </fest:template>

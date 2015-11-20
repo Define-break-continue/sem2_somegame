@@ -7,7 +7,6 @@ define([
     var PlayerModel = Backbone.Model.extend({
         login: '',
         score: 0
-
     });
 
     return PlayerModel;

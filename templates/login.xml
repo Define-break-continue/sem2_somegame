@@ -1,8 +1,13 @@
 <fest:template xmlns:fest="http://fest.mail.ru">
-    <form class="login-form" method="POST" action="#login">
-        <input type="email" name="email" placeholder="E-mail" class="login-form__input"></input><br />
-        <input type="password" name="password" placeholder="Password" class="login-form__input"></input><br />
-        <input type="submit" text="Let's start!" class="login-form__button"></input><br />
-        <p id="login-form__message"></p>
-    </form>
+
+    <fieldset class="popup">
+        <form method="POST" action="#login" class="js-popup">
+            <h1 class="popup__header">Log In</h1>
+            <p class="popup__message"></p>
+            <input type="email" name="email" placeholder="E-mail" class="popup__input" required="true"></input><br />
+            <input type="password" name="password" placeholder="Password" class="popup__input" required="true"></input><br />
+            <input type="submit" value="LET'S START!" class="popup__button"></input><br />
+        </form>
+            <a href="#registration"><button class="popup__button">REGISTRATION</button></a>
+    </fieldset>
 </fest:template>

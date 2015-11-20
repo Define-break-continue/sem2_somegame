@@ -3,105 +3,15 @@
     <meta charset="utf-8" />
     <title>The Craziest Game Ever</title>
     <link rel="stylesheet" href="/css/main.css" />
-    <!--<script src="/js/lib/jquery.js"></script>
-    <script src="/js/tmpl/main.js"></script>
-    <script src="/js/tmpl/scoreboard.js"></script>
-    <script src="/js/tmpl/game.js"></script>
-    <script src="/js/tmpl/login.js"></script>-->
     <script data-main="js/main" src="js/lib/require.js"></script>
 </head><body>
 
     <div id="page" class="page"></div>
+    <div id="popup"></div>
 
-    <!--<script>
-        var $page = $('#page');
 
-        // отправка данных о входе на сервер
-        function sendLoginData() {
-            $.ajax( {
-                url: '/signin',
-                data: $('.login_form').serializeArray(),
-                type: 'POST',
-                dataType: 'json',
-                //success: function( json ) {
-                //    $( '#login' ).html( '<i>Data sent</i>' );
-                //}
-                error: function( json ) {
-                    alert( 'HOLY COW! AN ERROR OCCURED!!! RUN AWAY FROM HERE!!!' );
-                }
-            } );
-        }
-        $page.find( 'js-login-form-submit' ).on( 'click', sendLoginData );
+    <noscript><h1>Sorry, Javascript is not supported by your browser.</h1></noscript>
 
-        // переключение экранов
-        function showScoreboardScreen() {
-            hideMainScreen();
-            hideGameScreen();
-            hideLoginScreen();
-            $page.html( scoreboardTmpl() );
-            $page.find( '.js-game' ).on( 'click', showGameScreen );
-            $page.find( '.js-login' ).on( 'click', showLoginScreen );
-            $page.find( '.js-main' ).on( 'click', showMainScreen );
-        }
-
-        function hideScoreboardScreen() {
-            $page.find( '.js-game' ).off( 'click', showGameScreen );
-            $page.find( '.js-login' ).off( 'click', showLoginScreen );
-            $page.find( '.js-main' ).off( 'click', showMainScreen );
-        }
-
-        function showGameScreen() {
-            hideMainScreen();
-            hideScoreboardScreen();
-            hideLoginScreen();
-            $page.html( gameTmpl() );
-            $page.find( '.js-scoreboard' ).on( 'click', showScoreboardScreen );
-            $page.find( '.js-login' ).on( 'click', showLoginScreen );
-            $page.find( '.js-main' ).on( 'click', showMainScreen );
-        }
-
-        function hideGameScreen() {
-            $page.find( '.js-scoreboard' ).off( 'click', showScoreboardScreen );
-            $page.find( '.js-login' ).off( 'click', showLoginScreen );
-            $page.find( '.js-main' ).off( 'click', showMainScreen );
-        }
-
-        function showLoginScreen() {
-            hideMainScreen();
-            hideScoreboardScreen();
-            hideGameScreen();
-            $page.html( loginTmpl() );
-            $( '#login_message' ).html( '' );
-            $page.find( '.js-scoreboard' ).on( 'click', showScoreboardScreen );
-            $page.find( '.js-game' ).on( 'click', showGameScreen );
-            $page.find( '.js-main' ).on( 'click', showMainScreen );
-        }
-
-        function hideLoginScreen() {
-            $page.find( '.js-scoreboard' ).off( 'click', showScoreboardScreen );
-            $page.find( '.js-game' ).off( 'click', showGameScreen );
-            $page.find( '.js-main' ).off( 'click', showMainScreen );
-        }
-
-        function showMainScreen() {
-            hideScoreboardScreen();
-            hideGameScreen();
-            hideLoginScreen();
-            $page.html( mainTmpl() );
-            $page.find( '.js-scoreboard' ).on( 'click', showScoreboardScreen );
-            $page.find( '.js-game' ).on( 'click', showGameScreen );
-            $page.find( '.js-login' ).on( 'click', showLoginScreen );
-        }
-
-        function hideMainScreen() {
-            $page.find( '.js-scoreboard' ).off( 'click', showScoreboardScreen );
-            $page.find( '.js-game' ).off( 'click', showGameScreen );
-            $page.find( '.js-login' ).off( 'click', showLoginScreen );
-        }
-
-        showMainScreen();
-    </script>-->
-    
     <!-- Livereload -->
     <script src="//localhost:35729/livereload.js"></script>
 </body></html>

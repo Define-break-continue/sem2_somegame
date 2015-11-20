@@ -2,12 +2,14 @@ define ( [
     'backbone',
     'views/game',
     'views/login',
+    'views/registration',
     'views/main',
     'views/scoreboard'
 ], function (
     Backbone,
     viewGame,
     viewLogin,
+    viewRegistration,
     viewMain,
     viewScoreboard
 ) {
@@ -18,6 +20,7 @@ console.log('lv: ', viewLogin);
             'scores' : 'scoreboardAction',
             'game' : 'gameAction',
             'login' : 'loginAction',
+            'registration': 'registrationAction',
             '*default' : 'defaultActions'
         },
 
@@ -26,26 +29,24 @@ console.log('lv: ', viewLogin);
         },
 
         screenChange: function(view) {
-            console.log('activeview = ', activeView);
             activeView.hide();
-            console.log('go!\n');
             view.show();
             this.activeView = view;
         },
 
         scoreboardAction: function() {
-            console.log('entered router\n');
             this.screenChange(viewScoreboard);
         },
 
         gameAction: function() {
-            console.log('entered router\n');
             this.screenChange(viewGame);
         },
 
         loginAction: function() {
-            console.log('entered router\n');
             this.screenChange(viewLogin);
+        },
+        registrationAction: function() {
+            this.screenChange(viewRegistration);
         },
         defaultActions: function() {
             this.screenChange(viewMain);
