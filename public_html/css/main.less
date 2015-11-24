@@ -1,6 +1,8 @@
+@bg-clr: #333;
 @form-content-clr: #F58A00;
 @form-glow-clr: #857BE7;
-@form-bg-clr: #000;
+@form-bg-clr: rgba(0, 0, 0, .9);
+@form-black: #000;
 @light-clr: #FFC930;
 @form-btn-bg-clr: linear-gradient(to bottom, @light-clr 50%, @form-content-clr);
 @main-content-clr: @form-content-clr;
@@ -14,6 +16,13 @@ input[type="text"]:valid, input[type="email"]:valid {
     color: green;
 }
 
+#myCanvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1000;
+}
+
 #page {
     margin: auto;
     width: 50%;
@@ -21,7 +30,7 @@ input[type="text"]:valid, input[type="email"]:valid {
 }
 
 body {
-    background-color: #333;
+    background-color: @bg-clr;
     color: white;
     font-family: serif;
 }
@@ -31,9 +40,10 @@ body {
 .popup {
     width: 360px;
     margin: auto;
+    vertical-align: middle;
     text-align: center;
     border-radius: 20px;
-    background-color: @form-bg-clr;
+    background: @form-bg-clr;
     border-color: @form-content-clr;
     box-shadow: 0 0 70px 2px @form-glow-clr;
 }
@@ -117,11 +127,11 @@ body {
 }
 
 .highscores__table__td {
-    border: solid 1px @form-bg-clr;
+    border: solid 1px @form-black;
     background-color: @light-clr;
     padding-top: 7px;
     padding-bottom: 7px;
-    color: @form-bg-clr;
+    color: @form-black;
 }
 
 .highscores__table__left-td {

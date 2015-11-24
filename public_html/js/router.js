@@ -21,6 +21,7 @@ console.log('lv: ', viewLogin);
             'game' : 'gameAction',
             'login' : 'loginAction',
             'registration': 'registrationAction',
+            'admin': 'adminAction',
             '*default' : 'defaultActions'
         },
 
@@ -45,9 +46,15 @@ console.log('lv: ', viewLogin);
         loginAction: function() {
             this.screenChange(viewLogin);
         },
+
         registrationAction: function() {
             this.screenChange(viewRegistration);
         },
+
+        adminAction: function() {
+            this.screenChange(viewAdmin);
+        },
+
         defaultActions: function() {
             this.screenChange(viewMain);
         }

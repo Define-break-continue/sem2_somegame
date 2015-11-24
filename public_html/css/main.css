@@ -2,6 +2,12 @@ input[type="text"]:valid,
 input[type="email"]:valid {
   color: green;
 }
+#myCanvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1000;
+}
 #page {
   margin: auto;
   width: 50%;
@@ -16,9 +22,10 @@ body {
 .popup {
   width: 360px;
   margin: auto;
+  vertical-align: middle;
   text-align: center;
   border-radius: 20px;
-  background-color: #000;
+  background: rgba(0, 0, 0, 0.9);
   border-color: #F58A00;
   box-shadow: 0 0 70px 2px #857BE7;
 }
@@ -51,9 +58,10 @@ body {
 .main {
   width: 360px;
   margin: auto;
+  vertical-align: middle;
   text-align: center;
   border-radius: 20px;
-  background-color: #000;
+  background: rgba(0, 0, 0, 0.9);
   border-color: #F58A00;
   box-shadow: 0 0 70px 2px #857BE7;
   width: 450px;
@@ -89,9 +97,10 @@ body {
 .highscores {
   width: 360px;
   margin: auto;
+  vertical-align: middle;
   text-align: center;
   border-radius: 20px;
-  background-color: #000;
+  background: rgba(0, 0, 0, 0.9);
   border-color: #F58A00;
   box-shadow: 0 0 70px 2px #857BE7;
 }
