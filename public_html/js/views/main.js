@@ -3,24 +3,31 @@
 define ( [
     'backbone',
     'tmpl/main',
+    'tmpl/balls-control',
     'views/balls'
 ], function (
     Backbone,
     tmpl,
+    ballsCtrl,
     balls
 ) {
     var View =  Backbone.View.extend({
         template: tmpl,
+        ballsControl: ballsCtrl,
 
         initialize: function ( options ) {
             this.el = $( '#page' );
             this.setElement('#page');
+            this.ballsFlag = false;
         },
         render: function () {
             this.$el.html( this.template() );
-            $('.main').css( 'margin-top', $('.main').height / 2 );
             ballColors = [/*$('.main').css('box-shadow').replace(/^.*(rgba?\([^)]+\)).*$/,'$1')*/'red', $('.main__header').css('color')];
-            scene();
+            if ( !this.ballsFlag ) {
+            	$('#balls-control').html( this.ballsControl() );
+            	scene();
+            	this.ballsFlag = true;
+            }
             return this;
         },
         show: function () {

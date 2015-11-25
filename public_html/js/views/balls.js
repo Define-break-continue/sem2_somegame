@@ -6,6 +6,7 @@ lastSpawned['r']=50;
 var bump_factor = 0.98;
 var stuck_cnt = 0;
 var ballColors = ['red', 'blue'];
+var whatToSpawn = undefined;
 function randomOf( min, max ) {
 	return Math.random() * ( max - min ) + min;
 }
@@ -14,7 +15,7 @@ function ChangingValue( x0, t0, dxdt ) {
 	this.t0 = t0;
 	this.dxdt = dxdt;
 	this.get = function( t ) {
-		if( typeof this.t == 'undefined' ) 
+		if( typeof this.t == 'undefined' )
 			return( x0 + ( Date.now() - t0 ) * dxdt );
 		else
 			return( x0 + ( t - t0 ) * dxdt );
@@ -117,7 +118,7 @@ function Border( ) {
 	}
 }
 function distance( obj1, obj2 ) {
-	if( ( typeof obj1 ) != 'number' ) { 
+	if( ( typeof obj1 ) != 'number' ) {
 		var dx = ( obj2.x.get() - obj1.x.get() );
 		var dy = ( obj2.y.get() - obj1.y.get() );
 	}
@@ -131,11 +132,11 @@ function angle( obj1, obj2 ) {
 	var dx, dy;
 	if( ( typeof obj1 ) != 'number' )
 		dx = ( obj2.x.get() - obj1.x.get() );
-	else 
+	else
 		dx = obj1;
 	if( ( typeof obj1 ) != 'number' )
 		dy = ( obj2.y.get() - obj1.y.get() );
-	else 
+	else
 		dy = obj2;
 	if( dx == 0 ) return ( (dy >=0) ? ( Math.PI / 2 ) : -( Math.PI / 2 ) );
 	var a = Math.atan( dy / dx );
@@ -144,19 +145,19 @@ function angle( obj1, obj2 ) {
 		if( dy < 0 ) a += 2*Math.PI;
 	return ( a );
 }
-	
+
 function stuck_restart( nballs, npacmans, ibp, itp ) {
 	if ( ! ibp ) { // first time called
 		// select biggest pacman
 		var bgstPcmn = undefined;
 		for( var obj in objects ) {
-			if( objects[obj].type && objects[obj].type == 'Pacman' ) 
+			if( objects[obj].type && objects[obj].type == 'Pacman' )
 				if ( ( ! bgstPcmn ) || bgstPcmn.r < objects[obj] )
 					bgstPcmn = objects[obj];
 		}
 		if ( ! bgstPcmn ) {
 			console.log('stuck, but no pacmans found');
-			return 0;  
+			return 0;
 		}
 		var ibp = objects.indexOf( bgstPcmn );
 		var itp = 0; // index to place new obj at
@@ -170,11 +171,11 @@ function stuck_restart( nballs, npacmans, ibp, itp ) {
 	if( ibp <= itp ) {
 		// ball is above bgstPcmn, move bgstPcmn
 		itp = ibp + 50;
-		while( ! objects[itp] ) itp ++;
+		while( objects[itp] ) itp ++;
 		objects[itp] = bgstPcmn;
 		delete objects[ibp];
 		// swap
-		ibp += itp; 
+		ibp += itp;
 		itp = ibp - itp;
 		ibp -= itp;
 		// itp now points to previous ibp, and it's free
@@ -185,16 +186,17 @@ function stuck_restart( nballs, npacmans, ibp, itp ) {
 	var yv = -0.3 * Math.sin( xv );
 	xv = 0.3 * Math.cos( xv );
 	console.log('itp: '+itp+', ibp: '+ibp);
-	objects[itp] = new Ball( randomOf(5,60), ballColors[nballs % 2], Date.now(), x, randomOf(0,xv), y, randomOf(0,yv) );
-	if ( nballs != 0 ) { 
+	objects[itp] = new Ball( randomOf(5,60), nballs % 2, Date.now(), x, randomOf(0,xv), y, randomOf(0,yv) );
+	if ( nballs != 0 ) {
 		console.log(1);
+		console.log('recursive stuck_restart at ' + Date.now() );
 		setTimeout('stuck_restart(' + (nballs - 1) + ', ' + npacmans + ', ' + ibp + ', ' + itp + ');', 500 );
 	}
 	else {
 		// last iteration
 		delete objects[ibp];
 		for( var i = 0; i < npacmans; i++ ) {
-			objects.push( new Pacman( randomOf(20,50), 'black', Date.now(), randomOf(-800,800), 0, randomOf(-800,-200), 0, randomOf(0,2), 0, 1/6, 0) );
+			objects.push( new Pacman( randomOf(20,50), 'black', Date.now(), randomOf(0,canvas.width), 0, 10, 0, randomOf(0,2), 0, 1/6, 0) );
 		}
 	bgstPcmn.type = 'Pacman';
 	}
@@ -207,15 +209,16 @@ function check_stuck() {
 				return 0;
 			}
 	}
-	//console.log('stuck at ' + Date.now() ); 
+	console.log('stuck at ' + Date.now() );
 	if( stuck_cnt < 5 )
 		stuck_cnt ++;
 	else {
 		stuck_cnt = 0;
 		stuck_restart( 20, 6 );
+		console.log('call stuck_restart at ' + Date.now() );
 		//setTimeout( "stuck_restart( 20, 6 )", 5000 );
 	}
-}	
+}
 function physics() {
 	// pacman
 	var pacman_xy_speed = 0.05;
@@ -225,7 +228,7 @@ function physics() {
 		obj = objects[nump];
 		if( obj.type == 'Pacman' ) {
 			var pacman = obj;
-			if( pacman.state == 'eating' && ( ! pacman.target.type || objects.indexOf(pacman.target) == -1 ) ) { 
+			if( pacman.state == 'eating' && ( ! pacman.target.type || objects.indexOf(pacman.target) == -1 ) ) {
 				// someone other ate my ball
 				console.log('someone other ate my ball');
 				pacman.target = 0;
@@ -248,17 +251,17 @@ function physics() {
 			}
 			if( ! pacman.target.type || ! pacman.target.type == 'Ball' || objects.indexOf(pacman.target) == -1 ) {
 				pacman.target = 0;
-				if( pacman.state != 'eating' ) {	
-					if( pacman.x.dxdt != 0 ) 
+				if( pacman.state != 'eating' ) {
+					if( pacman.x.dxdt != 0 )
 						pacman.x = new ConstValue( pacman.x.get() );
-					if( pacman.y.dxdt != 0 ) 
+					if( pacman.y.dxdt != 0 )
 						pacman.y = new ConstValue( pacman.y.get() );
-					if( pacman.ar.dxdt != 0 ) 
+					if( pacman.ar.dxdt != 0 )
 						pacman.ar = new ConstValue( pacman.ar.get() );
 				}
-				for(var num1 in objects) 
+				for(var num1 in objects)
 					if( Math.random() > 0.9 && ( objects[num1].type == 'Ball' || objects[num1].type == 'Pacman' ) )
-						if( objects[num1].r < pacman.r * 3 / 5 ) 
+						if( objects[num1].r < pacman.r * 3 / 5 )
 							pacman.target = objects[num1];
 							if( pacman.target.type ) {
 								var ip = objects.indexOf( pacman );
@@ -278,7 +281,7 @@ function physics() {
 					var dy = pacman.target.y.get() - pacman.y.get();
 					if( da > Math.PI ) da = -2*Math.PI + da;
 					if( da < -Math.PI ) da = 2*Math.PI + da;
-					
+
 					if( Math.abs(da) < 0.5 && distance(pacman,pacman.target) < ( pacman.r - pacman.target.r ) * 2 / 3 ) {
 						// begin eating
 						pacman.x = new ChangingValue( pacman.x.get(), Date.now(), pacman.x.dxdt/2 );
@@ -291,7 +294,7 @@ function physics() {
 						pacman.state = 'eating';
 					} else {
 						var dist = distance(dx,dy);
-						var overhead = dist * pacman_xy_speed*10; 
+						var overhead = dist * pacman_xy_speed*10;
 						dx += pacman.target.x.dxdt * overhead;
 						dy += pacman.target.y.dxdt * overhead;
 						da = angle( -dx, -dy ) - pacman.ar.get()*Math.PI - Math.PI;
@@ -300,7 +303,7 @@ function physics() {
 						dx -= pacman.r*Math.cos(pacman.ar.get()*Math.PI)/5;
 						dy -= pacman.r*Math.sin(pacman.ar.get()*Math.PI)/5;
 						var pacman_xy_speed_cur = pacman_xy_speed * (1+1/(0.008*pacman.r+0.015)) * ( 1 - 1 / ( 0.8 * dist + 1 ) );
-						
+
 						/*
 						context.beginPath();
 						context.moveTo(pacman.x.get(),pacman.y.get());
@@ -309,19 +312,19 @@ function physics() {
 						*/
 						if( da > Math.PI ) da = -2*Math.PI + da;
 						if( da < -Math.PI ) da = 2*Math.PI + da;
-						if( da < 0.03 && da > -0.03 )	
-							pacman.ar = new ConstValue( pacman.ar.get() ); 
+						if( da < 0.03 && da > -0.03 )
+							pacman.ar = new ConstValue( pacman.ar.get() );
 						if( da < -0.06 && pacman.ar.dxdt != -pacman_ar_speed )
-							pacman.ar = new ChangingValue( pacman.ar.get(), Date.now(),-pacman_ar_speed*(1+100/pacman.r)*Math.abs(da+.2) ); 
+							pacman.ar = new ChangingValue( pacman.ar.get(), Date.now(),-pacman_ar_speed*(1+100/pacman.r)*Math.abs(da+.2) );
 						if( da > 0.06 && pacman.ar.dxdt != pacman_ar_speed )
-							pacman.ar = new ChangingValue( pacman.ar.get(), Date.now(),pacman_ar_speed*(1+100/pacman.r)*Math.abs(da+.2) ); 
+							pacman.ar = new ChangingValue( pacman.ar.get(), Date.now(),pacman_ar_speed*(1+100/pacman.r)*Math.abs(da+.2) );
 						if( dx < 3 && dx > -3 && pacman.x.dxdy != pacman_xy_speed_cur )
 							pacman.x = new ConstValue( pacman.x.get() );
-						if( dx < -6 || dx > 6 ) 
-							pacman.x = new ChangingValue( pacman.x.get(), Date.now(), 
+						if( dx < -6 || dx > 6 )
+							pacman.x = new ChangingValue( pacman.x.get(), Date.now(),
 								pacman_xy_speed_cur * Math.cos( angle( dx, dy ) ) );
-						if( dy < -6 || dy > 6 ) 
-							pacman.y = new ChangingValue( pacman.y.get(), Date.now(), 
+						if( dy < -6 || dy > 6 )
+							pacman.y = new ChangingValue( pacman.y.get(), Date.now(),
 								pacman_xy_speed_cur * Math.sin( angle( dx, dy ) ) );
 						if( dy < 3 && dy > -3 )
 							pacman.y = new ConstValue( pacman.y.get() );
@@ -339,7 +342,7 @@ function physics() {
 				}
 		}
 	}
-	
+
 	// balls vzaimnoe bumping
 	for(var num1 in objects) {
 		obj1 = objects[num1];
@@ -363,7 +366,7 @@ function physics() {
 						var rv11 = distance( obj1.x.dxdt, obj1.y.dxdt ) * Math.cos( oa - angle( obj1.x.dxdt, obj1.y.dxdt ) );
 						var rv21 = distance( obj2.x.dxdt, obj2.y.dxdt ) * Math.cos( oa - angle( obj2.x.dxdt, obj2.y.dxdt ) );
 						if( rv21 > rv11 ) continue; // balls cannot push each other
-						var rv12 = 2*(obj1.r*obj1.r*rv11+obj2.r*obj2.r*rv21)/((obj1.r*obj1.r+obj2.r*obj2.r)); 
+						var rv12 = 2*(obj1.r*obj1.r*rv11+obj2.r*obj2.r*rv21)/((obj1.r*obj1.r+obj2.r*obj2.r));
 						//var rv12 = 2*(rv11+rv21)/(2);
 						var rv22 = rv12-rv21;
 						rv12 -= rv11;
@@ -388,7 +391,7 @@ function physics() {
 			if( obj.type == 'Ball' ) {
 				if( obj.x.get() <= obj.r + 2 ) { //console.log('bump1');
 					obj.x = new ChangingValue( obj.x.get(), Date.now(), Math.abs(obj.x.dxdt)*bump_factor ); }
-				if( obj.x.get() >= canvas.width - obj.r - 2 ) 
+				if( obj.x.get() >= canvas.width - obj.r - 2 )
 					obj.x = new ChangingValue( obj.x.get(), Date.now(), -Math.abs(obj.x.dxdt)*bump_factor );
 				if( obj.y.get() <= obj.r + 2 )
 					obj.y = new ChangingValue( obj.y.get(), Date.now(), Math.abs(obj.y.dxdt)*bump_factor );
@@ -435,13 +438,12 @@ function canvasMouseOut(e) {
 	objectBeingSpawned = undefined;
 }
 function canvasMouseEnter(e) {
-	var whatToSpawn = document.getElementsByName('selected-object');
-	if( whatToSpawn[0].checked ) { // ball
+	if( whatToSpawn == 'Ball' ) { // ball
 		objectBeingSpawned = new Ball( lastSpawned['r'], lastSpawned['color'], Date.now(), e.offsetX, 0.0, e.offsetY, 0.0 );
 		objectBeingSpawned.type = "notYetABall";
 		objects.push(objectBeingSpawned);
 	}
-	if( whatToSpawn[1].checked ) { // pacman
+	if( whatToSpawn == 'Pacman' ) { // pacman
 		objectBeingSpawned = new Pacman( lastSpawned['r'], 'black', Date.now(), e.offsetX, 0, e.offsetY, 0, 0, 0, 1/6, 0 );
 		objectBeingSpawned.type = "notYetAPacman";
 		objects.push(objectBeingSpawned);
@@ -449,7 +451,7 @@ function canvasMouseEnter(e) {
 }
 function canvasMouseWheel(e) {
 	if( objectBeingSpawned ) {
-		var delta = e.deltaY || e.detail || e.wheelDelta;		
+		var delta = e.deltaY || e.detail || e.wheelDelta;
 		if( objectBeingSpawned.type == 'notYetABall' || objectBeingSpawned.type == 'notYetAPacman' ) {
 			if(delta > 0 )
 				objectBeingSpawned.r *= 1.1;
@@ -466,16 +468,40 @@ function canvasMouseMove(e) {
 	}
 }
 function canvasMouseRightClick(e) {
+	if( ! whatToSpawn )
+	    return 0;
 	if( objectBeingSpawned && objectBeingSpawned.type == 'notYetABall' ) {
 		objectBeingSpawned.color = ( objectBeingSpawned.color + 1 ) % ballColors.length;
 	}
-	if (e.preventDefault) 
-		e.preventDefault(); 
+	if (e.preventDefault)
+		e.preventDefault();
 	else e.returnValue=false;
 	if (e.stopPropagation)
 		e.stopPropagation();
 	else e.cancelBubble=true;
-	
+
+}
+function changeSpawnedObjectBall(e) {
+	e.target.style['border-style'] = 'inset';
+	document.getElementsByClassName('balls-control__pacman-spawn')[0].style['border-style'] = '';
+	document.getElementsByClassName('balls-control__mouse')[0].style['border-style'] = '';
+	whatToSpawn = 'Ball';
+}
+function changeSpawnedObjectPacman(e) {
+	e.target.style['border-style'] = 'inset';
+	document.getElementsByClassName('balls-control__ball-spawn')[0].style['border-style'] = '';
+	document.getElementsByClassName('balls-control__mouse')[0].style['border-style'] = '';
+	whatToSpawn = 'Pacman';
+}
+function changeSpawnedObjectNothing(e) {
+	e.target.style['border-style'] = 'inset';
+	document.getElementsByClassName('balls-control__pacman-spawn')[0].style['border-style'] = '';
+	document.getElementsByClassName('balls-control__ball-spawn')[0].style['border-style'] = '';
+	whatToSpawn = undefined;
+}
+function changeElasticity(e) {
+	bump_factor = Math.log(e.target.value * 220.25465794806706 + 1)/10;
+	console.log(bump_factor);
 }
 function objClear() {
 	for( var obj in objects ) {
@@ -483,8 +509,8 @@ function objClear() {
 	}
 	objects.push( new Border() );
 }
-function addBalls() {
-	var size_r = document.getElementById('more-balls-size').value; //relative to canvas
+function addBalls(e) {
+	var size_r = document.getElementsByClassName('balls-control__ball-size')[0].value; //relative to canvas
 	var size_a_min = Math.sqrt(canvas.height * canvas.width) * size_r * size_r / 10000; //absolute
 	var size_a_max = size_a_min * 1.3;
 	var speed_max = (100-size_r)*(100-size_r)*0.00008;
@@ -493,8 +519,8 @@ function addBalls() {
 		objects.push( new Ball( randomOf(size_a_min, size_a_max), i % ballColors.length, Date.now(), randomOf(size_a_max, canvas.width-size_a_max), randomOf(-speed_max,speed_max), randomOf(size_a_max, canvas.height-size_a_max), randomOf(-speed_max,speed_max) ) );
 	}
 }
-function addPacmans() {
-	var size_r = document.getElementById('more-pacmans-size').value; //relative to canvas
+function addPacmans(e) {
+	var size_r = document.getElementsByClassName('balls-control__pacman-size')[0].value; //relative to canvas
 	var size_a_min = Math.sqrt(canvas.height * canvas.width) * size_r * size_r / 10000; //absolute
 	var size_a_max = size_a_min * 1.3;
 	size_a_min *= 0.7;
@@ -502,19 +528,15 @@ function addPacmans() {
 		objects.push( new Pacman( randomOf(size_a_min, size_a_max), 'black', Date.now(), randomOf(size_a_max, canvas.width-size_a_max), 0, randomOf(size_a_max, canvas.height-size_a_max), 0, randomOf(0,2), 0, 1/6, 0) );
 	}
 }
-function bump_factor_change() {
-	bump_factor = Math.log(document.getElementById('bump-factor-ui').value * 220.25465794806706 + 1)/10;
-	console.log(bump_factor);
-}
-	
+
 function scene() { // <<<---------------------------MAIN----FUNC-----------------
 	canvas = document.getElementById('myCanvas');
 	context = canvas.getContext('2d');
-	canvas.width = window.innerWidth;//800;
-	canvas.height = window.innerHeight;//800;
+	canvas.width = window.innerWidth;
+	canvas.height = window.innerHeight;
 //	------------------object creation syntax:--------------------------
 //
-//	Ball( r, color, t0, x0, dxdt, y0, dydt ) 
+//	Ball( r, color, t0, x0, dxdt, y0, dydt )
 //		r - radius
 //		color
 //		t0 - start time, at which it was in x0,y0
@@ -522,7 +544,7 @@ function scene() { // <<<---------------------------MAIN----FUNC----------------
 //		dxdt - ball's speed projection on x axis
 //		y0 - start y coord
 //		dydt - ball's speed projection on y axis
-//	
+//
 //	Border() - draws canvas border
 //
 //	Pacman( r, color, t0, x0, dxdt, y0, dydt, ar0, dardt, am0, damdt )
@@ -538,7 +560,7 @@ function scene() { // <<<---------------------------MAIN----FUNC----------------
 //		[1]      [5]
 //		[2]      [6]
 //		[3]      [7]
-//		walls are thought to be used by players to defend their side 
+//		walls are thought to be used by players to defend their side
 //		from incoming balls
 //
 //	--------------------------------------------------------------------
@@ -549,22 +571,22 @@ function scene() { // <<<---------------------------MAIN----FUNC----------------
 		//new Ball( 50, 0, Date.now(), 400, 0.0, 180, -0.1 ),
 		//new Ball( 50, 0, Date.now(), 120, -0.5, 120, -0.6 ),
 		//new Pacman( 200, 'black', Date.now(), 200, 0, 200, 0, 0, 0, 1/6, 0 ),
-//		new Border(),
-		
+		//new Border(),
+
 	]
 	// populate objects[] with for loops
-	
-	for( var i = 0; i < 50; i++ ) {
+
+	for( var i = 0; i < 10; i++ ) {
 		objects.push( new Ball( randomOf(5,60), i % ballColors.length, Date.now(), randomOf(51,canvas.width-51), randomOf(-0.2,0.2), randomOf(51,canvas.height-51), randomOf(-0.2,0.2) ) );
 	}
-	
-	for( var i = 0; i < 10; i++ ) {
+
+	for( var i = 0; i < 3; i++ ) {
 		objects.push( new Pacman( randomOf(20,50), 'black', Date.now(), randomOf(-800,800), 0, randomOf(-800,-200), 0, randomOf(0,2), 0, 1/6, 0) );
 	}
-	
+
 	setInterval( drawFrame, 50 );
 	setInterval( check_stuck, 1000 );
-	if ('onwheel' in document) 
+	if ('onwheel' in document)
 		canvas.addEventListener('wheel', canvasMouseWheel );
 	else if ('onmousewheel' in document)
 		canvas.addEventListener('mousewheel', canvasMouseWheel );
@@ -574,4 +596,12 @@ function scene() { // <<<---------------------------MAIN----FUNC----------------
 	canvas.addEventListener('contextmenu', canvasMouseRightClick );
 	canvas.addEventListener('mousedown', canvasMouseDown );
 	canvas.addEventListener('mouseup', canvasMouseUp );
+	document.getElementsByClassName('balls-control__ball-spawn')[0].addEventListener('click', changeSpawnedObjectBall );
+	document.getElementsByClassName('balls-control__pacman-spawn')[0].addEventListener('click', changeSpawnedObjectPacman );
+	document.getElementsByClassName('balls-control__mouse')[0].addEventListener('click', changeSpawnedObjectNothing );
+    document.getElementsByClassName('balls-control__elasticity')[0].addEventListener('change', changeElasticity );
+	document.getElementsByClassName('balls-control__balls-spawn')[0].addEventListener('click', addBalls );
+	document.getElementsByClassName('balls-control__pacmans-spawn')[0].addEventListener('click', addPacmans );
+
+
 }

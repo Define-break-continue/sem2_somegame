@@ -3,29 +3,34 @@ input[type="email"]:valid {
   color: green;
 }
 #myCanvas {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
-  z-index: -1000;
+  z-index: -100;
 }
 #page {
   margin: auto;
-  width: 50%;
-  min-width: 470px;
+  /*width: 50%;*/
+  /*min-width: 470px;*/
+  padding-bottom: 130px;
 }
 body {
   background-color: #333;
   color: white;
   font-family: serif;
+  height: 1px;
+  /*min-height: 470px;*/
+  /*z-index: -5;*/
 }
 /* Login and Registration screens */
 .popup {
   width: 360px;
   margin: auto;
+  margin-top: 40px;
   vertical-align: middle;
   text-align: center;
   border-radius: 20px;
-  background: rgba(0, 0, 0, 0.9);
+  background: rgba(0, 0, 0, 0.88);
   border-color: #F58A00;
   box-shadow: 0 0 70px 2px #857BE7;
 }
@@ -58,10 +63,11 @@ body {
 .main {
   width: 360px;
   margin: auto;
+  margin-top: 40px;
   vertical-align: middle;
   text-align: center;
   border-radius: 20px;
-  background: rgba(0, 0, 0, 0.9);
+  background: rgba(0, 0, 0, 0.88);
   border-color: #F58A00;
   box-shadow: 0 0 70px 2px #857BE7;
   width: 450px;
@@ -97,10 +103,11 @@ body {
 .highscores {
   width: 360px;
   margin: auto;
+  margin-top: 40px;
   vertical-align: middle;
   text-align: center;
   border-radius: 20px;
-  background: rgba(0, 0, 0, 0.9);
+  background: rgba(0, 0, 0, 0.88);
   border-color: #F58A00;
   box-shadow: 0 0 70px 2px #857BE7;
 }
@@ -153,4 +160,82 @@ body {
   background-color: #F58A00;
   color: #fff;
   font-style: italic;
+}
+/* Balls Control Deck */
+#balls-control {
+  bottom: 0;
+}
+.balls-control {
+  width: 360px;
+  margin: auto;
+  margin-top: 40px;
+  vertical-align: middle;
+  border-radius: 20px;
+  background: rgba(0, 0, 0, 0.88);
+  border-color: #F58A00;
+  box-shadow: 0 0 70px 2px #857BE7;
+  width: 450px;
+  padding-top: 5px;
+  padding-bottom: 20px;
+  position: fixed;
+  width: 95%;
+  min-width: 836px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -10;
+  padding-top: 0;
+  padding-bottom: 0;
+  text-align: center;
+  color: #F58A00;
+}
+.balls-control__spawn-one {
+  width: 23%;
+  float: left;
+  clear: left;
+}
+.balls-control__spawn-many {
+  width: 53%;
+  border-left: 1px solid #FFC930;
+  border-right: 1px solid #FFC930;
+  float: left;
+}
+.balls-control__spawn-many__inner {
+  float: left;
+  width: 49%;
+}
+.balls-control__physics {
+  width: 23%;
+  float: left;
+  clear: right;
+}
+.balls-control__header {
+  font-size: 24px;
+  font-weight: bold;
+  color: #F58A00;
+  text-align: center;
+  text-shadow: 1px -1px 1px #FFC930;
+  font-size: 18px;
+}
+.balls-control__button {
+  width: 180px;
+  padding: 12px;
+  border-radius: 7px;
+  font-size: 15px;
+  background: linear-gradient(to bottom, #FFC930 50%, #F58A00);
+  margin-top: 3px;
+  margin-bottom: 5px;
+  border: solid 1px #F58A00;
+  box-shadow: 0 0 1px 1px #F58A00;
+  width: 80px;
+  height: 30px;
+  padding: 2px;
+  font-size: 14px;
+  margin-left: 4px;
+}
+.balls-control__hr {
+  color: #F58A00;
+}
+.balls-control__range {
+  foreground-color: #F58A00;
 }
