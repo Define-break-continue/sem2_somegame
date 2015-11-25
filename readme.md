@@ -77,7 +77,6 @@ Url для обмена данными во время игры. Методы:
      `methodId` - 33
 
 
-
 ##/rooms
 URL для методов работы с комнатами. Методы:
 
@@ -93,6 +92,18 @@ URL для методов работы с комнатами. Методы:
      `methodId` - 44
 * [list](https://github.com/Define-break-continue/sem2_somegame/tree/protocol/docs/rooms/list.md)
      `methodId` - 45
+
+##events
+Запросы от сервера, которые получает Frontend при наступлении событий
+
+* [bonus_generated](https://github.com/Define-break-continue/sem2_somegame/tree/protocol/docs/events/bonus_generated.md)
+
+* [game_over](https://github.com/Define-break-continue/sem2_somegame/tree/protocol/docs/events/game_over.md)
+
+* [gamer_leave](https://github.com/Define-break-continue/sem2_somegame/tree/protocol/docs/events/gamer_leave.md)
+
+* [packmans_moved](https://github.com/Define-break-continue/sem2_somegame/tree/protocol/docs/events/packmans_moved.md)
+
 
 
 ##/admin
