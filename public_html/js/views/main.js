@@ -22,7 +22,8 @@ define ( [
         },
         render: function () {
             this.$el.html( this.template() );
-            ballColors = [/*$('.main').css('box-shadow').replace(/^.*(rgba?\([^)]+\)).*$/,'$1')*/'red', $('.main__header').css('color')];
+            ballColors = ['red', $('.main__header').css('color')];
+//            $('#page').css('z-index', -101);
             if ( !this.ballsFlag ) {
             	$('#balls-control').html( this.ballsControl() );
             	scene();

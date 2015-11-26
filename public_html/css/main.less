@@ -25,9 +25,12 @@ input[type="text"]:valid, input[type="email"]:valid {
 
 #page {
     margin: auto;
-    /*width: 50%;*/
-    /*min-width: 470px;*/
-    padding-bottom: 130px;
+    width: 50%;
+    min-width: 470px;
+    &:after {
+        padding-bottom: 130px;
+        z-index: -101;
+    }
 }
 
 body {

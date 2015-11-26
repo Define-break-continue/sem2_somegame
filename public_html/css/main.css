@@ -10,9 +10,12 @@ input[type="email"]:valid {
 }
 #page {
   margin: auto;
-  /*width: 50%;*/
-  /*min-width: 470px;*/
+  width: 50%;
+  min-width: 470px;
+}
+#page:after {
   padding-bottom: 130px;
+  z-index: -101;
 }
 body {
   background-color: #333;
