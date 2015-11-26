@@ -13,9 +13,10 @@ input[type="email"]:valid {
   width: 50%;
   min-width: 470px;
 }
-#page:after {
-  padding-bottom: 130px;
-  z-index: -101;
+#opaque {
+  height: 130px;
+  width: 60%;
+  z-index: -10000;
 }
 body {
   background-color: #333;
