@@ -34,7 +34,8 @@ module.exports = function ( grunt ) {
 					optimization: 2
 				},
 				files: {
-					"public_html/css/main.css": "public_html/css/*.less" // destination file and source file
+					"public_html/css/main.css": "public_html/css/general.less",
+					"public_html/css/main.css": "public_html/css/less/*.less" // destination file and source file
 				}
 			}
 		},
