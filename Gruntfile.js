@@ -25,6 +25,20 @@ module.exports = function ( grunt ) {
 				}
 			}
 		},
+
+		less: {
+			development: {
+				options: {
+					compress: true,
+					yuicompress: true,
+					optimization: 2
+				},
+				files: {
+					"public_html/css/main.css": "public_html/css/*.less" // destination file and source file
+				}
+			}
+		},
+
 		watch: {
 			fest: { /* Цель */
 				files: ['templates/*.xml'], /* следим за шаблонами */
@@ -38,7 +52,15 @@ module.exports = function ( grunt ) {
 				options: {
 					livereload: true // автоматическая перезагрузка
 				}
-			}
+			},
+
+			styles: {
+				files: ['public_html/css/*.less'], // which files to watch
+                tasks: ['less'],
+                options: {
+                	nospawn: true
+                }
+            }
 		},
 		concurrent: {
 			target: ['watch', 'shell'],
@@ -51,5 +73,7 @@ module.exports = function ( grunt ) {
 	grunt.loadNpmTasks('grunt-concurrent');
 	grunt.loadNpmTasks( 'grunt-fest' );
 	grunt.loadNpmTasks( 'grunt-contrib-watch' );
-	grunt.registerTask( 'default', [ 'concurrent' ] );
+	grunt.loadNpmTasks( 'grunt-contrib-less' );
+	grunt.registerTask( 'default', [ 'concurrent', 'less', 'watch'] );
+	//grunt.registerTask( 'default', ['less', 'watch'] );
 };
