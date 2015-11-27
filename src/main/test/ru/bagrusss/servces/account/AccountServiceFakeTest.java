@@ -33,6 +33,7 @@ public class AccountServiceFakeTest {
 
     @After
     public void tearDown() throws Exception {
+        mAccountService.removeAll();
         mUsers.clear();
     }
 
@@ -72,27 +73,37 @@ public class AccountServiceFakeTest {
     }
 
     @Test
-    public void testRemoveSession() throws Exception{
+    public void testRemoveSession() throws Exception {
         for (UserProfile usr : mUsers) {
             mAccountService.addSession(usr.toString(), usr);
         }
         assertFalse(mAccountService.removeSession(new UserProfile(" ", " ", " ").toString()));
-        for (UserProfile usr:mUsers){
+        for (UserProfile usr : mUsers) {
             assertTrue(mAccountService.removeSession(usr.toString()));
         }
     }
 
     @Test
     public void testDoSaveUser() throws Exception {
-        HttpSession mockSession=mock(HttpSession.class);
+        HttpSession mockSession = mock(HttpSession.class);
         when(mockSession.getId()).thenReturn("somesession");
 
-        HttpServletRequest mock= mock(HttpServletRequest.class);
+        HttpServletRequest mock = mock(HttpServletRequest.class);
         when(mock.getSession()).thenReturn(mockSession);
         mAccountService.doSaveUser(mock, mUsers.get(0));
         assertEquals(1, mAccountService.getCountActivatedUsers());
         mAccountService.doSaveUser(mock, mUsers.get(0));
-        assertEquals(mAccountService.getCountActivatedUsers(),1);
+        assertEquals(mAccountService.getCountActivatedUsers(), 1);
     }
 
+    @Test
+    public void testRemoveAll() throws Exception {
+        for (UserProfile usr:mUsers){
+            mAccountService.addUser(usr.getmUserLogin(),usr);
+            mAccountService.addSession(usr.toString(), usr);
+        }
+        mAccountService.removeAll();
+        assertEquals(0, mAccountService.getCountActivatedUsers());
+        assertEquals(0, mAccountService.getCountRegisteredUsers());
+    }
 }

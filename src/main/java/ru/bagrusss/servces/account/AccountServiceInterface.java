@@ -8,6 +8,8 @@ import org.jetbrains.annotations.Nullable;
  */
 public interface AccountServiceInterface {
 
+    void removeAll();
+
     boolean isAdmin(String sessionId);
 
     boolean addUser(@NotNull String userName, @NotNull UserProfile userProfile);

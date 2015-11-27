@@ -2,10 +2,8 @@ package ru.bagrusss.servces.account;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import static org.mockito.Mockito.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,6 +28,12 @@ public final class AccountServiceFake implements AccountServiceInterface {
     private AccountServiceFake() {
         mUsers = new HashMap<>();
         mSessions = new HashMap<>();
+    }
+
+    @Override
+    public void removeAll() {
+        mSessions.clear();
+        mUsers.clear();
     }
 
     @Override
