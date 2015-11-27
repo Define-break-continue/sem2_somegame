@@ -1,7 +1,7 @@
 package ru.bagrusss.administration;
 
 import org.jetbrains.annotations.NotNull;
-import ru.bagrusss.servces.AccountService;
+import ru.bagrusss.servces.account.AccountServiceFake;
 import ru.bagrusss.templater.PageGenerator;
 
 import javax.servlet.ServletException;
@@ -26,8 +26,8 @@ public class AdminPageServlet extends HttpServlet {
         response.setStatus(HttpServletResponse.SC_OK);
         Map<String, Object> pageVariables = new HashMap<>();
         String timeString = request.getParameter("shutdown");
-        pageVariables.put("regUsers", AccountService.getInstance().getCountRegisteredUsers());
-        pageVariables.put("actUsers", AccountService.getInstance().getCountActivatedUsers());
+        pageVariables.put("regUsers", AccountServiceFake.getInstance().getCountRegisteredUsers());
+        pageVariables.put("actUsers", AccountServiceFake.getInstance().getCountActivatedUsers());
         if (timeString != null) {
             try {
                 stopServer(Integer.valueOf(timeString));

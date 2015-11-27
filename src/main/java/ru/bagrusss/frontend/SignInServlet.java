@@ -4,8 +4,8 @@ package ru.bagrusss.frontend;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
-import ru.bagrusss.models.UserProfile;
-import ru.bagrusss.servces.AccountService;
+import ru.bagrusss.servces.account.UserProfile;
+import ru.bagrusss.servces.account.AccountServiceFake;
 import ru.bagrusss.templater.PageGenerator;
 
 import javax.servlet.ServletException;
@@ -16,15 +16,15 @@ import java.io.IOException;
 
 public class SignInServlet extends HttpServlet {
 
-    private final AccountService accountService;
+    private final AccountServiceFake accountServiceFake;
     public static final String PARAM_PASSWORD = "password";
     public static final String PARAM_NAME = "name";
     public static final String PARAM_LOGOUT = "logout";
     public static final String URL = "/signin";
 
 
-    public SignInServlet(AccountService accountService) {
-        this.accountService = accountService;
+    public SignInServlet(AccountServiceFake accountServiceFake) {
+        this.accountServiceFake = accountServiceFake;
     }
 
     @Override
@@ -53,13 +53,13 @@ public class SignInServlet extends HttpServlet {
 
         String name = request.getParameter(PARAM_NAME);
         String password = request.getParameter(PARAM_PASSWORD);
-        UserProfile user = accountService.getUser(name);
+        UserProfile user = accountServiceFake.getUser(name);
         response.setStatus(HttpServletResponse.SC_OK);
         JSONObject responseText = new JSONObject();
         String res;
-        if (user != null && user.getUserPassword().equals(password)) {
+        if (user != null && user.getmUserPassword().equals(password)) {
             res = "OK";
-            accountService.doSaveUser(request, user);
+            accountServiceFake.doSaveUser(request, user);
         } else {
             res = "FAIL";
 
@@ -74,7 +74,7 @@ public class SignInServlet extends HttpServlet {
     }
 
     void doLogout(@NotNull HttpServletRequest request) {
-        accountService.removeSession(request.getSession().getId());
+        accountServiceFake.removeSession(request.getSession().getId());
     }
 
 }

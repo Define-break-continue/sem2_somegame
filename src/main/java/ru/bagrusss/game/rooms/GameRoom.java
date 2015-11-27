@@ -1,7 +1,7 @@
 package ru.bagrusss.game.rooms;
 
 import org.jetbrains.annotations.NotNull;
-import ru.bagrusss.models.UserProfile;
+import ru.bagrusss.servces.account.UserProfile;
 
 import java.util.List;
 

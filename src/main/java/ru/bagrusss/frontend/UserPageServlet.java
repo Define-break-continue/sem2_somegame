@@ -1,8 +1,8 @@
 package ru.bagrusss.frontend;
 
 import org.jetbrains.annotations.NotNull;
-import ru.bagrusss.models.UserProfile;
-import ru.bagrusss.servces.AccountService;
+import ru.bagrusss.servces.account.UserProfile;
+import ru.bagrusss.servces.account.AccountServiceFake;
 import ru.bagrusss.templater.PageGenerator;
 
 import javax.servlet.ServletException;
@@ -26,12 +26,12 @@ public class UserPageServlet extends HttpServlet {
         resp.setStatus(HttpServletResponse.SC_OK);
         Map<String, Object> pageVariables = new HashMap<>();
         String sessionId = req.getSession().getId();
-        UserProfile user = AccountService.getInstance().getSession(sessionId);
+        UserProfile user = AccountServiceFake.getInstance().getSession(sessionId);
         String name;
         String email;
         if (user != null) {
-            name = user.getUserLogin();
-            email = user.getUserEmail();
+            name = user.getmUserLogin();
+            email = user.getmUserEmail();
         } else {
             name = "Guest";
             email = "No info!";

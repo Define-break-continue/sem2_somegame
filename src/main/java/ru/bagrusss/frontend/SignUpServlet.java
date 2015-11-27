@@ -3,8 +3,8 @@ package ru.bagrusss.frontend;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
-import ru.bagrusss.models.UserProfile;
-import ru.bagrusss.servces.AccountService;
+import ru.bagrusss.servces.account.UserProfile;
+import ru.bagrusss.servces.account.AccountServiceFake;
 import ru.bagrusss.templater.PageGenerator;
 
 import javax.servlet.ServletException;
@@ -14,11 +14,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class SignUpServlet extends HttpServlet {
-    private final AccountService accountService;
+    private final AccountServiceFake accountServiceFake;
     public static final String URL = "/signup";
 
-    public SignUpServlet(AccountService accountService) {
-        this.accountService = accountService;
+    public SignUpServlet(AccountServiceFake accountServiceFake) {
+        this.accountServiceFake = accountServiceFake;
     }
 
     @Override
@@ -38,10 +38,10 @@ public class SignUpServlet extends HttpServlet {
         String result;
         String message;
         UserProfile user=new UserProfile(name, password, email);
-        if (accountService.addUser(name, user)) {
+        if (accountServiceFake.addUser(name, user)) {
             result = "OK";
             message="User successfuly created!";
-            accountService.doSaveUser(req, user);
+            accountServiceFake.doSaveUser(req, user);
         } else {
             result = "FAIL";
             message="User already exist! Try agan.";

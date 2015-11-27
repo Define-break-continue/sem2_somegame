@@ -1,9 +1,5 @@
 package ru.bagrusss.main;
 
-import ru.bagrusss.administration.AdminPageServlet;
-import ru.bagrusss.frontend.SignInServlet;
-import ru.bagrusss.frontend.UserPageServlet;
-import ru.bagrusss.servces.AccountService;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.HandlerList;
@@ -11,7 +7,11 @@ import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.jetbrains.annotations.NotNull;
+import ru.bagrusss.administration.AdminPageServlet;
+import ru.bagrusss.frontend.SignInServlet;
 import ru.bagrusss.frontend.SignUpServlet;
+import ru.bagrusss.frontend.UserPageServlet;
+import ru.bagrusss.servces.account.AccountServiceFake;
 
 public class Main {
 
@@ -32,8 +32,8 @@ public class Main {
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.addServlet(new ServletHolder(new AdminPageServlet()), AdminPageServlet.URL);
 
-        context.addServlet(new ServletHolder(new SignInServlet(AccountService.getInstance())), SignInServlet.URL);
-        context.addServlet(new ServletHolder(new SignUpServlet(AccountService.getInstance())), SignUpServlet.URL);
+        context.addServlet(new ServletHolder(new SignInServlet(AccountServiceFake.getInstance())), SignInServlet.URL);
+        context.addServlet(new ServletHolder(new SignUpServlet(AccountServiceFake.getInstance())), SignUpServlet.URL);
         context.addServlet(new ServletHolder(new UserPageServlet()), UserPageServlet.URL);
 
         ResourceHandler resource_handler = new ResourceHandler();
