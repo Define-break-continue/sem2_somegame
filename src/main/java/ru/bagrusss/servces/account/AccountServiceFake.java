@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public final class AccountServiceFake implements AccountServiceInterface {
+public final class AccountServiceFake implements AccountService {
 
     private static AccountServiceFake mInstance;
     private final Map<String, UserProfile> mUsers;
@@ -70,7 +70,6 @@ public final class AccountServiceFake implements AccountServiceInterface {
         return mSessions.get(sessionId);
     }
 
-
     @Override
     public long getCountActivatedUsers() {
         return mSessions.size();
@@ -84,6 +83,5 @@ public final class AccountServiceFake implements AccountServiceInterface {
     public void doSaveUser(@NotNull HttpServletRequest request, @NotNull UserProfile user) {
         addSession(request.getSession().getId(), user);
     }
-
 
 }

@@ -36,12 +36,12 @@ public class Main {
         context.addServlet(new ServletHolder(new SignUpServlet(AccountServiceFake.getInstance())), SignUpServlet.URL);
         context.addServlet(new ServletHolder(new UserPageServlet()), UserPageServlet.URL);
 
-        ResourceHandler resource_handler = new ResourceHandler();
-        resource_handler.setDirectoriesListed(true);
-        resource_handler.setResourceBase(RESOURSE_DIR);
+        ResourceHandler resourceHandler = new ResourceHandler();
+        resourceHandler.setDirectoriesListed(true);
+        resourceHandler.setResourceBase(RESOURSE_DIR);
 
         HandlerList handlers = new HandlerList();
-        handlers.setHandlers(new Handler[]{resource_handler, context});
+        handlers.setHandlers(new Handler[]{resourceHandler, context});
         server.setHandler(handlers);
 
         try {

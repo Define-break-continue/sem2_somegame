@@ -4,9 +4,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Created by vladislav on 12.10.15.
+ * Created by vladislav
  */
-public interface AccountServiceInterface {
+public interface AccountService {
 
     void removeAll();
 

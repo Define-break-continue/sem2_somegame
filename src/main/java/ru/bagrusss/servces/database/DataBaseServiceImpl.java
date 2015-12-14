@@ -11,11 +11,12 @@ import java.util.Map;
  */
 
 public final class DataBaseServiceImpl implements DataBaseService {
-    private static final String DB_HOST = "jdbc:mysql://localhost:3306/tp_db";
-    private static final String DB_USER = "tp_user";
-    private static final String DB_PASS = "tp_user2015";
+
+    private static final String DB_HOST = "jdbc:mysql://localhost:3306/java_2015_09_g07_db";
+    private static final String DB_USER = "java_2015_09_g07";
+    private static final String DB_PASS = "java_2015_09_g07";
     private static final int MAX_OPEN_PREPARED_STATEMENTS = 100;
-    private static DataBaseServiceImpl s_dbHelper;
+    private static DataBaseServiceImpl mDBHelper;
     private final BasicDataSource mBasicDataSource;
 
     private DataBaseServiceImpl() {
@@ -31,12 +32,12 @@ public final class DataBaseServiceImpl implements DataBaseService {
     }
 
     public static DataBaseServiceImpl getInstance() {
-        DataBaseServiceImpl localInstance = s_dbHelper;
+        DataBaseServiceImpl localInstance = mDBHelper;
         if (localInstance == null) {
             synchronized (DataBaseServiceImpl.class) {
-                localInstance = s_dbHelper;
+                localInstance = mDBHelper;
                 if (localInstance == null)
-                    s_dbHelper = localInstance = new DataBaseServiceImpl();
+                    mDBHelper = localInstance = new DataBaseServiceImpl();
             }
         }
         return localInstance;
