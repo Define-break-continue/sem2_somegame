@@ -4,8 +4,8 @@ package ru.bagrusss.frontend;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
-import ru.bagrusss.servces.account.UserProfile;
 import ru.bagrusss.servces.account.AccountServiceFake;
+import ru.bagrusss.servces.account.UserProfile;
 import ru.bagrusss.templater.PageGenerator;
 
 import javax.servlet.ServletException;
@@ -28,49 +28,44 @@ public class SignInServlet extends HttpServlet {
     }
 
     @Override
-    public void doGet(@NotNull HttpServletRequest request,
-                      @NotNull HttpServletResponse response) throws ServletException, IOException {
-        response.setStatus(HttpServletResponse.SC_OK);
-        if (request.getParameter(PARAM_LOGOUT) != null) {
-            doLogout(request);
-            JSONObject respText=new JSONObject();
+    public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.setStatus(HttpServletResponse.SC_OK);
+        if (req.getParameter(PARAM_LOGOUT) != null) {
+            doLogout(req);
+            JSONObject respText = new JSONObject();
             try {
                 respText.put("status", HttpServletResponse.SC_OK);
                 respText.put("nextUrl", "/");
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            response.getWriter().println(respText.toString());
+            resp.getWriter().println(respText.toString());
             return;
         }
-        response.getWriter().println(PageGenerator.getPage("signin.html", null));
+        resp.getWriter().println(PageGenerator.getPage("signin.html", null));
     }
 
 
     @Override
-    public void doPost(@NotNull HttpServletRequest request,
-                       @NotNull HttpServletResponse response) throws ServletException, IOException {
+    public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        String name = request.getParameter(PARAM_NAME);
-        String password = request.getParameter(PARAM_PASSWORD);
+        String name = req.getParameter(PARAM_NAME);
+        String password = req.getParameter(PARAM_PASSWORD);
         UserProfile user = accountServiceFake.getUser(name);
-        response.setStatus(HttpServletResponse.SC_OK);
+        resp.setStatus(HttpServletResponse.SC_OK);
         JSONObject responseText = new JSONObject();
         String res;
         if (user != null && user.getmUserPassword().equals(password)) {
             res = "OK";
-            accountServiceFake.doSaveUser(request, user);
-        } else {
-            res = "FAIL";
-
-        }
+            accountServiceFake.doSaveUser(req, user);
+        } else res = "FAIL";
         try {
             responseText.put("status", HttpServletResponse.SC_OK);
             responseText.put("result", res);
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        response.getWriter().println(responseText.toString());
+        resp.getWriter().println(responseText.toString());
     }
 
     void doLogout(@NotNull HttpServletRequest request) {

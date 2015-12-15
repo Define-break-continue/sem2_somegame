@@ -13,9 +13,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Сервлет страницы инфы о пользователе
- */
+
 
 public class UserPageServlet extends HttpServlet {
 

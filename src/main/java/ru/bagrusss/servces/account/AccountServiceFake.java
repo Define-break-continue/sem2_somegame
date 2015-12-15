@@ -37,7 +37,7 @@ public final class AccountServiceFake implements AccountService {
     }
 
     @Override
-    public boolean isAdmin(String sessionId) {
+    public boolean isAdmin(String email) {
         return false;
     }
 

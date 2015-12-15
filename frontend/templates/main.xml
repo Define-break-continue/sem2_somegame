@@ -1,0 +1,17 @@
+<fest:template xmlns:fest="http://fest.mail.ru" context_name = "json">
+	<fieldset class="main">
+		<h1 class="main__header">
+			A GAME WHICH IS TOO CLOSE TO THE TOP OF THE EPICITY
+		</h1>
+		<hr class="main__hr" />
+		<a href="#scores">
+			<button class="main__element">HIGHSCORES</button>
+		</a>
+		<a href="#game">
+			<button class="main__element">PLAY!</button>
+		</a>
+		<a href="#login">
+			<button class="main__element">LOG IN</button>
+		</a>
+	</fieldset>
+</fest:template>

@@ -1,10 +1,9 @@
 package ru.bagrusss.frontend;
 
-import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
-import ru.bagrusss.servces.account.UserProfile;
 import ru.bagrusss.servces.account.AccountServiceFake;
+import ru.bagrusss.servces.account.UserProfile;
 import ru.bagrusss.templater.PageGenerator;
 
 import javax.servlet.ServletException;
@@ -22,14 +21,13 @@ public class SignUpServlet extends HttpServlet {
     }
 
     @Override
-    public void doGet(@NotNull HttpServletRequest request,
-                      @NotNull HttpServletResponse response) throws ServletException, IOException {
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.getWriter().println(PageGenerator.getPage("signup.html", null));
         response.setStatus(HttpServletResponse.SC_OK);
     }
 
     @Override
-    protected void doPost(@NotNull HttpServletRequest req, @NotNull HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String name = req.getParameter("name");
         String email = req.getParameter("email");
         String password = req.getParameter("password");
@@ -37,18 +35,18 @@ public class SignUpServlet extends HttpServlet {
         resp.setStatus(HttpServletResponse.SC_OK);
         String result;
         String message;
-        UserProfile user=new UserProfile(name, password, email);
+        UserProfile user = new UserProfile(name, password, email);
         if (accountServiceFake.addUser(name, user)) {
             result = "OK";
-            message="User successfuly created!";
+            message = "User successfuly created!";
             accountServiceFake.doSaveUser(req, user);
         } else {
             result = "FAIL";
-            message="User already exist! Try agan.";
+            message = "User already exist! Try agan.";
         }
         try {
             responseText.put("status", HttpServletResponse.SC_OK);
-            responseText.put("res", result);
+            responseText.put("resources", result);
             responseText.put("message", message);
         } catch (JSONException e) {
             e.printStackTrace();

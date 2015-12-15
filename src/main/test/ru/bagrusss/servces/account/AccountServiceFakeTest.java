@@ -1,5 +1,6 @@
 package ru.bagrusss.servces.account;
 
+import org.jetbrains.annotations.TestOnly;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -37,6 +38,7 @@ public class AccountServiceFakeTest {
         mUsers.clear();
     }
 
+    @TestOnly
     @Test
     public void testAddUser() throws Exception {
         for (UserProfile mUser : mUsers) {
@@ -45,6 +47,7 @@ public class AccountServiceFakeTest {
         assertFalse(mAccountService.addUser("vlad3", new UserProfile("vlad3", "456", "vlad3@mail.ru")));
     }
 
+    @TestOnly
     @Test
     public void testGetUser() throws Exception {
         for (UserProfile usr : mUsers) {
@@ -54,6 +57,7 @@ public class AccountServiceFakeTest {
         assertEquals(null, mAccountService.getUser("vlad5"));
     }
 
+    @TestOnly
     @Test
     public void testAddSession() throws Exception {
         for (UserProfile usr : mUsers) {
@@ -63,6 +67,7 @@ public class AccountServiceFakeTest {
         assertFalse(mAccountService.addSession(mUsers.get(0).toString(), mUsers.get(0)));
     }
 
+    @TestOnly
     @Test
     public void testGetSession() throws Exception {
         assertNull(mAccountService.getSession(mUsers.get(0).toString()));
@@ -72,6 +77,7 @@ public class AccountServiceFakeTest {
         }
     }
 
+    @TestOnly
     @Test
     public void testRemoveSession() throws Exception {
         for (UserProfile usr : mUsers) {
@@ -83,6 +89,7 @@ public class AccountServiceFakeTest {
         }
     }
 
+    @TestOnly
     @Test
     public void testDoSaveUser() throws Exception {
         HttpSession mockSession = mock(HttpSession.class);
@@ -96,10 +103,11 @@ public class AccountServiceFakeTest {
         assertEquals(mAccountService.getCountActivatedUsers(), 1);
     }
 
+    @TestOnly
     @Test
     public void testRemoveAll() throws Exception {
-        for (UserProfile usr:mUsers){
-            mAccountService.addUser(usr.getmUserLogin(),usr);
+        for (UserProfile usr : mUsers) {
+            mAccountService.addUser(usr.getmUserLogin(), usr);
             mAccountService.addSession(usr.toString(), usr);
         }
         mAccountService.removeAll();

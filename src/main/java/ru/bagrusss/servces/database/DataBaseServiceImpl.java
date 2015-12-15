@@ -4,7 +4,7 @@ import org.apache.commons.dbcp2.BasicDataSource;
 import org.jetbrains.annotations.NotNull;
 
 import java.sql.*;
-import java.util.Map;
+import java.util.List;
 
 /**
  * Created by vladislav
@@ -19,6 +19,10 @@ public final class DataBaseServiceImpl implements DataBaseService {
     private static DataBaseServiceImpl mDBHelper;
     private final BasicDataSource mBasicDataSource;
 
+    public static final String TABLE_USER = " `User` ";
+    public static final String TABLE_STATISTICS = " `Statistics` ";
+    public static final String TABLE_ADMINS = " `Admin` ";
+
     private DataBaseServiceImpl() {
         mBasicDataSource = new BasicDataSource();
         mBasicDataSource.setDriverClassName("com.mysql.jdbc.Driver");
@@ -29,6 +33,15 @@ public final class DataBaseServiceImpl implements DataBaseService {
         mBasicDataSource.setMinIdle(4);
         mBasicDataSource.setMaxIdle(10);
         mBasicDataSource.setMaxOpenPreparedStatements(MAX_OPEN_PREPARED_STATEMENTS);
+    }
+
+    public boolean checkDataBase() {
+        try {
+            mDBHelper.runUpdate(mDBHelper.getConnection(), "SHOW TABLES");
+            return true;
+        } catch (SQLException e) {
+            return false;
+        }
     }
 
     public static DataBaseServiceImpl getInstance() {
@@ -43,16 +56,45 @@ public final class DataBaseServiceImpl implements DataBaseService {
         return localInstance;
     }
 
+    private void createDataBase() throws SQLException {
+        StringBuilder sql = new StringBuilder("CREATE TABLE IF NOT EXISTS")
+                .append(TABLE_USER)
+                .append("(`id` INT NOT NULL AUTO_INCREMENT, ")
+                .append("`email` VARCHAR(50), ")
+                .append("`first_name` VARCHAR(35), ")
+                .append("`last_name` VARCHAR(35), ")
+                .append("PRIMARY KEY (`id`)) ")
+                .append("DEFAULT CHARACTER SET = utf8, ENGINE = InnoDB");
+        mDBHelper.runUpdate(getConnection(), sql.toString());
+        sql.setLength(0);
+        sql.append("CREATE TABLE IF NOT EXISTS")
+                .append(TABLE_STATISTICS)
+                .append("(`user_id` INT, ")
+                .append("games_count INT UNSIGNED DEFAULT 0, ")
+                .append("games_wins INT UNSIGNED DEFAULT 0) ")
+                .append("DEFAULT CHARACTER SET = utf8, ENGINE = InnoDB");
+        mDBHelper.runUpdate(getConnection(), sql.toString());
+        sql.setLength(0);
+        sql.append("CREATE TABLE IF NOT EXISTS")
+                .append(TABLE_ADMINS)
+                .append("(`admin_id` INT NOT NULL, ")
+                .append("(`isActivated` TINYINT(0) DEFAULT 0, ")
+                .append("PRIMARY KEY (`admin_id`)) ")
+                .append("DEFAULT CHARACTER SET = utf8, ENGINE = InnoDB");
+        mDBHelper.runUpdate(getConnection(), sql.toString());
+
+    }
+
     @Override
     public Connection getConnection() throws SQLException {
         return mBasicDataSource.getConnection();
     }
 
     @Override
-    public void runQuery(@NotNull Connection connection, String sql, ResultHandlet resultHandlet) throws SQLException {
+    public void runQuery(@NotNull Connection connection, String sql, ResultHandler resultHandler) throws SQLException {
         try (Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(sql)) {
-            resultHandlet.handle(resultSet);
+            resultHandler.handle(resultSet);
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -61,18 +103,50 @@ public final class DataBaseServiceImpl implements DataBaseService {
     }
 
     @Override
-    public void runPreparedQuery(@NotNull Connection connection, String sql,
-                                 Map<Integer, Object> params, ResultHandlet result) throws SQLException {
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            for (Integer i : params.keySet()) {
-                preparedStatement.setObject(i, params.get(i));
-            }
-            ResultSet resultSet = preparedStatement.executeQuery();
-            result.handle(resultSet);
-            resultSet.close();
+    public <T> T runTypedQuery(@NotNull Connection connection, String sql, TResultHandler<T> tHandler) throws SQLException {
+        T res = null;
+        try (Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(sql)) {
+            res = tHandler.handle(resultSet);
         } finally {
             connection.close();
         }
+        return res;
+    }
+
+    @Override
+    public void runPreparedQuery(@NotNull Connection connection, String sql, List<?> params,
+                                 ResultHandler handler) throws SQLException {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            int i = 1;
+            for (Object par : params) {
+                preparedStatement.setObject(i++, par);
+            }
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                handler.handle(resultSet);
+            }
+        } finally {
+            connection.close();
+        }
+    }
+
+
+    @Override
+    public <T> T runTypedPreparedQuery(@NotNull Connection connection, String sql, List<?> params,
+                                       TResultHandler<T> tHandler) throws SQLException {
+        T res = null;
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            int i = 1;
+            for (Object par : params) {
+                preparedStatement.setObject(i++, par);
+            }
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                res = tHandler.handle(resultSet);
+            }
+        } finally {
+            connection.close();
+        }
+        return res;
     }
 
     @Override
@@ -88,7 +162,8 @@ public final class DataBaseServiceImpl implements DataBaseService {
     }
 
     @Override
-    public void runPreparedUpdate(@NotNull Connection connection, String sql, Map<Integer, String> params) throws SQLException {
-
+    public int runPreparedUpdate(@NotNull Connection connection, String sql, List<?> params) throws SQLException {
+        return 0;
     }
+
 }

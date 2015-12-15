@@ -2,12 +2,17 @@ package ru.bagrusss.servces.account;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import ru.bagrusss.servces.database.DataBaseService;
+import ru.bagrusss.servces.database.DataBaseServiceImpl;
+
+import java.sql.SQLException;
 
 /**
  * Created by vladislav
  */
 
 public class DataBaseAccountServiceImpl implements AccountService {
+    DataBaseService mDataBaseService = DataBaseServiceImpl.getInstance();
 
     @Override
     public void removeAll() {
@@ -15,7 +20,7 @@ public class DataBaseAccountServiceImpl implements AccountService {
     }
 
     @Override
-    public boolean isAdmin(String sessionId) {
+    public boolean isAdmin(String email) {
         return false;
     }
 
@@ -53,6 +58,20 @@ public class DataBaseAccountServiceImpl implements AccountService {
 
     @Override
     public long getCountRegisteredUsers() {
+        StringBuilder sql = new StringBuilder("SELECT COUNT(id) ")
+                .append("FROM").append(DataBaseServiceImpl.TABLE_USER);
+        Long id;
+        try {
+            id = mDataBaseService.runTypedQuery(mDataBaseService.getConnection(), sql.toString(), result -> {
+                long res = 0;
+                if (result.next()) {
+                    res = result.getLong(1);
+                }
+                return res;
+            });
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return 0;
     }
 }

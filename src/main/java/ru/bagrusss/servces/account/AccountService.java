@@ -2,15 +2,16 @@ package ru.bagrusss.servces.account;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import ru.bagrusss.servces.BaseInterface;
 
 /**
  * Created by vladislav
  */
-public interface AccountService {
+public interface AccountService extends BaseInterface {
 
     void removeAll();
 
-    boolean isAdmin(String sessionId);
+    boolean isAdmin(String email);
 
     boolean addUser(@NotNull String userName, @NotNull UserProfile userProfile);
 

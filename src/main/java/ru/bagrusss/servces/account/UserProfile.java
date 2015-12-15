@@ -1,24 +1,51 @@
 package ru.bagrusss.servces.account;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Created by vladislav.
  */
 
 public class UserProfile {
-    @NotNull
-    private final String mUserPassword;
-    @NotNull
-    private final String mUserLogin;
-    @NotNull
-    private final String mUserEmail;
+
+    private String mUserPassword;
+    private String mUserLogin;
+    private String mUserEmail;
+    private String mFirstName;
+    private String mLastName;
 
     public UserProfile(@NotNull String login, @NotNull String password, @NotNull String email) {
         mUserLogin = login;
         mUserEmail = email;
         mUserPassword = password;
     }
+
+    public UserProfile(String mUserPassword, String mUserLogin, String mUserEmail,
+                       @Nullable String mFirstName, @Nullable String mLastName) {
+        this.mUserPassword = mUserPassword;
+        this.mUserLogin = mUserLogin;
+        this.mUserEmail = mUserEmail;
+        this.mFirstName = mFirstName;
+        this.mLastName = mLastName;
+    }
+
+    public String getmLastName() {
+        return mLastName;
+    }
+
+    public void setmLastName(String mLastName) {
+        this.mLastName = mLastName;
+    }
+
+    public String getmFirstName() {
+        return mFirstName;
+    }
+
+    public void setmFirstName(String mFirstName) {
+        this.mFirstName = mFirstName;
+    }
+
 
     @NotNull
     public String getmUserEmail() {

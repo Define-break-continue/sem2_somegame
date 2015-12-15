@@ -21,11 +21,11 @@ public class AdminPageServlet extends HttpServlet {
     public static final String SHUTDOWN_MESSAGE="Server will be down after: ";
 
     @Override
-    public void doGet(@NotNull HttpServletRequest request, @NotNull HttpServletResponse response) throws ServletException, IOException {
-        response.setContentType("text/html;charset=utf-8");
-        response.setStatus(HttpServletResponse.SC_OK);
+    public void doGet(@NotNull HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.setContentType("text/html;charset=utf-8");
+        resp.setStatus(HttpServletResponse.SC_OK);
         Map<String, Object> pageVariables = new HashMap<>();
-        String timeString = request.getParameter("shutdown");
+        String timeString = req.getParameter("shutdown");
         pageVariables.put("regUsers", AccountServiceFake.getInstance().getCountRegisteredUsers());
         pageVariables.put("actUsers", AccountServiceFake.getInstance().getCountActivatedUsers());
         if (timeString != null) {
@@ -36,7 +36,7 @@ public class AdminPageServlet extends HttpServlet {
             }
         }
         pageVariables.put("status", "run");
-        response.getWriter().println(PageGenerator.getPage("admin.tml", pageVariables));
+        resp.getWriter().println(PageGenerator.getPage("admin.tml", pageVariables));
     }
     private void stopServer(int time){
         System.out.print((new StringBuilder(SHUTDOWN_MESSAGE)).append(time).append(" ms").toString());

@@ -12,18 +12,32 @@ import ru.bagrusss.frontend.SignInServlet;
 import ru.bagrusss.frontend.SignUpServlet;
 import ru.bagrusss.frontend.UserPageServlet;
 import ru.bagrusss.servces.account.AccountServiceFake;
+import ru.bagrusss.servces.database.DataBaseService;
+import ru.bagrusss.servces.database.DataBaseServiceImpl;
 
 public class Main {
 
     private static final String START_MESSAGE = "Run server at port ";
-    public static final String RESOURSE_DIR = "public_html";
+    public static final String RESOURSE_DIR = "frontend/public_html";
     public static final String ERROR_MESSAGE = "Use port as the first argument";
+
+    public static final int DB_ERROR = 2;
+
+    static Context appContext = new Context();
 
     public static void main(@NotNull String[] args) {
         if (args.length != 1) {
             System.out.append(ERROR_MESSAGE);
             System.exit(1);
         }
+        try {
+            appContext.add(DataBaseService.class, DataBaseServiceImpl.getInstance());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (!((DataBaseServiceImpl) appContext.get(DataBaseService.class)).checkDataBase())
+            System.exit(DB_ERROR);
+
         String portString = args[0];
         int port = Integer.valueOf(portString);
         System.out.println((new StringBuilder(START_MESSAGE)).append(portString).append('\n'));
