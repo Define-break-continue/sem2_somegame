@@ -18,7 +18,7 @@ import ru.bagrusss.servces.database.DataBaseServiceImpl;
 public class Main {
 
     private static final String START_MESSAGE = "Run server at port ";
-    public static final String RESOURSE_DIR = "frontend/public_html";
+    public static final String RESOURSE_DIR = "public_html";
     public static final String ERROR_MESSAGE = "Use port as the first argument";
 
     public static final int DB_ERROR = 2;
