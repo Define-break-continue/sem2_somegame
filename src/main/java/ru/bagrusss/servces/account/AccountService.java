@@ -2,16 +2,14 @@ package ru.bagrusss.servces.account;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import ru.bagrusss.servces.BaseInterface;
 
 /**
  * Created by vladislav
  */
-public interface AccountService extends BaseInterface {
+
+public interface AccountService {
 
     void removeAll();
-
-    boolean isAdmin(String email);
 
     boolean addUser(@NotNull String userName, @NotNull UserProfile userProfile);
 
@@ -20,7 +18,7 @@ public interface AccountService extends BaseInterface {
     boolean removeSession(@NotNull String sessionId);
 
     @Nullable
-    UserProfile getUser(@NotNull String userName);
+    UserProfile getUser(String userName);
 
     @Nullable
     UserProfile getSession(@NotNull String sessionId);

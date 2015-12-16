@@ -31,26 +31,31 @@ public class SignUpServlet extends HttpServlet {
         String name = req.getParameter("name");
         String email = req.getParameter("email");
         String password = req.getParameter("password");
-        JSONObject responseText = new JSONObject();
-        resp.setStatus(HttpServletResponse.SC_OK);
         String result;
         String message;
-        UserProfile user = new UserProfile(name, password, email);
-        if (accountServiceFake.addUser(name, user)) {
-            result = "OK";
-            message = "User successfuly created!";
-            accountServiceFake.doSaveUser(req, user);
-        } else {
+        JSONObject response = new JSONObject();
+        if (email == null || password == null) {
             result = "FAIL";
-            message = "User already exist! Try agan.";
+            message = "Encorrect parameters";
+        } else {
+            UserProfile user = new UserProfile(name, password, email);
+            if (accountServiceFake.addUser(email, user)) {
+                result = "OK";
+                message = "User successfuly created!";
+                accountServiceFake.doSaveUser(req, user);
+            } else {
+                result = "FAIL";
+                message = "User already exist! Try agan.";
+            }
         }
         try {
-            responseText.put("status", HttpServletResponse.SC_OK);
-            responseText.put("resources", result);
-            responseText.put("message", message);
+            response.put("status", HttpServletResponse.SC_OK);
+            response.put("resources", result);
+            response.put("message", message);
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        resp.getWriter().println(responseText.toString());
+        resp.setStatus(HttpServletResponse.SC_OK);
+        resp.getWriter().println(response.toString());
     }
 }

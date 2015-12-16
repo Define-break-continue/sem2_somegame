@@ -1,8 +1,7 @@
 package ru.bagrusss.frontend;
 
-import org.jetbrains.annotations.NotNull;
+import ru.bagrusss.servces.account.AccountService;
 import ru.bagrusss.servces.account.UserProfile;
-import ru.bagrusss.servces.account.AccountServiceFake;
 import ru.bagrusss.templater.PageGenerator;
 
 import javax.servlet.ServletException;
@@ -14,22 +13,26 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-
 public class UserPageServlet extends HttpServlet {
 
     public static final String URL = "/user";
+    private AccountService mAccounts;
+
+    public UserPageServlet(AccountService accountServiceFake) {
+        this.mAccounts = accountServiceFake;
+    }
 
     @Override
-    protected void doGet(@NotNull HttpServletRequest req, @NotNull HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setStatus(HttpServletResponse.SC_OK);
         Map<String, Object> pageVariables = new HashMap<>();
         String sessionId = req.getSession().getId();
-        UserProfile user = AccountServiceFake.getInstance().getSession(sessionId);
+        UserProfile user = mAccounts.getSession(sessionId);
         String name;
         String email;
         if (user != null) {
-            name = user.getmUserLogin();
-            email = user.getmUserEmail();
+            name = user.getUserLogin();
+            email = user.getUserEmail();
         } else {
             name = "Guest";
             email = "No info!";
@@ -39,8 +42,5 @@ public class UserPageServlet extends HttpServlet {
         resp.getWriter().println(PageGenerator.getPage("userpage.html", pageVariables));
     }
 
-    @Override
-    protected void doPost(@NotNull HttpServletRequest req, @NotNull HttpServletResponse resp) throws ServletException, IOException {
-        resp.setStatus(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
-    }
+
 }

@@ -42,7 +42,7 @@ public class AccountServiceFakeTest {
     @Test
     public void testAddUser() throws Exception {
         for (UserProfile mUser : mUsers) {
-            mAccountService.addUser(mUser.getmUserLogin(), mUser);
+            mAccountService.addUser(mUser.getUserLogin(), mUser);
         }
         assertFalse(mAccountService.addUser("vlad3", new UserProfile("vlad3", "456", "vlad3@mail.ru")));
     }
@@ -51,8 +51,8 @@ public class AccountServiceFakeTest {
     @Test
     public void testGetUser() throws Exception {
         for (UserProfile usr : mUsers) {
-            mAccountService.addUser(usr.getmUserLogin(), usr);
-            assertEquals(mAccountService.getUser(usr.getmUserLogin()), usr);
+            mAccountService.addUser(usr.getUserLogin(), usr);
+            assertEquals(mAccountService.getUser(usr.getUserLogin()), usr);
         }
         assertEquals(null, mAccountService.getUser("vlad5"));
     }
@@ -107,7 +107,7 @@ public class AccountServiceFakeTest {
     @Test
     public void testRemoveAll() throws Exception {
         for (UserProfile usr : mUsers) {
-            mAccountService.addUser(usr.getmUserLogin(), usr);
+            mAccountService.addUser(usr.getUserLogin(), usr);
             mAccountService.addSession(usr.toString(), usr);
         }
         mAccountService.removeAll();

@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public final class AccountServiceFake implements AccountService {
+public class AccountServiceFake implements AccountService {
 
     private static AccountServiceFake mInstance;
     private final Map<String, UserProfile> mUsers;
@@ -37,11 +37,6 @@ public final class AccountServiceFake implements AccountService {
     }
 
     @Override
-    public boolean isAdmin(String email) {
-        return false;
-    }
-
-    @Override
     public boolean addUser(@NotNull String userName, @NotNull UserProfile userProfile) {
         if (mUsers.containsKey(userName))
             return false;
@@ -60,7 +55,7 @@ public final class AccountServiceFake implements AccountService {
     }
 
     @Override
-    public UserProfile getUser(@NotNull String userName) {
+    public UserProfile getUser(@Nullable String userName) {
         return mUsers.get(userName);
     }
 

@@ -1,6 +1,5 @@
 package ru.bagrusss.administration;
 
-import org.jetbrains.annotations.NotNull;
 import ru.bagrusss.servces.account.AccountServiceFake;
 import ru.bagrusss.templater.PageGenerator;
 
@@ -18,10 +17,14 @@ import java.util.Map;
 public class AdminPageServlet extends HttpServlet {
 
     public static final String URL = "/admin";
-    public static final String SHUTDOWN_MESSAGE="Server will be down after: ";
+    public static final String SHUTDOWN_MESSAGE = "Server will be down after: ";
+    public static final String STATUS_RUN="RUN";
+    public static final String STATUS_STOPPING="STOPING";
+    public static final String STATUS_STOP_ERROR="Error";
 
     @Override
-    public void doGet(@NotNull HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+    public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/html;charset=utf-8");
         resp.setStatus(HttpServletResponse.SC_OK);
         Map<String, Object> pageVariables = new HashMap<>();
@@ -30,15 +33,19 @@ public class AdminPageServlet extends HttpServlet {
         pageVariables.put("actUsers", AccountServiceFake.getInstance().getCountActivatedUsers());
         if (timeString != null) {
             try {
-                stopServer(Integer.valueOf(timeString));
-            } catch (NullPointerException e){
-                e.printStackTrace();
+                long ms = Integer.valueOf(timeString);
+                stopServer(ms);
+                pageVariables.put("status", STATUS_STOPPING);
+            } catch (NumberFormatException e) {
+                pageVariables.put("status", STATUS_STOP_ERROR);
             }
+        } else {
+            pageVariables.put("status", STATUS_RUN);
         }
-        pageVariables.put("status", "run");
         resp.getWriter().println(PageGenerator.getPage("admin.tml", pageVariables));
     }
-    private void stopServer(int time){
+
+    public void stopServer(long time) {
         System.out.print((new StringBuilder(SHUTDOWN_MESSAGE)).append(time).append(" ms").toString());
         new Thread(() -> {
             try {

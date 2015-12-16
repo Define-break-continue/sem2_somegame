@@ -1,7 +1,6 @@
 package ru.bagrusss.frontend;
 
 
-import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 import ru.bagrusss.servces.account.AccountServiceFake;
@@ -31,7 +30,7 @@ public class SignInServlet extends HttpServlet {
     public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setStatus(HttpServletResponse.SC_OK);
         if (req.getParameter(PARAM_LOGOUT) != null) {
-            doLogout(req);
+            accountServiceFake.removeSession(req.getSession().getId());
             JSONObject respText = new JSONObject();
             try {
                 respText.put("status", HttpServletResponse.SC_OK);
@@ -55,9 +54,11 @@ public class SignInServlet extends HttpServlet {
         resp.setStatus(HttpServletResponse.SC_OK);
         JSONObject responseText = new JSONObject();
         String res;
-        if (user != null && user.getmUserPassword().equals(password)) {
+        if (user != null) {
+            if (user.getUserPassword().equals(password)){
+                accountServiceFake.doSaveUser(req, user);
+            }
             res = "OK";
-            accountServiceFake.doSaveUser(req, user);
         } else res = "FAIL";
         try {
             responseText.put("status", HttpServletResponse.SC_OK);
@@ -66,10 +67,6 @@ public class SignInServlet extends HttpServlet {
             e.printStackTrace();
         }
         resp.getWriter().println(responseText.toString());
-    }
-
-    void doLogout(@NotNull HttpServletRequest request) {
-        accountServiceFake.removeSession(request.getSession().getId());
     }
 
 }
