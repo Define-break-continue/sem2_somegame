@@ -8,7 +8,6 @@ define([
 
     playerExamples = [];
     for ( var i = 0; i < 10; i++ ) {
-    console.log('for works');
         playerExamples.push( new PlayerModel({ login: 'Player' + i.toString(), score: Math.floor( Math.random() * 1000 ) }) );
     };
 
