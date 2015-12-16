@@ -4,16 +4,25 @@ define ( [
     'views/login',
     'views/registration',
     'views/main',
-    'views/scoreboard'
+    'views/scoreboard',
+    'views/ViewManager'
 ], function (
     Backbone,
     viewGame,
     viewLogin,
     viewRegistration,
     viewMain,
-    viewScoreboard
+    viewScoreboard,
+    viewManager
 ) {
-console.log('lv: ', viewLogin);
+    viewManager.addViews( [
+        viewGame,
+        viewLogin,
+        viewRegistration,
+        viewMain,
+        viewScoreboard
+    ] );
+
     var Router = Backbone.Router.extend( {
 
         routes: {
