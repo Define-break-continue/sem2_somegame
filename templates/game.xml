@@ -1,4 +1,5 @@
 <fest:template xmlns:fest="http://fest.mail.ru">
+<fest:include src="backbutton.xml" />
     <div class="game__message">
         <p class="game__message_start">Hey <fest:value>json.login</fest:value>! Prepare for the mosh!</p>
     </div>

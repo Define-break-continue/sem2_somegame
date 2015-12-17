@@ -31,11 +31,12 @@ module.exports = function ( grunt ) {
 				options: {
 					compress: true,
 					yuicompress: true,
-					optimization: 2
+					optimization: 2,
+					paths: ["public_html/css", "public_html/css/less"]
 				},
 				files: {
-					"public_html/css/main.css": "public_html/css/general.less",
-					"public_html/css/main.css": "public_html/css/less/*.less" // destination file and source file
+					"public_html/css/main.css": "public_html/css/*.less",
+//					"public_html/css/main.css": "public_html/css/less/*.less" // destination file and source file
 				}
 			}
 		},
@@ -56,7 +57,7 @@ module.exports = function ( grunt ) {
 			},
 
 			styles: {
-				files: ['public_html/css/*.less'], // which files to watch
+				files: ['public_html/css/*.less', 'public_html/css/less/*.less'], // which files to watch
                 tasks: ['less'],
                 options: {
                 	nospawn: true

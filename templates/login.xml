@@ -1,5 +1,5 @@
 <fest:template xmlns:fest="http://fest.mail.ru">
-
+<fest:include src="backbutton.xml" />
     <fieldset class="popup">
         <form method="POST" action="#login" class="js-popup">
             <h1 class="popup__header">Log In</h1>

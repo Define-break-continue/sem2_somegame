@@ -1,0 +1,6 @@
+<fest:template xmlns:fest="http://fest.mail.ru" context_name="context">
+    <fest:choose>
+        <!--fest:when test="context.login"><a href="#login"><button class="back-button js-back-button">BACK</button></a></fest:when>-->
+        <fest:otherwise><a href="#main"><button class="back-button js-back-button">BACK</button></a></fest:otherwise>
+    </fest:choose>
+</fest:template>

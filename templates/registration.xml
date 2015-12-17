@@ -1,9 +1,11 @@
 <fest:template xmlns:fest="http://fest.mail.ru">
+<fest:include src="backbutton.xml" context_name="login" />
     <form method="POST" id="js-registration-form">
         <fieldset class="popup">
             <h1 class="popup__header">Registration</h1>
             <div class="popup__email-message"></div>
             <div class="popup__password-message"></div>
+            <div class="popup__other-message"></div>
             <input type="email" name="email" placeholder="E-mail" class="popup__input" required="true" id="email"></input><br />
             <input type="password" name="password1" placeholder="Password" class="popup__input" required="true" id="password1"></input><br />
             <input type="password" name="password2" placeholder="Repeat your password" class="popup__input" required="true" id="password2"></input><br />

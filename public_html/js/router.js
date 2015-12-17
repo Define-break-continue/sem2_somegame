@@ -39,9 +39,7 @@ define ( [
         },
 
         screenChange: function(view) {
-            activeView.hide();
             view.show();
-            this.activeView = view;
         },
 
         scoreboardAction: function() {
