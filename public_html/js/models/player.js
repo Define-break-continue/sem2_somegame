@@ -8,9 +8,13 @@ define([
         registrationURL: '/signup/',
         loginURL: '/signin/',
         defaults: {
+            tp: 0,
             email: '',
             password: '',
             score: 0,
+            gamesPlayed: 0,
+            gamesWon: 0,
+            gamesLost: 0,
             emailMessage: '',
             passwordMessage: '',
             otherMessage: '',

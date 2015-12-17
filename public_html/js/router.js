@@ -5,6 +5,7 @@ define ( [
     'views/registration',
     'views/main',
     'views/scoreboard',
+    'views/stats',
     'views/ViewManager'
 ], function (
     Backbone,
@@ -13,6 +14,7 @@ define ( [
     viewRegistration,
     viewMain,
     viewScoreboard,
+    viewStats,
     viewManager
 ) {
     viewManager.addViews( [
@@ -20,7 +22,8 @@ define ( [
         viewLogin,
         viewRegistration,
         viewMain,
-        viewScoreboard
+        viewScoreboard,
+        viewStats
     ] );
 
     var Router = Backbone.Router.extend( {
@@ -30,7 +33,7 @@ define ( [
             'game' : 'gameAction',
             'login' : 'loginAction',
             'registration': 'registrationAction',
-            'admin': 'adminAction',
+            'stats': 'statsAction',
             '*default' : 'defaultActions'
         },
 
@@ -58,8 +61,8 @@ define ( [
             this.screenChange(viewRegistration);
         },
 
-        adminAction: function() {
-            this.screenChange(viewAdmin);
+        statsAction: function() {
+            this.screenChange(viewStats);
         },
 
         defaultActions: function() {

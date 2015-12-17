@@ -7,7 +7,7 @@ define([
 ){
 
     playerExamples = [];
-    for ( var i = 0; i < 10; i++ ) {
+    for ( var i = 1; i <= 10; i++ ) {
         playerExamples.push( new PlayerModel({ login: 'Player' + i.toString(), score: Math.floor( Math.random() * 1000 ) }) );
     };
 
