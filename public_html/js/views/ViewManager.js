@@ -8,6 +8,9 @@ define ( [
     var viewManager = Backbone.View.extend( {
         views: [],
         activeView: viewMain,
+//        events: {
+//            'click .js-back-button': 'back'
+//        },
 
         addViews: function( viewArray ) {
             for ( var view in viewArray ) {

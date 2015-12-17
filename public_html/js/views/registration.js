@@ -1,17 +1,21 @@
 define ( [
     'backbone',
-    'tmpl/registration'
+    'tmpl/registration',
+    'models/player'
 ], function (
     Backbone,
-    tmpl
+    tmpl,
+    userModel
 ) {
     var View =  Backbone.View.extend({
         template: tmpl,
+        model: new userModel(),
 
         events: {
-            'change #password2' : 'passwordChecker',
-            'change #password1' : 'passwordChecker',
-            'change #email' : 'emailChecker'
+            'change .js-password2' : 'passwordChecker',
+            'change .js-password1' : 'passwordChecker',
+            'change .js-email' : 'emailChecker',
+            'submit .js-registration-form': 'register'
         },
 
         initialize: function ( options ) {
@@ -20,9 +24,9 @@ define ( [
         },
         render: function () {
             this.$el.html( this.template() );
-            this.$email = this.$('#email');
-            this.$password1 = this.$('#password1');
-            this.$password2 = this.$('#password2');
+            this.$email = this.$('.js-email');
+            this.$password1 = this.$('.js-password1');
+            this.$password2 = this.$('.js-password2');
             return this;
         },
         show: function () {
@@ -36,40 +40,45 @@ define ( [
         passwordChecker: function() {
             // при наличии чего-то в поле password2
             if (  this.$password2.val() && this.$password1.val() != this.$password2.val() ) {
-                $( '.login-form__password-message' ).html( 'The passwords are different! Please, check it!' );
+                $( '.popup__password-message' ).html( 'The passwords are different! Please, check it!' );
                 this.$password1.focus;
                 this.$password1.css('color', 'red');
                 this.$password2.css('color', 'red');
+                return false;
             } else {
-                $( '.login-form__password-message' ).html( '' );
+                $( '.popup__password-message' ).html( '' );
                 if ( this.$password2.val() ) {
                     this.$password1.css('color', 'green');
                     this.$password2.css('color', 'green');
+                    return true;
                 }
+                return false;
             }
         },
 
         emailChecker: function(event) {
             if ( !event.target.validity.valid ) {
-                $( '.login-form__email-message' ).html( 'Please enter a valid e-mail' );
+                $( '.popup__email-message' ).html( 'Please enter a valid e-mail' );
                 this.$email.css('color', 'red');
                 this.$email.focus;
+                return false;
             } else {
-                $( '.login-form__email-message' ).html( '' );
+                $( '.popup__email-message' ).html( '' );
                 this.$email.css('color', 'green');
+                return true;
             }
         },
 
-        register: function() {
-            $("#idForm").on("submit", function(event) {
+        register: function( event ) {
                 event.preventDefault();
-                $.ajax({
-                    type: "POST",
-                    url: "path/to/your/endpoint",
-                    data: $(this).serialize(),
-                    success: postDispatcher
-                    });
-            });
+                if ( !this.passwordChecker || !this.emailChecker ) return false;
+                this.model.set( { email: this.$email.val(), password: this.$password1.val() } )
+                this.model.registration();
+                if( this.model.get( 'isSuccess' ) ) {
+                    Backbone.history.navigate( '#main', { trigger: true } );
+                } else {
+                    return false;
+                }
         }
     });
     return new View;

@@ -14,7 +14,7 @@ define([
             emailMessage: '',
             passwordMessage: '',
             otherMessage: '',
-            isSuccess: ''
+            isSuccess: false
         },
 
         registration: function() {
