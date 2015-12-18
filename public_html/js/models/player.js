@@ -15,19 +15,16 @@ define([
             gamesPlayed: 0,
             gamesWon: 0,
             gamesLost: 0,
-            emailMessage: '',
-            passwordMessage: '',
-            otherMessage: '',
             isSuccess: false,
             isAdmin: false
         },
 
-        registration: function() {
+        registration: function( data ) {
             $.ajax( {
                 type: 'POST',
                 url: this.registrationURL,
                 dataType: 'json',
-                data: this.toJSON(),
+                data: data,//this.toJSON(),
                 error: this.ajaxError,
                 success: this.ajaxSuccess
             });
@@ -46,11 +43,9 @@ define([
 
         registrationCheck: function() {
             if ( this.get('email').search('@') < 0 ) {
-                this.emailMessage = 'Please type a valid e-mail!';
                 validationError = 'Validation Error!';
             }
             if ( this.get('password').length < 1 ) {
-                this.passwordMessage = 'Please type the password!';
                 validationError = 'Validation Error!';
             }
         },
@@ -60,11 +55,10 @@ define([
         },
 
         ajaxError: function() {
-            this.otherMessage = 'Failed to send the data.';
         },
 
         ajaxSuccess: function( code ) {
-            if ( code === 0 ) {
+            if ( code == 0 ) {
                 this.isSuccess = true;
             } else {
                 this.isSuccess = false;

@@ -79,7 +79,12 @@ define ( [
             if ( !this.validate() ) return;
 
             this.model.set( { email: this.$email.val(), password: this.$password1.val() } )
-            this.model.registration();
+            this.model.registration( {
+                tp: 0,
+                email: this.$email.val(),
+                passwd1: this.$password1.val(),
+                passwd2: this.$password2.val()
+            } );
             if( this.model.get( 'isSuccess' ) ) {
                 Backbone.history.navigate( '#main', { trigger: true } );
             } else {
