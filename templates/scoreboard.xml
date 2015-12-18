@@ -16,5 +16,8 @@
                 </fest:each>
             </tr>
         </table>
+        <fest:if test="json.isAdmin">
+            <button class="stats__button">Press this button to fuck all the shit connected to the server</button>
+        </fest:if>
     </fieldset>
 </fest:template>

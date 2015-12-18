@@ -18,7 +18,8 @@ define([
             emailMessage: '',
             passwordMessage: '',
             otherMessage: '',
-            isSuccess: false
+            isSuccess: false,
+            isAdmin: false
         },
 
         registration: function() {

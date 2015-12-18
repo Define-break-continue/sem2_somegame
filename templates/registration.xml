@@ -1,5 +1,5 @@
 <fest:template xmlns:fest="http://fest.mail.ru">
-<fest:include src="backbutton.xml" context_name="login" />
+<fest:include src="backbutton.xml" context="login" />
     <form method="POST" class="js-registration-form">
         <fieldset class="popup">
             <h1 class="popup__header">Registration</h1>

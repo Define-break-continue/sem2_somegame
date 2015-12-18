@@ -10,6 +10,7 @@ define ( [
     var View =  Backbone.View.extend({
         template: tmpl,
         model: new userModel(),
+        isAdmin: true,
         data: {
             'E-mail' : 'romvano@ya.ru',
             'Score' : 1024,
@@ -23,7 +24,7 @@ define ( [
             this.setElement('#page');
         },
         render: function () {
-            this.$el.html( this.template( /*this.data.toJSON()*/ ) );
+            this.$el.html( this.template( this.data, {isAdmin: this.isAdmin} ) );
             this.$('body').append( this.el );
             return this;
         },
