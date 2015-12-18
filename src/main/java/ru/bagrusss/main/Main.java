@@ -6,64 +6,77 @@ import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
-import org.jetbrains.annotations.NotNull;
-import ru.bagrusss.administration.AdminPageServlet;
-import ru.bagrusss.frontend.SignInServlet;
-import ru.bagrusss.frontend.SignUpServlet;
-import ru.bagrusss.frontend.UserPageServlet;
+import ru.bagrusss.apiservlets.*;
+import ru.bagrusss.helpers.Context;
+import ru.bagrusss.helpers.Resourses;
+import ru.bagrusss.helpers.ServerConfigs;
+import ru.bagrusss.servces.account.AccountService;
 import ru.bagrusss.servces.account.AccountServiceFake;
 import ru.bagrusss.servces.database.DataBaseService;
-import ru.bagrusss.servces.database.DataBaseServiceImpl;
+import ru.bagrusss.servces.database.ServiceDB;
+
+import java.io.IOException;
+import java.nio.file.Paths;
 
 public class Main {
 
-    private static final String START_MESSAGE = "Run server at port ";
-    public static final String RESOURSE_DIR = "public_html";
-    public static final String ERROR_MESSAGE = "Use port as the first argument";
+    private static final String MESSAGE_RUN = "Run server at port ";
 
-    public static final int DB_ERROR = 2;
+    public static final String SERVER_CONFIGS = ".//resources//.cfg//server.json";
+    public static final String RESOURCE_PATH = Paths.get("").toAbsolutePath() + "//resources";
 
-    static Context appContext = new Context();
+    public static final byte DB_ERROR = 2;
+    public static final byte DB_CONFIGS_ERROR = 4;
+    public static final byte CONFIGS_ERROR = 3;
 
-    public static void main(@NotNull String[] args) {
-        if (args.length != 1) {
-            System.out.append(ERROR_MESSAGE);
-            System.exit(1);
-        }
+    private static Context appContext = new Context();
+
+    public static Context getAppContext() {
+        return appContext;
+    }
+
+    private static void initContext() {
         try {
-            appContext.add(DataBaseService.class, DataBaseServiceImpl.getInstance());
+            appContext.add(DataBaseService.class, new ServiceDB());
+            appContext.add(AccountService.class, new AccountServiceFake());
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if (!((DataBaseServiceImpl) appContext.get(DataBaseService.class)).checkDataBase())
-            System.exit(DB_ERROR);
+    }
 
-        String portString = args[0];
-        int port = Integer.valueOf(portString);
-        System.out.println((new StringBuilder(START_MESSAGE)).append(portString).append('\n'));
-
+    public static void main(String[] args) {
+        initContext();
+        ServerConfigs conf = null;
+        try {
+            conf = Resourses.readResourses(SERVER_CONFIGS, ServerConfigs.class);
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+            System.exit(CONFIGS_ERROR);
+        }
+        int port = conf.getPort();
+        System.out.println((new StringBuilder(MESSAGE_RUN)).append(port).append('\n'));
         Server server = new Server(port);
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
-        context.addServlet(new ServletHolder(new AdminPageServlet()), AdminPageServlet.URL);
-
-        context.addServlet(new ServletHolder(new SignInServlet(AccountServiceFake.getInstance())), SignInServlet.URL);
-        context.addServlet(new ServletHolder(new SignUpServlet(AccountServiceFake.getInstance())), SignUpServlet.URL);
-        context.addServlet(new ServletHolder(new UserPageServlet()), UserPageServlet.URL);
+        context.addServlet(new ServletHolder(new Admin()), Admin.URL);
+        context.addServlet(new ServletHolder(new SignIn()), SignIn.URL);
+        context.addServlet(new ServletHolder(new SignUp()), SignUp.URL);
+        context.addServlet(new ServletHolder(new User()), User.URL);
+        context.addServlet(new ServletHolder(new Info()), Info.URL);
 
         ResourceHandler resourceHandler = new ResourceHandler();
         resourceHandler.setDirectoriesListed(true);
-        resourceHandler.setResourceBase(RESOURSE_DIR);
+        String path = conf.getFrontendPath();
+        resourceHandler.setResourceBase(path);
 
         HandlerList handlers = new HandlerList();
         handlers.setHandlers(new Handler[]{resourceHandler, context});
         server.setHandler(handlers);
-
         try {
-            server.start();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        try {
+            try {
+                server.start();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             server.join();
         } catch (InterruptedException e) {
             e.printStackTrace();

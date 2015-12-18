@@ -1,7 +1,7 @@
 package ru.bagrusss.servces.database;
 
 import org.jetbrains.annotations.NotNull;
-import ru.bagrusss.servces.BaseInterface;
+import ru.bagrusss.helpers.BaseInterface;
 
 import java.sql.Connection;
 import java.sql.SQLException;

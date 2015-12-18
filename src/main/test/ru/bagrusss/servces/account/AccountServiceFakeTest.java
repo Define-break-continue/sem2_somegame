@@ -24,7 +24,7 @@ public class AccountServiceFakeTest {
 
     @Before
     public void setUp() throws Exception {
-        mAccountService = AccountServiceFake.getInstance();
+        mAccountService = new AccountServiceFake();
         mUsers = new LinkedList<>();
         mUsers.add(new UserProfile("vlad1", "123", "vlad@mail.ru"));
         mUsers.add(new UserProfile("vlad2", "1232", "vlad1@mail.ru"));
@@ -42,16 +42,16 @@ public class AccountServiceFakeTest {
     @Test
     public void testAddUser() throws Exception {
         for (UserProfile mUser : mUsers) {
-            mAccountService.addUser(mUser.getmUserLogin(), mUser);
+            mAccountService.registerUser(mUser.getmUserLogin(), mUser);
         }
-        assertFalse(mAccountService.addUser("vlad3", new UserProfile("vlad3", "456", "vlad3@mail.ru")));
+        assertFalse(mAccountService.registerUser("vlad3", new UserProfile("vlad3", "456", "vlad3@mail.ru"))>0);
     }
 
     @TestOnly
     @Test
     public void testGetUser() throws Exception {
         for (UserProfile usr : mUsers) {
-            mAccountService.addUser(usr.getmUserLogin(), usr);
+            mAccountService.registerUser(usr.getmUserLogin(), usr);
             assertEquals(mAccountService.getUser(usr.getmUserLogin()), usr);
         }
         assertEquals(null, mAccountService.getUser("vlad5"));
@@ -97,9 +97,9 @@ public class AccountServiceFakeTest {
 
         HttpServletRequest mock = mock(HttpServletRequest.class);
         when(mock.getSession()).thenReturn(mockSession);
-        mAccountService.doSaveUser(mock, mUsers.get(0));
+        mAccountService.addSession(mockSession.getId(), mUsers.get(0));
         assertEquals(1, mAccountService.getCountActivatedUsers());
-        mAccountService.doSaveUser(mock, mUsers.get(0));
+        mAccountService.addSession(mockSession.getId(), mUsers.get(0));
         assertEquals(mAccountService.getCountActivatedUsers(), 1);
     }
 
@@ -107,7 +107,7 @@ public class AccountServiceFakeTest {
     @Test
     public void testRemoveAll() throws Exception {
         for (UserProfile usr : mUsers) {
-            mAccountService.addUser(usr.getmUserLogin(), usr);
+            mAccountService.registerUser(usr.getmUserLogin(), usr);
             mAccountService.addSession(usr.toString(), usr);
         }
         mAccountService.removeAll();

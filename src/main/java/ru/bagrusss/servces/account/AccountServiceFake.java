@@ -3,29 +3,16 @@ package ru.bagrusss.servces.account;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
 
 public final class AccountServiceFake implements AccountService {
 
-    private static AccountServiceFake mInstance;
     private final Map<String, UserProfile> mUsers;
     private final Map<String, UserProfile> mSessions;
 
-    public static AccountServiceFake getInstance() {
-        AccountServiceFake localInstance = mInstance;
-        if (localInstance == null) {
-            synchronized (AccountServiceFake.class) {
-                localInstance = mInstance;
-                if (localInstance == null) mInstance = localInstance = new AccountServiceFake();
-            }
-        }
-        return localInstance;
-    }
-
-    private AccountServiceFake() {
+    public AccountServiceFake() {
         mUsers = new HashMap<>();
         mSessions = new HashMap<>();
     }
@@ -42,11 +29,11 @@ public final class AccountServiceFake implements AccountService {
     }
 
     @Override
-    public boolean addUser(@NotNull String userName, @NotNull UserProfile userProfile) {
-        if (mUsers.containsKey(userName))
-            return false;
-        mUsers.put(userName, userProfile);
-        return true;
+    public long registerUser(@NotNull String email, @NotNull UserProfile userProfile) {
+        if (mUsers.containsKey(email))
+            return 0;
+        mUsers.put(email, userProfile);
+        return userProfile.hashCode();
     }
 
     @Override
@@ -80,8 +67,5 @@ public final class AccountServiceFake implements AccountService {
         return mUsers.size();
     }
 
-    public void doSaveUser(@NotNull HttpServletRequest request, @NotNull UserProfile user) {
-        addSession(request.getSession().getId(), user);
-    }
 
 }

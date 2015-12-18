@@ -14,8 +14,9 @@ public class UserProfile {
     private String mUserEmail;
     private String mFirstName;
     private String mLastName;
+    private long id;
 
-    public UserProfile(@NotNull String login, @NotNull String password, @NotNull String email) {
+    public UserProfile(@Nullable String login, @NotNull String password, @NotNull String email) {
         mUserLogin = login;
         mUserEmail = email;
         mUserPassword = password;
@@ -74,9 +75,15 @@ public class UserProfile {
 
     @Override
     public int hashCode() {
-        int result = mUserLogin.hashCode();
-        result = 31 * result + mUserEmail.hashCode();
-        return result;
+        return mUserEmail.hashCode() << 5 + mUserPassword.hashCode() << 6;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 }
 

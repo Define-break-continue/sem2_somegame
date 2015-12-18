@@ -1,0 +1,8 @@
+{
+  "port": 8080,
+  "frontend": "frontend/public_html",
+  "rooms": 2,
+  "gamers": 5,
+  "units": 5,
+  "game_time": 150
+}
