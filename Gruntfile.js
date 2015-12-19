@@ -2,7 +2,8 @@ module.exports = function ( grunt ) {
 	grunt.initConfig( {
 		shell: { 
 			server: { /* Подзадача */
-				command: 'java -cp L1.2-1.0-jar-with-dependencies.jar main.Main 8080'
+//				command: 'java -cp L1.2-1.0-jar-with-dependencies.jar main.Main 8080'
+				command: 'java -jar server.jar'
 				/* запуск сервера */
 			}
 		},
@@ -76,6 +77,6 @@ module.exports = function ( grunt ) {
 	grunt.loadNpmTasks( 'grunt-fest' );
 	grunt.loadNpmTasks( 'grunt-contrib-watch' );
 	grunt.loadNpmTasks( 'grunt-contrib-less' );
-	grunt.registerTask( 'default', [ 'concurrent', 'less', 'watch'] );
+	grunt.registerTask( 'default', [ 'concurrent', 'less', 'watch' ] );
 	//grunt.registerTask( 'default', ['less', 'watch'] );
 };

@@ -27,6 +27,7 @@ define ( [
             this.$email = this.$('.js-email');
             this.$password1 = this.$('.js-password1');
             this.$password2 = this.$('.js-password2');
+            this.$errorMessage = this.$('.popup__other-message');
             return this;
         },
         show: function () {
@@ -82,14 +83,30 @@ define ( [
             this.model.registration( {
                 tp: 0,
                 email: this.$email.val(),
-                passwd1: this.$password1.val(),
-                passwd2: this.$password2.val()
+                password1: this.$password1.val(),
+                password2: this.$password2.val()
             } );
-            if( this.model.get( 'isSuccess' ) ) {
-                Backbone.history.navigate( '#main', { trigger: true } );
-            } else {
-                $('.popup__other-message').html( 'Failed to send data to server. Sth is wrong =)' );
+
+            switch ( this.model.get( 'isSuccess' ) ) {
+                case 0:
+                    console.log('0000');
+                    this.$errorMessage.html( '' );
+                    Backbone.history.navigate( '#main', { trigger: true } );
+                    break;
+                case 5:
+                console.log('5555');
+                    this.$errorMessage.html( 'There is already a user with this e-mail. Please choose another one!' );
+                    break;
+                case 8:
+                console.log('8888');
+                    this.$errorMessage.html( 'The input passwords are different!' );
+                    break;
+                default:
+                console.log('defaaaaaaa');
+                    this.$errorMessage.html( 'Failed to send data to server. Sth is wrong =)' );
+                    break;
             }
+            return false;
         }
     });
     return new View;
