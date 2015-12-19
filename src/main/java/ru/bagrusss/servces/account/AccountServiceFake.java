@@ -2,15 +2,16 @@ package ru.bagrusss.servces.account;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import ru.bagrusss.servces.database.dataset.UserDataSet;
 
 import java.util.HashMap;
 import java.util.Map;
 
-
+@Deprecated
 public final class AccountServiceFake implements AccountService {
 
-    private final Map<String, UserProfile> mUsers;
-    private final Map<String, UserProfile> mSessions;
+    private final Map<String, UserDataSet> mUsers;
+    private final Map<String, UserDataSet> mSessions;
 
     public AccountServiceFake() {
         mUsers = new HashMap<>();
@@ -29,16 +30,16 @@ public final class AccountServiceFake implements AccountService {
     }
 
     @Override
-    public long registerUser(@NotNull String email, @NotNull UserProfile userProfile) {
+    public long registerUser(@NotNull String email, @NotNull UserDataSet user) {
         if (mUsers.containsKey(email))
             return 0;
-        mUsers.put(email, userProfile);
-        return userProfile.hashCode();
+        mUsers.put(email, user);
+        return user.hashCode();
     }
 
     @Override
-    public boolean addSession(@NotNull String sessionId, @NotNull UserProfile userProfile) {
-        return mSessions.put(sessionId, userProfile) == null;
+    public boolean addSession(@NotNull String sessionId, @NotNull UserDataSet user) {
+        return mSessions.put(sessionId, user) == null;
     }
 
     @Override
@@ -47,18 +48,23 @@ public final class AccountServiceFake implements AccountService {
     }
 
     @Override
-    public UserProfile getUser(@NotNull String userName) {
-        return mUsers.get(userName);
+    public UserDataSet getUser(@NotNull String email) {
+        return mUsers.get(email);
+    }
+
+    @Override
+    public UserDataSet getUser(@NotNull String email, @NotNull String password) {
+        return null;
     }
 
     @Override
     @Nullable
-    public UserProfile getSession(@NotNull String sessionId) {
+    public UserDataSet getSession(@NotNull String sessionId) {
         return mSessions.get(sessionId);
     }
 
     @Override
-    public long getCountActivatedUsers() {
+    public int getCountActivatedUsers() {
         return mSessions.size();
     }
 

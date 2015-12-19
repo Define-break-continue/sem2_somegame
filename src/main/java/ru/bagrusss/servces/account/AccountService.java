@@ -3,6 +3,7 @@ package ru.bagrusss.servces.account;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.bagrusss.helpers.BaseInterface;
+import ru.bagrusss.servces.database.dataset.UserDataSet;
 
 /**
  * Created by vladislav
@@ -14,19 +15,22 @@ public interface AccountService extends BaseInterface {
 
     boolean isAdmin(String email);
 
-    long registerUser(@NotNull String email, @NotNull UserProfile userProfile);
+    long registerUser(@NotNull String email, @NotNull UserDataSet user);
 
-    boolean addSession(@NotNull String sessionId, @NotNull UserProfile userProfile);
+    boolean addSession(@NotNull String sessionId, @NotNull UserDataSet user);
 
     boolean removeSession(@NotNull String sessionId);
 
     @Nullable
-    UserProfile getUser(@NotNull String userName);
+    UserDataSet getUser(@NotNull String email);
 
     @Nullable
-    UserProfile getSession(@NotNull String sessionId);
+    UserDataSet getUser(@NotNull String email, @NotNull String password);
 
-    long getCountActivatedUsers();
+    @Nullable
+    UserDataSet getSession(@NotNull String sessionId);
+
+    int getCountActivatedUsers();
 
     long getCountRegisteredUsers();
 }

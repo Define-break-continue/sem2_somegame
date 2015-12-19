@@ -19,12 +19,9 @@ public class Admin extends BaseServlet {
 
     @Override
     public void doGet(@NotNull HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.setContentType("text/html;charset=utf-8");
+        resp.setContentType("text/html; charset=utf-8");
         resp.setStatus(HttpServletResponse.SC_OK);
-        Map<String, Object> pageVariables = new HashMap<>();
         String timeString = req.getParameter("shutdown");
-        pageVariables.put("regUsers", mAccountService.getCountRegisteredUsers());
-        pageVariables.put("actUsers", mAccountService.getCountActivatedUsers());
         if (timeString != null) {
             try {
                 stopServer(Integer.valueOf(timeString));
@@ -32,7 +29,6 @@ public class Admin extends BaseServlet {
                 e.printStackTrace();
             }
         }
-        pageVariables.put("status", "run");
     }
 
     private void stopServer(int time) {

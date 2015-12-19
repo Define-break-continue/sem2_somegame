@@ -1,1 +1,1 @@
-java -jar Java_server.jar 8080
+java -jar server.jar

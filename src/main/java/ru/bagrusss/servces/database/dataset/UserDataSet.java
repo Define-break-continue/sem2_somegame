@@ -1,0 +1,56 @@
+package ru.bagrusss.servces.database.dataset;
+
+/**
+ * Created by vladislav
+ */
+
+@SuppressWarnings("ALL")
+public class UserDataSet {
+
+    private String password;
+    private String email;
+    private String firstname;
+    private String lastname;
+    private long id;
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public UserDataSet(String email, String password) {
+        this.password = password;
+        this.email = email;
+    }
+
+    public UserDataSet(long id, String email, String password) {
+        this.password = password;
+        this.email = email;
+        this.id = id;
+    }
+
+    public UserDataSet(long id, String email) {
+        this.email = email;
+        this.id = id;
+    }
+
+    public UserDataSet(long id, String email, String password, String firstname, String lastname) {
+        this.password = password;
+        this.email = email;
+        this.id = id;
+        this.firstname = firstname;
+        this.lastname = lastname;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+}

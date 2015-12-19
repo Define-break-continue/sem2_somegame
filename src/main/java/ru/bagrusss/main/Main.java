@@ -7,13 +7,9 @@ import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import ru.bagrusss.apiservlets.*;
-import ru.bagrusss.helpers.Context;
 import ru.bagrusss.helpers.Resourses;
-import ru.bagrusss.helpers.ServerConfigs;
 import ru.bagrusss.servces.account.AccountService;
-import ru.bagrusss.servces.account.AccountServiceFake;
-import ru.bagrusss.servces.database.DataBaseService;
-import ru.bagrusss.servces.database.ServiceDB;
+import ru.bagrusss.servces.account.ServiceDB;
 
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -37,8 +33,7 @@ public class Main {
 
     private static void initContext() {
         try {
-            appContext.add(DataBaseService.class, new ServiceDB());
-            appContext.add(AccountService.class, new AccountServiceFake());
+            appContext.add(AccountService.class, new ServiceDB());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -60,7 +55,7 @@ public class Main {
         context.addServlet(new ServletHolder(new Admin()), Admin.URL);
         context.addServlet(new ServletHolder(new SignIn()), SignIn.URL);
         context.addServlet(new ServletHolder(new SignUp()), SignUp.URL);
-        context.addServlet(new ServletHolder(new User()), User.URL);
+        context.addServlet(new ServletHolder(new Users()), Users.URL);
         context.addServlet(new ServletHolder(new Info()), Info.URL);
 
         ResourceHandler resourceHandler = new ResourceHandler();

@@ -4,6 +4,7 @@ import org.jetbrains.annotations.TestOnly;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import ru.bagrusss.servces.database.dataset.UserDataSet;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -17,19 +18,20 @@ import static org.mockito.Mockito.when;
 /**
  * Created by vladislav
  */
+
 public class AccountServiceFakeTest {
 
     AccountServiceFake mAccountService;
-    List<UserProfile> mUsers;
+    List<UserDataSet> mUsers;
 
     @Before
     public void setUp() throws Exception {
         mAccountService = new AccountServiceFake();
         mUsers = new LinkedList<>();
-        mUsers.add(new UserProfile("vlad1", "123", "vlad@mail.ru"));
-        mUsers.add(new UserProfile("vlad2", "1232", "vlad1@mail.ru"));
-        mUsers.add(new UserProfile("vlad3", "some", "vlad2@mail.ru"));
-        mUsers.add(new UserProfile("vlad4", "456", "vlad4@mail.ru"));
+        mUsers.add(new UserDataSet("vlad@mail.ru", "123"));
+        mUsers.add(new UserDataSet("vlad1@mail.ru", "1232"));
+        mUsers.add(new UserDataSet("vlad2@mail.ru", "some"));
+        mUsers.add(new UserDataSet("vlad4@mail.ru", "456"));
     }
 
     @After
@@ -41,18 +43,18 @@ public class AccountServiceFakeTest {
     @TestOnly
     @Test
     public void testAddUser() throws Exception {
-        for (UserProfile mUser : mUsers) {
-            mAccountService.registerUser(mUser.getmUserLogin(), mUser);
+        for (UserDataSet mUser : mUsers) {
+            mAccountService.registerUser(mUser.getEmail(), mUser);
         }
-        assertFalse(mAccountService.registerUser("vlad3", new UserProfile("vlad3", "456", "vlad3@mail.ru"))>0);
+        assertFalse(mAccountService.registerUser("vlad3", new UserDataSet("vlad3@mail.ru", "456")) == 0);
     }
 
     @TestOnly
     @Test
     public void testGetUser() throws Exception {
-        for (UserProfile usr : mUsers) {
-            mAccountService.registerUser(usr.getmUserLogin(), usr);
-            assertEquals(mAccountService.getUser(usr.getmUserLogin()), usr);
+        for (UserDataSet usr : mUsers) {
+            mAccountService.registerUser(usr.getEmail(), usr);
+            assertEquals(mAccountService.getUser(usr.getEmail()), usr);
         }
         assertEquals(null, mAccountService.getUser("vlad5"));
     }
@@ -60,7 +62,7 @@ public class AccountServiceFakeTest {
     @TestOnly
     @Test
     public void testAddSession() throws Exception {
-        for (UserProfile usr : mUsers) {
+        for (UserDataSet usr : mUsers) {
             mAccountService.addSession(usr.toString(), usr);
         }
         assertEquals(4, mAccountService.getCountActivatedUsers());
@@ -71,7 +73,7 @@ public class AccountServiceFakeTest {
     @Test
     public void testGetSession() throws Exception {
         assertNull(mAccountService.getSession(mUsers.get(0).toString()));
-        for (UserProfile usr : mUsers) {
+        for (UserDataSet usr : mUsers) {
             mAccountService.addSession(usr.toString(), usr);
             assertNotNull(mAccountService.getSession(usr.toString()));
         }
@@ -80,11 +82,11 @@ public class AccountServiceFakeTest {
     @TestOnly
     @Test
     public void testRemoveSession() throws Exception {
-        for (UserProfile usr : mUsers) {
+        for (UserDataSet usr : mUsers) {
             mAccountService.addSession(usr.toString(), usr);
         }
-        assertFalse(mAccountService.removeSession(new UserProfile(" ", " ", " ").toString()));
-        for (UserProfile usr : mUsers) {
+        assertFalse(mAccountService.removeSession(new UserDataSet(" ", " ").toString()));
+        for (UserDataSet usr : mUsers) {
             assertTrue(mAccountService.removeSession(usr.toString()));
         }
     }
@@ -106,8 +108,8 @@ public class AccountServiceFakeTest {
     @TestOnly
     @Test
     public void testRemoveAll() throws Exception {
-        for (UserProfile usr : mUsers) {
-            mAccountService.registerUser(usr.getmUserLogin(), usr);
+        for (UserDataSet usr : mUsers) {
+            mAccountService.registerUser(usr.getEmail(), usr);
             mAccountService.addSession(usr.toString(), usr);
         }
         mAccountService.removeAll();

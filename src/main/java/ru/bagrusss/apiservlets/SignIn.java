@@ -4,7 +4,7 @@ package ru.bagrusss.apiservlets;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import ru.bagrusss.helpers.Errors;
-import ru.bagrusss.servces.account.UserProfile;
+import ru.bagrusss.servces.database.dataset.UserDataSet;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -17,6 +17,7 @@ public class SignIn extends BaseServlet {
 
     @Override
     public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.setContentType("application/json; charset=utf-8");
         JsonObject params;
         try {
             params = mGson.fromJson(req.getReader(), JsonObject.class);
@@ -35,13 +36,11 @@ public class SignIn extends BaseServlet {
             Errors.errorAPI(resp, Errors.CODE_INVALID_REQUEST, Errors.MESSAGE_INVALID_REQUEST);
             return;
         }
-        UserProfile user = mAccountService.getUser(email);
+        UserDataSet user = mAccountService.getUser(email, password);
         if (user != null) {
-            if (user.getmUserPassword().equals(password)) {
                 params.addProperty(ID, user.getId());
                 Errors.correct(resp, params);
                 return;
-            }
         }
         Errors.errorAPI(resp, Errors.CODE_USER_NOT_EXISTS, Errors.MESSAGE_USER_NOT_EXISTS);
     }

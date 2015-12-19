@@ -10,7 +10,7 @@ import java.io.IOException;
 /**
  * Created by vladislav
  */
-@SuppressWarnings("ALL")
+@SuppressWarnings("unused")
 public class Errors {
     public static final byte CODE_OK = 0; // - OK.
     public static final byte CODE_CANT_START_GAME = 1; //- невозможно запустить игру.
@@ -41,6 +41,7 @@ public class Errors {
 
     public static void correct(HttpServletResponse rsp, JsonObject resp) throws IOException {
         rsp.setStatus(HttpServletResponse.SC_OK);
+        rsp.setContentType("application/json; charset=utf-8");
         JsonObject response = new JsonObject();
         response.addProperty("code", CODE_OK);
         response.add(RESPONSE, resp);
@@ -63,6 +64,7 @@ public class Errors {
 
     public static void errorAPI(HttpServletResponse rsp, byte code, String msg) throws IOException {
         rsp.setCharacterEncoding(BaseServlet.DEFAULT_ENCODING);
+        rsp.setContentType("application/json; charset=utf-8");
         rsp.setStatus(HttpServletResponse.SC_OK);
         JsonObject response = new JsonObject();
         response.addProperty("code", code);

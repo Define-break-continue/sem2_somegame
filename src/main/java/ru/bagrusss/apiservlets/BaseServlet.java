@@ -1,7 +1,7 @@
 package ru.bagrusss.apiservlets;
 
 import com.google.gson.Gson;
-import ru.bagrusss.helpers.Context;
+import ru.bagrusss.main.Context;
 import ru.bagrusss.helpers.Resourses;
 import ru.bagrusss.main.Main;
 import ru.bagrusss.servces.account.AccountService;

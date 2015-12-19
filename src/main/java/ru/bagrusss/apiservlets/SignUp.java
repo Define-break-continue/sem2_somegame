@@ -3,7 +3,7 @@ package ru.bagrusss.apiservlets;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import ru.bagrusss.helpers.Errors;
-import ru.bagrusss.servces.account.UserProfile;
+import ru.bagrusss.servces.database.dataset.UserDataSet;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -41,7 +41,7 @@ public class SignUp extends BaseServlet {
             Errors.errorPasswordsNotMatch(resp);
             return;
         }
-        UserProfile user = new UserProfile(null, pass1, email);
+        UserDataSet user = new UserDataSet(email, pass1);
         long id = mAccountService.registerUser(email, user);
         user.setId(id);
         if (id != 0) {
