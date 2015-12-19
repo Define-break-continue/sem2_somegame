@@ -33,7 +33,7 @@ define([
                 $.ajax( {
                     type: 'POST',
                     url: this.registrationURL,
-                    dataType: 'Content-Type: application/json',
+                    dataType: 'json',
                     data: JSON.stringify(data),//this.toJSON(),
                     error: this.ajaxError,
                     success: this.ajaxSuccess
