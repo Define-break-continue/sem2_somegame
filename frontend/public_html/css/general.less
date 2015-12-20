@@ -1,0 +1,48 @@
+@import "login";
+@import "main";
+@import "scoreboard";
+@import "balls-control";
+@import "stats";
+@import "general";
+
+
+@bg-clr: #333;
+@form-content-clr: #F58A00;
+@form-glow-clr: #857BE7;
+@form-bg-clr: rgba(0, 0, 0, .88);
+@form-black: #000;
+@light-clr: #FFC930;
+@form-btn-bg-clr: linear-gradient(to bottom, @light-clr 50%, @form-content-clr);
+@main-content-clr: @form-content-clr;
+@main-element-bg-clr: @form-btn-bg-clr;
+@main-element-text-clr: #000;
+@main-element-width: 95%;
+@border-radius: 7px;
+
+#myCanvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -100;
+}
+
+#page {
+    margin: auto;
+    width: 50%;
+    min-width: 470px;
+}
+
+#opaque {
+    height: 130px;
+    width: 60%;
+    z-index: -10000;
+}
+
+body {
+    background-color: @bg-clr;
+    color: white;
+    font-family: serif;
+    height: 1px;
+    /*min-height: 470px;*/
+    /*z-index: -5;*/
+}

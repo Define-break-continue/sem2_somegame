@@ -1,0 +1,15 @@
+<fest:template xmlns:fest="http://fest.mail.ru">
+<fest:include src="backbutton.xml" context="login" />
+    <form method="POST" class="js-registration-form">
+        <fieldset class="popup">
+            <h1 class="popup__header">Registration</h1>
+            <div class="popup__email-message"></div>
+            <div class="popup__password-message"></div>
+            <div class="popup__other-message"></div>
+            <input type="email" name="email" placeholder="E-mail" class="popup__input js-email" required="true"></input><br />
+            <input type="password" name="password1" placeholder="Password" class="popup__input js-password1" required="true"></input><br />
+            <input type="password" name="password2" placeholder="Repeat your password" class="popup__input js-password2" required="true"></input><br />
+            <input type="submit" value="LET'S START!" class="popup__button"></input><br />
+        </fieldset>
+    </form>
+</fest:template>

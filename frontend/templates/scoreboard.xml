@@ -1,0 +1,23 @@
+<fest:template xmlns:fest="http://fest.mail.ru" context_name="json">
+<fest:include src="backbutton.xml" />
+    <fieldset class="highscores">
+        <h1 class="highscores__header">
+            HIGHSCORES
+        </h1>
+        <table class="highscores__table">
+            <tr class="highscores__table__first-tr">
+                <td class="highscores__table__left-td highscores__table__first">Rank</td><td class="highscores__table__center-td highscores__table__first">Username</td><td class="highscores__table__right-td highscores__table__first">Scores</td>
+                <fest:each iterate="json" index="i" value="data">
+                    <tr class="highscores__table__usual-tr">
+                        <td class="highscores__table__left-td"><fest:value>i</fest:value></td>
+                        <td class="highscores__table__center-td"><fest:value>data.login</fest:value></td>
+                        <td class="highscores__table__right-td"><fest:value>data.score</fest:value></td>
+                    </tr>
+                </fest:each>
+            </tr>
+        </table>
+        <fest:if test="json.isAdmin">
+            <button class="stats__button">Press this button to fuck all the shit connected to the server</button>
+        </fest:if>
+    </fieldset>
+</fest:template>

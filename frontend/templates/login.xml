@@ -1,0 +1,14 @@
+<fest:template xmlns:fest="http://fest.mail.ru">
+<fest:include src="backbutton.xml" />
+    <fieldset class="popup">
+        <form method="POST" action="#login" class="js-login-form">
+            <h1 class="popup__header">Log In</h1>
+            <p class="popup__login-message"></p>
+            <p class="popup__password-message"></p>
+            <input type="email" name="email" placeholder="E-mail" class="popup__input js-login" required="true"></input><br />
+            <input type="password" name="password" placeholder="Password" class="popup__input js-password" required="true"></input><br />
+            <input type="submit" value="LET'S START!" class="popup__button"></input><br />
+        </form>
+            <a href="#registration"><button class="popup__button">REGISTRATION</button></a>
+    </fieldset>
+</fest:template>

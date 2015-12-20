@@ -1,0 +1,15 @@
+<fest:template xmlns:fest="http://fest.mail.ru">
+<fest:include src="backbutton.xml" />
+    <div class="game__message">
+        <p class="game__message_start">Hey <fest:value>json.login</fest:value>! Prepare for the mosh!</p>
+    </div>
+
+    <div class="game__score">
+        <p class="game__score_p"><fest:value>json.login</fest:value>: <span id="game__score__points">0</span> points</p>
+    </div>
+
+    <div class="game__message">
+        <p class="game__message_victory">Congratulations! You've ate'em all!</p>
+        <p class="game__message_failure">Sorry, you are not a winner =(</p>
+    </div>
+</fest:template>
