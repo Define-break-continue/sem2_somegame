@@ -14,7 +14,7 @@ import java.util.List;
 public class ScoreDAO {
 
     private Executor mExecutor = new Executor();
-    public static final String TABLE_STATISTICS = " `Statistics` ";
+    public static final String TABLE_STATISTICS = " `Score` ";
 
     public class Score {
 
@@ -49,7 +49,7 @@ public class ScoreDAO {
                 .append("`games` INT UNSIGNED DEFAULT 0, ")
                 .append("`wins` INT UNSIGNED DEFAULT 0, ")
                 .append("`score` INT UNSIGNED DEFAULT 0, ")
-                .append("PRIMARY KEY (`user_id`) ")
+                .append("PRIMARY KEY (`user_id`)) ")
                 .append("DEFAULT CHARACTER SET = utf8");
         mExecutor.runUpdate(sql.toString());
     }

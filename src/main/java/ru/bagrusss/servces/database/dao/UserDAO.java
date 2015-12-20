@@ -26,7 +26,8 @@ public class UserDAO {
                 .append("`first_name` VARCHAR(35) DEFAULT NULL, ")
                 .append("`last_name` VARCHAR(35) DEFAULT NULL, ")
                 .append("`password` VARCHAR(50) NOT NULL, ")
-                .append("PRIMARY KEY (`email`, `password`), ") //для поиска по индексу
+                .append("PRIMARY KEY (`email`), ")
+                .append("KEY email_pass (`email`, `password`), ")
                 .append("UNIQUE KEY key_id(`id`)) ")
                 .append("DEFAULT CHARACTER SET = utf8");
         mExecutor.runUpdate(sql.toString());
