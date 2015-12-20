@@ -4,7 +4,7 @@ define ( [
     'backbone',
     'tmpl/main',
     'tmpl/balls-control',
-    'views/balls'
+    '../../canvas/balls'
 ], function (
     Backbone,
     tmpl,
@@ -14,6 +14,7 @@ define ( [
     var View =  Backbone.View.extend({
         template: tmpl,
         ballsControl: ballsCtrl,
+        isLoggedIn: true,
 
         initialize: function ( options ) {
             this.el = $( '#page' );
@@ -21,9 +22,8 @@ define ( [
             this.ballsFlag = false;
         },
         render: function () {
-            this.$el.html( this.template() );
+            this.$el.html( this.template( { isLoggedIn: this.isLoggedIn } ) );
             ballColors = ['red', $('.main__header').css('color')];
-//            $('#page').css('z-index', -101);
             if ( !this.ballsFlag ) {
             	$('#balls-control').html( this.ballsControl() );
             	scene();
