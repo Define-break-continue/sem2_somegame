@@ -29,6 +29,8 @@ define([
                 $.ajax( {
                     type: 'POST',
                     url: this.registrationURL,
+                    async: false,
+                    timeout: 8000,
                     dataType: 'json',
                     data: JSON.stringify( data ),//this.toJSON(),
                     error: function( answer ) { self.set( 'isSuccess', 99 ); },
@@ -40,13 +42,16 @@ define([
         login: function( data ) {
             var self = this;
             if ( this.loginCheck() ) {
+            console.log('sending');
                 $.ajax( {
                     type: 'POST',
                     url: this.loginURL,
+                    async: false,
+                    timeout: 8000,
                     dataType: 'json',
                     data: JSON.stringify( data ),
                     error: function( answer ) { self.set( 'isSuccess', 99 ); },
-                    success: function( answer ) { self.set( 'isSuccess', answer.code ); },
+                    success: function( answer ) { console.log('model'); self.set( 'isSuccess', answer.code ); },
                 } );
             }
         },

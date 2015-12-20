@@ -82,6 +82,7 @@ define ( [
                 email: this.$email.val(),
                 password: this.$password.val(),
             } );
+            console.log('view');
             switch ( this.model.get( 'isSuccess' ) ) {
                 case 0:
                     this.$errorMessage.html( '' );
