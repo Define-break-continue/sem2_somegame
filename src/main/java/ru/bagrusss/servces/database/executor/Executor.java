@@ -8,11 +8,12 @@ import java.util.List;
 /**
  * Created by vladislav
  */
-
+@SuppressWarnings("unused")
 public class Executor {
 
     private final ConnectionPool mConnectionPool = ConnectionPool.getInstance();
 
+    @Nullable
     public <T> T runTypedQuery(String sql, TResultHandler<T> tHandler) throws SQLException {
         try (Connection connection = mConnectionPool.getConnection();
              Statement statement = connection.createStatement();
@@ -41,6 +42,7 @@ public class Executor {
         return null;
     }
 
+    @Nullable
     public <T> T runTypedPreparedQuery(String sql, List<?> params, TResultHandler<T> handler) throws SQLException {
         try (Connection connection = mConnectionPool.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {

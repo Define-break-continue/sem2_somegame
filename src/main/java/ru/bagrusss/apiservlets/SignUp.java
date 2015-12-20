@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+@SuppressWarnings("all")
 public class SignUp extends BaseServlet {
 
     public static final String URL = "/signup/";

@@ -11,7 +11,7 @@ import java.util.Map;
 
 public class Context {
 
-    private Map<Class<? extends BaseInterface>, Object> services = new HashMap<>();
+    private final Map<Class<? extends BaseInterface>, Object> services = new HashMap<>();
 
     public void add(Class<? extends BaseInterface> cl, Object implementor) throws Exception {
         if (services.containsKey(cl)) {

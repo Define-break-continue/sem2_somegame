@@ -1,7 +1,9 @@
 package ru.bagrusss.servces.database.dataset;
 
 /**
- * Created by vladislav on 19.12.15.
+ * Created by vladislav
  */
+@SuppressWarnings("unused")
 public class AdminDataSet {
+
 }

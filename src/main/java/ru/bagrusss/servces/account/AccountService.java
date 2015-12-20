@@ -8,7 +8,7 @@ import ru.bagrusss.servces.database.dataset.UserDataSet;
 /**
  * Created by vladislav
  */
-
+@SuppressWarnings("unused")
 public interface AccountService extends BaseInterface {
 
     void removeAll();

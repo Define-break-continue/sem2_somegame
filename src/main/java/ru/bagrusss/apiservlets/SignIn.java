@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+@SuppressWarnings("all")
 public class SignIn extends BaseServlet {
 
     public static final String URL = "/signin/";
@@ -38,9 +39,9 @@ public class SignIn extends BaseServlet {
         }
         UserDataSet user = mAccountService.getUser(email, password);
         if (user != null) {
-                params.addProperty(ID, user.getId());
-                Errors.correct(resp, params);
-                return;
+            params.addProperty(ID, user.getId());
+            Errors.correct(resp, params);
+            return;
         }
         Errors.errorAPI(resp, Errors.CODE_USER_NOT_EXISTS, Errors.MESSAGE_USER_NOT_EXISTS);
     }

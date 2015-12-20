@@ -2,14 +2,16 @@ package ru.bagrusss.servces.account;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import ru.bagrusss.main.Main;
+import ru.bagrusss.game.ResultsGame;
 import ru.bagrusss.servces.database.dao.AdminDAO;
 import ru.bagrusss.servces.database.dao.ScoreDAO;
 import ru.bagrusss.servces.database.dao.UserDAO;
+import ru.bagrusss.servces.database.dataset.ScoreDataSet;
 import ru.bagrusss.servces.database.dataset.UserDataSet;
 
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,14 +20,13 @@ import java.util.logging.Logger;
  * Created by vladislav
  */
 
-public final class ServiceDB implements AccountService {
+public final class ServiceDB implements AccountService, ResultsGame {
 
-    public static final String DB_CONFIGS = Main.RESOURCE_PATH + "//.cfg//db.json";
     private UserDAO mUserDAO;
     private AdminDAO mAdminDAO;
     private ScoreDAO mScoreDAO;
 
-    private Map<String, UserDataSet> mSessions = new HashMap<>();
+    private final Map<String, UserDataSet> mSessions = new HashMap<>();
 
 
     private final Logger dbLogger = Logger.getLogger(getClass().getCanonicalName());
@@ -34,12 +35,11 @@ public final class ServiceDB implements AccountService {
         try {
             mUserDAO = new UserDAO();
             mAdminDAO = new AdminDAO();
+            mScoreDAO = new ScoreDAO();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
     }
-
 
     /**
      * used for test only!
@@ -83,7 +83,12 @@ public final class ServiceDB implements AccountService {
     @Nullable
     @Override
     public UserDataSet getUser(@NotNull String email) {
-        return null;
+        try {
+            return mUserDAO.getUser(email, null);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Nullable
@@ -118,16 +123,25 @@ public final class ServiceDB implements AccountService {
         return 0;
     }
 
-    /*
-        sql.setLength(0);
-        sql.append("CREATE TABLE IF NOT EXISTS")
-                .append(TABLE_STATISTICS)
-                .append("(`user_id` INT, ")
-                .append("games INT UNSIGNED DEFAULT 0, ")
-                .append("wins INT UNSIGNED DEFAULT 0, ")
-                .append("score INT UNSIGNED DEFAULT 0) ")
-                .append("DEFAULT CHARACTER SET = utf8, ENGINE = InnoDB");
-        runUpdate(getConnection(), sql.toString(), null);
-        }*/
 
+    @Override
+    public boolean saveResults(List<ScoreDAO.Score> results) {
+        try {
+            return mScoreDAO.saveResults(results);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @Nullable
+    @Override
+    public ScoreDataSet getInfo(long userId) {
+        try {
+            return mScoreDAO.getUserScore(userId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

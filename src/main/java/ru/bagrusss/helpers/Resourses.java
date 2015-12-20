@@ -10,11 +10,12 @@ import java.io.IOException;
 /**
  * Created by vladislav on 18.12.15.
  */
-
+@SuppressWarnings("all")
 public class Resourses {
 
     public static final Gson GSON = new Gson();
-    @SuppressWarnings("all")
+
+
     public static <T> T readResourses(String path, Class<T> cl) throws IOException {
         try (FileReader file = new FileReader(path);
              BufferedReader reader = new BufferedReader(file)) {

@@ -19,21 +19,20 @@ public class Main {
     private static final String MESSAGE_RUN = "Run server at port ";
 
     public static final String SERVER_CONFIGS = ".//resources//.cfg//server.json";
-    public static final String RESOURCE_PATH = Paths.get("").toAbsolutePath() + "//resources";
+    public static final String RESOURCES_PATH = Paths.get("").toAbsolutePath() + "//resources";
 
-    public static final byte DB_ERROR = 2;
     public static final byte DB_CONFIGS_ERROR = 4;
     public static final byte CONFIGS_ERROR = 3;
 
-    private static Context appContext = new Context();
+    private static final Context APP_CONTEXT = new Context();
 
     public static Context getAppContext() {
-        return appContext;
+        return APP_CONTEXT;
     }
 
     private static void initContext() {
         try {
-            appContext.add(AccountService.class, new ServiceDB());
+            APP_CONTEXT.add(AccountService.class, new ServiceDB());
         } catch (Exception e) {
             e.printStackTrace();
         }

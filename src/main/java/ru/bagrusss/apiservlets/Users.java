@@ -5,7 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-
+@SuppressWarnings("unused")
 public class Users extends BaseServlet {
 
     public static final String URL = "/user/*";

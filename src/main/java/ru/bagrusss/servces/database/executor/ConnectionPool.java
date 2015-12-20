@@ -24,7 +24,7 @@ public final class ConnectionPool {
 
     private static volatile ConnectionPool sInstance;
     private final BasicDataSource mBasicDataSource;
-    public static final String DB_CONFIGS = Main.RESOURCE_PATH + "//.cfg//db.json";
+    public static final String DB_CONFIGS = Main.RESOURCES_PATH + "//.cfg//db.json";
     private final Logger dbLogger = Logger.getLogger(getClass().getCanonicalName());
 
     @SuppressWarnings("ALL")
