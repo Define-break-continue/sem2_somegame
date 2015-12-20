@@ -4,22 +4,25 @@ define ( [
     'backbone',
     'tmpl/main',
     'tmpl/balls-control',
-    '../../canvas/balls'
+    '../../canvas/balls',
+    'models/player',
 ], function (
     Backbone,
     tmpl,
     ballsCtrl,
-    balls
+    balls,
+    userModel
 ) {
     var View =  Backbone.View.extend({
         template: tmpl,
         ballsControl: ballsCtrl,
-        isLoggedIn: !true,
+        model: new userModel(),
 
         initialize: function ( options ) {
             this.el = $( '#page' );
             this.setElement('#page');
             this.ballsFlag = false;
+            this.isLoggedIn = this.model.get( 'isLogged' );
         },
         render: function () {
             this.$el.html( this.template( { isLoggedIn: this.isLoggedIn } ) );

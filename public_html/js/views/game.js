@@ -17,6 +17,9 @@ define ( [
         },
         render: function () {
             this.$el.html( this.template(  ) );
+            this.$foreCanvas = this.$( '.game__canvas-fore' )[0];
+            this.$backCanvas = this.$( '.game__canvas-back' )[0];
+            gamescene( this.$foreCanvas, this.$backCanvas );
             return this;
         },
         show: function () {
