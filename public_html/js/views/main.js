@@ -14,7 +14,7 @@ define ( [
     var View =  Backbone.View.extend({
         template: tmpl,
         ballsControl: ballsCtrl,
-        isLoggedIn: true,
+        isLoggedIn: !true,
 
         initialize: function ( options ) {
             this.el = $( '#page' );

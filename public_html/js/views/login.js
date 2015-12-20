@@ -25,6 +25,9 @@ define ( [
             this.$el.html( this.template() );
             this.$email = this.$('.js-login');
             this.$password = this.$('.js-password');
+            this.$passwordMessage = this.$( '.popup__password-message' );
+            this.$emailMessage = this.$( '.popup__email-message' );
+            this.$errorMessage = this.$( '.popup__other-message' );
             return this;
         },
         show: function () {
@@ -38,12 +41,12 @@ define ( [
         passwordChecker: function() {
             // при наличии чего-то в поле password2
             if ( !this.$password.val() ) {
-                $( '.popup__password-message' ).html( 'Please, enter the password! ' );
+                this.$passwordMessage.html( 'Please, enter the password! ' );
                 this.$password.focus;
                 this.$password.css('color', 'red');
                 return false;
             } else {
-                $( '.popup__password-message' ).html( '' );
+                this.$passwordMessage.html( '' );
                     this.$password.css('color', 'green');
                     return true;
                 }
@@ -53,12 +56,12 @@ define ( [
 
         emailChecker: function() {
             if ( !this.$email[0].validity.valid ) {
-                $( '.popup__email-message' ).html( 'Please enter a valid e-mail! ' );
+                this.$emailMessage.html( 'Please enter a valid e-mail! ' );
                 this.$email.css('color', 'red');
                 this.$email.focus;
                 return false;
             } else {
-                $( '.popup__email-message' ).html( '' );
+                this.$emailMessage.html( '' );
                 this.$email.css('color', 'green');
                 return true;
             }
@@ -73,14 +76,28 @@ define ( [
 
             if ( !this.validate() ) return;
 
-            this.model.set( { email: this.$email.val(), password: this.$password.val() } )
-            this.model.registration();
-            if( this.model.get( 'isSuccess' ) ) {
-                Backbone.history.navigate( '#main', { trigger: true } );
-            } else {
-                $('.popup__other-message').html( 'Failed to send data to server. Sth is wrong =)' );
+            this.model.set( { email: this.$email.val(), password: this.$password.val() } );
+            this.model.login( {
+                tp: 0,
+                email: this.$email.val(),
+                password: this.$password.val(),
+            } );
+            switch ( this.model.get( 'isSuccess' ) ) {
+                case 0:
+                    this.$errorMessage.html( '' );
+                    this.model.set( { 'isLogged': true } );
+                    Backbone.history.navigate( '#main', { trigger: true } );
+                    break;
+                case 4:
+                case 9:
+                    this.$errorMessage.html( 'Incorrect login or password!' );
+                    break;
+                default:
+                    this.$errorMessage.html( 'Failed to send data to server. Sth is wrong =)' );
+                    break;
             }
-        }
+            return false;
+        },
     });
     return new View;
 } );

@@ -89,25 +89,22 @@ define ( [
 
             switch ( this.model.get( 'isSuccess' ) ) {
                 case 0:
-                    console.log('0000');
                     this.$errorMessage.html( '' );
+                    this.model.set( { 'isLogged': true } );
                     Backbone.history.navigate( '#main', { trigger: true } );
                     break;
                 case 5:
-                console.log('5555');
                     this.$errorMessage.html( 'There is already a user with this e-mail. Please choose another one!' );
                     break;
                 case 8:
-                console.log('8888');
                     this.$errorMessage.html( 'The input passwords are different!' );
                     break;
                 default:
-                console.log('defaaaaaaa');
                     this.$errorMessage.html( 'Failed to send data to server. Sth is wrong =)' );
                     break;
             }
             return false;
         }
-    });
+    } );
     return new View;
 } );
