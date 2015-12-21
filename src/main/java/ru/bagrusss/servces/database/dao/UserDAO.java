@@ -17,7 +17,7 @@ import java.sql.SQLException;
 @SuppressWarnings({"unused", "StringBufferReplaceableByString"})
 public class UserDAO {
 
-    private Executor mExecutor = new Executor();
+    private Executor mExecutor = new Executor(Main.RESOURCES_PATH + "//.cfg//db.json");
 
     public static final String TABLE_USER = " `User` ";
 

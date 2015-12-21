@@ -12,7 +12,11 @@ import java.util.List;
 @SuppressWarnings("unused")
 public class Executor {
 
-    private final ConnectionPool mConnectionPool = ConnectionPool.getInstance();
+    public Executor(String confpath) {
+        mConnectionPool = ConnectionPool.getInstance(confpath);
+    }
+
+    private final ConnectionPool mConnectionPool;
 
 
     public <T> T runTypedQuery(String sql, TResultHandler<T> tHandler) throws SQLException {

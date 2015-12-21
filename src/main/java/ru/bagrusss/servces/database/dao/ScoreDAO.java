@@ -1,6 +1,7 @@
 package ru.bagrusss.servces.database.dao;
 
 import org.jetbrains.annotations.Nullable;
+import ru.bagrusss.main.Main;
 import ru.bagrusss.servces.database.dataset.ScoreDataSet;
 import ru.bagrusss.servces.database.executor.Executor;
 
@@ -16,7 +17,7 @@ import java.util.List;
         "StringBufferReplaceableByString"})
 public class ScoreDAO {
 
-    private final Executor mExecutor = new Executor();
+    private final Executor mExecutor = new Executor(Main.RESOURCES_PATH + "//.cfg//db.json");
     public static final String TABLE_STATISTICS = " `Score` ";
 
     @SuppressWarnings({"CanBeFinal", "InnerClassMayBeStatic"})

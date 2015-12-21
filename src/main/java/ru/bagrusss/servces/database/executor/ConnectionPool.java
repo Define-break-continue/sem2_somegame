@@ -3,7 +3,6 @@ package ru.bagrusss.servces.database.executor;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.jetbrains.annotations.NotNull;
 import ru.bagrusss.helpers.Resourses;
-import ru.bagrusss.main.Main;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -15,17 +14,13 @@ import java.util.logging.Logger;
  * Created by vladislav
  */
 
-@SuppressWarnings("all")
-/**
- * поскольку idea предлагает заменить StringBuilder на конкатенацию String
- */
 
+@SuppressWarnings("StringBufferReplaceableByString")
 public final class ConnectionPool {
 
     private static volatile ConnectionPool sInstance;
     private final BasicDataSource mBasicDataSource;
-    public static final String DB_CONFIGS = Main.RESOURCES_PATH + "//.cfg//db.json";
-    private final Logger dbLogger = Logger.getLogger(getClass().getCanonicalName());
+    private static final Logger LOG = Logger.getLogger(ConnectionPool.class.getCanonicalName());
 
     public static final byte DB_CONFIGS_ERROR = 4;
 
@@ -45,12 +40,12 @@ public final class ConnectionPool {
         private String password;
     }
 
-    private ConnectionPool() {
+    private ConnectionPool(String path) {
         ConfigsDB conf = null;
         try {
-            conf = Resourses.readResourses(DB_CONFIGS, ConfigsDB.class);
+            conf = Resourses.readResourses(path, ConfigsDB.class);
         } catch (IOException e) {
-            dbLogger.log(Level.SEVERE, e.getMessage());
+            LOG.log(Level.SEVERE, e.getMessage());
             System.exit(DB_CONFIGS_ERROR);
         }
         mBasicDataSource = new BasicDataSource();
@@ -62,16 +57,16 @@ public final class ConnectionPool {
         mBasicDataSource.setMinIdle(conf.minConnections);
         mBasicDataSource.setMaxIdle(conf.maxConnections);
         mBasicDataSource.setMaxOpenPreparedStatements(conf.maxPreparedStatements);
-        dbLogger.log(Level.INFO, "Connection Pool initialized from settings");
+        LOG.log(Level.INFO, "Connection Pool initialized from settings");
     }
 
-    static ConnectionPool getInstance() {
+    static ConnectionPool getInstance(String configpath) {
         ConnectionPool local = sInstance;
         if (local == null) {
             synchronized (ConnectionPool.class) {
                 local = sInstance;
                 if (local == null) {
-                    sInstance = local = new ConnectionPool();
+                    sInstance = new ConnectionPool(configpath);
                 }
             }
         }
@@ -80,14 +75,16 @@ public final class ConnectionPool {
 
     @NotNull
     private String buildURL(@NotNull ConfigsDB cfg) {
-        StringBuilder url = new StringBuilder();
-        url.append(cfg.pref).append(':')
+        StringBuilder url = new StringBuilder()
+                .append(cfg.pref).append(':')
                 .append(cfg.datadase).append("://")
                 .append(cfg.host).append(':')
                 .append(cfg.port).append('/')
                 .append(cfg.base).append('?')
                 .append(cfg.params);
-        return url.toString();
+        String urll = url.toString();
+        LOG.log(Level.INFO, urll);
+        return urll;
     }
 
     Connection getConnection() throws SQLException {
