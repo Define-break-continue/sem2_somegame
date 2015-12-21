@@ -14,7 +14,6 @@ import java.util.logging.Logger;
  * Created by vladislav
  */
 
-
 @SuppressWarnings("StringBufferReplaceableByString")
 public final class ConnectionPool {
 

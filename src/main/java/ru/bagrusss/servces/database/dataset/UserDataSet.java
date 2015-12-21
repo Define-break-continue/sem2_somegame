@@ -54,6 +54,14 @@ public class UserDataSet {
         this.lastname = lastname;
     }
 
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+
     public long getId() {
         return id;
     }

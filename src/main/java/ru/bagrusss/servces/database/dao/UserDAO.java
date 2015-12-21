@@ -78,16 +78,17 @@ public class UserDAO {
                 .append("\', PASSWORD(\'").append(user.getPassword())
                 .append("'))");
         return mExecutor.runUpdate(sql.toString(),
-                rs -> rs.next() ? rs.getLong(1) : 1);
+                rs -> rs.next() ? rs.getLong(1) : 0);
     }
 
     public UserDataSet getUserById(long id) throws SQLException {
-        StringBuilder sql = new StringBuilder("SELECT `id`, `email` FROM")
-                .append(TABLE_USER).append("WHERE `id`=\'")
+        StringBuilder sql = new StringBuilder("SELECT * FROM")
+                .append(TABLE_USER).append("WHERE `id`=")
                 .append(id);
         return mExecutor.runTypedQuery(sql.toString(), rs -> {
             rs.next();
-            return new UserDataSet(rs.getLong(1), rs.getString(2));
+            return new UserDataSet(rs.getLong(1), rs.getString(2), rs.getString(5),
+                    rs.getString(3), rs.getString(4));
         });
     }
 
@@ -102,7 +103,7 @@ public class UserDAO {
         StringBuilder sql = new StringBuilder("UPDATE").append(TABLE_USER)
                 .append("SET `first_name`= \'").append(user.getFirstname())
                 .append("\', `last_name`= \'").append(user.getLastname())
-                .append("\' WHERE `email`=").append(user.getEmail())
+                .append("\' WHERE `email`=\'").append(user.getEmail())
                 .append('\'');
         return mExecutor.runUpdate(sql.toString()) > 0;
     }

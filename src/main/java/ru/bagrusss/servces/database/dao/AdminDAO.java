@@ -57,14 +57,16 @@ public class AdminDAO {
 
     @SuppressWarnings("UnusedReturnValue")
     public boolean createAdmin(@NotNull String email, boolean isActivated) throws SQLException {
-        if (new UserDAO(mExecutor).getUser(email, null) != null) {
-            StringBuilder sql = new StringBuilder("INSERT IGNORE INTO ")
-                    .append(TABLE_ADMINS).append("VALUES (\'")
-                    .append(email).append("\', ")
-                    .append(isActivated).append(')');
-            return mExecutor.runUpdate(sql.toString()) != 0;
+        try {
+            new UserDAO(mExecutor).getUser(email, null);
+        } catch (SQLException e) {
+            return false;
         }
-        return false;
+        StringBuilder sql = new StringBuilder("INSERT IGNORE INTO ")
+                .append(TABLE_ADMINS).append("VALUES (\'")
+                .append(email).append("\', ")
+                .append(isActivated).append(')');
+        return mExecutor.runUpdate(sql.toString()) != 0;
     }
 
     public AdminDataSet getAdminByEmail(@NotNull String email) throws SQLException {

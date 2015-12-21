@@ -25,7 +25,7 @@ public class ScoreDAO {
     }
 
     @SuppressWarnings({"CanBeFinal", "InnerClassMayBeStatic"})
-    public class Score {
+    public static class Score {
 
         private boolean isWin;
         private long score;
@@ -67,10 +67,13 @@ public class ScoreDAO {
 
     public ScoreDataSet getUserScore(long id) throws SQLException {
         ScoreDataSet empty = new ScoreDataSet(id, 0, 0, 0);
-        if (new UserDAO(mExecutor).getUserById(id) == null)
+        try {
+            new UserDAO(mExecutor).getUserById(id);
+        } catch (SQLException e) {
             return empty;
+        }
         StringBuilder sql = new StringBuilder()
-                .append("SELECT *, `games`-`wins` AS `lose` FROM")
+                .append("SELECT * FROM")
                 .append(TABLE_STATISTICS).append("WHERE ")
                 .append("`user_id`=").append(id);
         return mExecutor.runTypedQuery(sql.toString(), rs -> {
@@ -88,7 +91,7 @@ public class ScoreDAO {
             return false;
         StringBuilder sql = new StringBuilder("UPDATE").append(TABLE_STATISTICS)
                 .append("SET `wins`=`wins`+").append(isWin)
-                .append(", `games`=`games`+1, `score`+").append(score)
+                .append(", `games`=`games`+1, `score`=`score`+").append(score)
                 .append(" WHERE `user_id`=").append(id);
         return mExecutor.runUpdate(sql.toString()) > 0;
     }
@@ -113,8 +116,8 @@ public class ScoreDAO {
     public List<ScoreDataSet> getBest(long count) throws SQLException {
         if (count < 1)
             return null;
-        StringBuilder sql = new StringBuilder("SELECT *, `games`-`wins` lose FROM")
-                .append(TABLE_STATISTICS).append("ORDER BY `score` LIMIT")
+        StringBuilder sql = new StringBuilder("SELECT * FROM")
+                .append(TABLE_STATISTICS).append("ORDER BY `score` LIMIT ")
                 .append(count);
         return mExecutor.runTypedQuery(sql.toString(), rs -> {
             List<ScoreDataSet> res = new LinkedList<>();
