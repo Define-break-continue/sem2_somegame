@@ -21,7 +21,7 @@ public class TestsWithDB {
 
     @BeforeClass
     public static void createDB() throws SQLException {
-        executor = new Executor(Main.RESOURCES_PATH + "//.cfg//testdb.json");
+        executor = new Executor(Main.RESOURCES_PATH + "/.cfg/testdb.json");
         StringBuilder sql = new StringBuilder("CREATE TABLE IF NOT EXISTS")
                 .append(TABLE_ADMINS)
                 .append("(`email` VARCHAR(50) NOT NULL, ")
@@ -67,4 +67,5 @@ public class TestsWithDB {
         executor.runUpdate("DROP TABLE " + TABLE_ADMINS + ','
                 + TABLE_STATISTICS + ',' + TABLE_USER);
     }
+
 }

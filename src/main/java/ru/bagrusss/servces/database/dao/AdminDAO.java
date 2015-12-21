@@ -3,10 +3,12 @@ package ru.bagrusss.servces.database.dao;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import org.jetbrains.annotations.NotNull;
+import ru.bagrusss.helpers.Resourses;
 import ru.bagrusss.main.Main;
 import ru.bagrusss.servces.database.dataset.AdminDataSet;
 import ru.bagrusss.servces.database.executor.Executor;
 
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -17,8 +19,12 @@ import java.sql.SQLException;
 @SuppressWarnings({"StringBufferReplaceableByString", "unused"})
 public class AdminDAO {
 
-    private Executor mExecutor = new Executor(Main.RESOURCES_PATH + "//.cfg//db.json");
+    private final Executor mExecutor;
     public static final String TABLE_ADMINS = " `Admin` ";
+
+    public AdminDAO(@NotNull Executor ex) {
+        this.mExecutor = ex;
+    }
 
     public void createAdminTable() throws SQLException {
         StringBuilder sql = new StringBuilder("CREATE TABLE IF NOT EXISTS")
@@ -28,7 +34,13 @@ public class AdminDAO {
                 .append("PRIMARY KEY (`email`)) ")
                 .append("DEFAULT CHARACTER SET = utf8");
         mExecutor.runUpdate(sql.toString());
-        JsonArray admins = Main.getServerConfigs().get("admins").getAsJsonArray();
+        JsonArray admins = null;
+        try {
+            admins = Resourses.readResourses(Main.RESOURCES_PATH + "/.cfg/admins.json", JsonArray.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.exit(Main.CONFIGS_ERROR);
+        }
         for (JsonElement adm : admins) {
             createAdmin(adm.getAsJsonObject().get("email").getAsString(), true);
         }
@@ -45,7 +57,7 @@ public class AdminDAO {
 
     @SuppressWarnings("UnusedReturnValue")
     public boolean createAdmin(@NotNull String email, boolean isActivated) throws SQLException {
-        if (new UserDAO().getUser(email, null) != null) {
+        if (new UserDAO(mExecutor).getUser(email, null) != null) {
             StringBuilder sql = new StringBuilder("INSERT IGNORE INTO ")
                     .append(TABLE_ADMINS).append("VALUES (\'")
                     .append(email).append("\', ")

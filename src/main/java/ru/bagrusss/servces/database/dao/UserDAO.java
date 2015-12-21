@@ -4,10 +4,12 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import ru.bagrusss.helpers.Resourses;
 import ru.bagrusss.main.Main;
 import ru.bagrusss.servces.database.dataset.UserDataSet;
 import ru.bagrusss.servces.database.executor.Executor;
 
+import java.io.IOException;
 import java.sql.SQLException;
 
 /**
@@ -17,9 +19,13 @@ import java.sql.SQLException;
 @SuppressWarnings({"unused", "StringBufferReplaceableByString"})
 public class UserDAO {
 
-    private Executor mExecutor = new Executor(Main.RESOURCES_PATH + "//.cfg//db.json");
+    private final Executor mExecutor;
 
     public static final String TABLE_USER = " `User` ";
+
+    public UserDAO(@NotNull Executor mExecutor) {
+        this.mExecutor = mExecutor;
+    }
 
     public void createUserTable() throws SQLException {
         StringBuilder sql = new StringBuilder("CREATE TABLE IF NOT EXISTS")
@@ -34,7 +40,13 @@ public class UserDAO {
                 .append("UNIQUE KEY key_id(`id`)) ")
                 .append("DEFAULT CHARACTER SET = utf8");
         mExecutor.runUpdate(sql.toString());
-        JsonArray users = Main.getServerConfigs().get("admins").getAsJsonArray();
+        JsonArray users = null;
+        try {
+            users = Resourses.readResourses(Main.RESOURCES_PATH + "/.cfg/admins.json", JsonArray.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.exit(Main.CONFIGS_ERROR);
+        }
         for (JsonElement usr : users) {
             mExecutor.runUpdate(new StringBuilder("INSERT IGNORE INTO")
                     .append(TABLE_USER).append("(`email`, `password`) ")
@@ -93,5 +105,10 @@ public class UserDAO {
                 .append("\' WHERE `email`=").append(user.getEmail())
                 .append('\'');
         return mExecutor.runUpdate(sql.toString()) > 0;
+    }
+
+    @Deprecated
+    public void deleteAll() throws SQLException {
+        mExecutor.runUpdate("DELETE FROM " + TABLE_USER);
     }
 }

@@ -1,7 +1,7 @@
 package ru.bagrusss.servces.database.dao;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import ru.bagrusss.main.Main;
 import ru.bagrusss.servces.database.dataset.ScoreDataSet;
 import ru.bagrusss.servces.database.executor.Executor;
 
@@ -17,8 +17,12 @@ import java.util.List;
         "StringBufferReplaceableByString"})
 public class ScoreDAO {
 
-    private final Executor mExecutor = new Executor(Main.RESOURCES_PATH + "//.cfg//db.json");
+    private final Executor mExecutor;
     public static final String TABLE_STATISTICS = " `Score` ";
+
+    public ScoreDAO(@NotNull Executor mExecutor) {
+        this.mExecutor = mExecutor;
+    }
 
     @SuppressWarnings({"CanBeFinal", "InnerClassMayBeStatic"})
     public class Score {
@@ -63,7 +67,7 @@ public class ScoreDAO {
 
     public ScoreDataSet getUserScore(long id) throws SQLException {
         ScoreDataSet empty = new ScoreDataSet(id, 0, 0, 0);
-        if (new UserDAO().getUserById(id) == null)
+        if (new UserDAO(mExecutor).getUserById(id) == null)
             return empty;
         StringBuilder sql = new StringBuilder()
                 .append("SELECT *, `games`-`wins` AS `lose` FROM")

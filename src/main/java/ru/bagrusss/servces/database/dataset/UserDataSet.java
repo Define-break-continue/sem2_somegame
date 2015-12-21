@@ -62,4 +62,20 @@ public class UserDataSet {
         this.id = id;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        UserDataSet that = (UserDataSet) o;
+
+        if (!getEmail().equals(that.getEmail())) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return getEmail().hashCode();
+    }
 }

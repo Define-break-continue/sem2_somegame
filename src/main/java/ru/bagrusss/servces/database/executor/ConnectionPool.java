@@ -57,7 +57,7 @@ public final class ConnectionPool {
         mBasicDataSource.setMinIdle(conf.minConnections);
         mBasicDataSource.setMaxIdle(conf.maxConnections);
         mBasicDataSource.setMaxOpenPreparedStatements(conf.maxPreparedStatements);
-        LOG.log(Level.INFO, "Connection Pool initialized from settings");
+        LOG.log(Level.INFO, "Connection Pool initialized from " + path);
     }
 
     static ConnectionPool getInstance(String configpath) {

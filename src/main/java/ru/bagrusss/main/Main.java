@@ -22,8 +22,8 @@ public class Main {
 
     private static final String MESSAGE_RUN = "Run server at port ";
 
-    public static final String SERVER_CONFIGS = ".//resources//.cfg//server.json";
-    public static final String RESOURCES_PATH = Paths.get("").toAbsolutePath() + "//resources";
+    public static final String SERVER_CONFIGS = "./resources/.cfg/server.json";
+    public static final String RESOURCES_PATH = Paths.get("").toAbsolutePath() + "/resources";
 
     public static final byte CONFIGS_ERROR = 3;
     public static final byte INIT_ERROR = 5;
@@ -46,6 +46,7 @@ public class Main {
         public void setConfigs(JsonObject confs) {
             this.confs = confs;
         }
+
     }
 
     public static Context getAppContext() {
@@ -58,7 +59,7 @@ public class Main {
 
     private static void initContext() {
         try {
-            ServiceDB db = new ServiceDB();
+            ServiceDB db = new ServiceDB(Main.RESOURCES_PATH + "/.cfg/db.json");
             APP_CONTEXT.add(AccountService.class, db);
             APP_CONTEXT.add(ResultsGame.class, db);
         } catch (Exception e) {
