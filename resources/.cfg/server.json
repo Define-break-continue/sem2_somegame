@@ -4,5 +4,11 @@
   "rooms": 2,
   "gamers": 5,
   "units": 5,
-  "game_time": 150
+  "gametime": 150,
+  "admins": [
+    {
+      "email": "bagrusss@gmail.com",
+      "passhash": "*C9D46B2D5519BD0FD0A98CD0255FD9261A4E15C9"
+    }
+  ]
 }

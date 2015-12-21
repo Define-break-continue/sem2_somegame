@@ -4,66 +4,66 @@ define([
     Backbone
 ){
 
+
+
     var PlayerModel = Backbone.Model.extend({
         registrationURL: '/signup/',
         loginURL: '/signin/',
         defaults: {
-            tp: 0,
-            email: '',
-            password: '',
-            score: 0,
-            gamesPlayed: 0,
-            gamesWon: 0,
-            gamesLost: 0,
-            isSuccess: false,
-            isAdmin: false
+                tp: 0,
+                email: '',
+                password: '',
+                score: 0,
+                gamesPlayed: 0,
+                gamesWon: 0,
+                gamesLost: 0,
+                isAdmin: false,
+                isSuccess: 99,
+                isLogged: false,
         },
 
         registration: function( data ) {
-            $.ajax( {
-                type: 'POST',
-                url: this.registrationURL,
-                dataType: 'json',
-                data: JSON.stringify(data),//this.toJSON(),
-                error: this.ajaxError,
-                success: this.ajaxSuccess
-            });
+//            console.log(data.toString());
+            var self = this;
+            if ( this.registrationCheck() ) {
+                $.ajax( {
+                    type: 'POST',
+                    url: this.registrationURL,
+                    dataType: 'json',
+                    data: JSON.stringify( data ),//this.toJSON(),
+                    error: function( answer ) { self.set( 'isSuccess', 99 ); },
+                    success: function( answer ) { self.set( 'isSuccess', answer.code ); },
+                } );
+            }
         },
 
-        login: function() {
-            $.ajax( {
-                type: 'POST',
-                url: this.loginURL,
-                dataType: 'json',
-                data: this.toJSON(),
-                error: this.ajaxError,
-                success: this.ajaxSuccess
-            });
+        login: function( data ) {
+            var self = this;
+            if ( this.loginCheck() ) {
+                $.ajax( {
+                    type: 'POST',
+                    url: this.loginURL,
+                    dataType: 'json',
+                    data: JSON.stringify( data ),
+                    error: function( answer ) { self.set( 'isSuccess', 99 ); },
+                    success: function( answer ) { self.set( 'isSuccess', answer.code ); },
+                } );
+            }
         },
 
         registrationCheck: function() {
-            if ( this.get('email').search('@') < 0 ) {
-                validationError = 'Validation Error!';
+            if ( this.get('email').search('@') < 1 ) {
+                return false;
             }
             if ( this.get('password').length < 1 ) {
-                validationError = 'Validation Error!';
+                return false;
             }
+            return true;
         },
 
         loginCheck: function() {
-            registrationCheck();
+            return this.registrationCheck();
         },
-
-        ajaxError: function() {
-        },
-
-        ajaxSuccess: function( code ) {
-            if ( code == 0 ) {
-                this.isSuccess = true;
-            } else {
-                this.isSuccess = false;
-            }
-        }
     });
 
     return PlayerModel;

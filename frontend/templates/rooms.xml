@@ -1,0 +1,15 @@
+<fest:template xmlns:fest="http://fest.mail.ru" context_name = "json">
+<fest:include src="backbutton.xml" />
+    <fieldset class="rooms">
+        <h1 class="rooms__header">
+            SELECT A ROOM
+        </h1>
+        <div class="rooms__error-message"></div>
+        <hr class="rooms__hr" />
+        <fest:for iterate="json.rooms" index="i">
+            <a href="#game">
+                <button class="rooms__element"><fest:value>json.rooms[i]</fest:value></button>
+            </a>
+        </fest:for>
+    </fieldset>
+</fest:template>

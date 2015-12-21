@@ -7,11 +7,23 @@
 		<a href="#scores">
 			<button class="main__element">HIGHSCORES</button>
 		</a>
-		<a href="#game">
+		<a href="#rooms">
 			<button class="main__element">PLAY!</button>
 		</a>
-		<a href="#login">
-			<button class="main__element">LOG IN</button>
-		</a>
+		<fest:choose>
+			<fest:when test="json.isLoggedIn">
+				<a href="#stats">
+					<button class="main__element">PROFILE</button>
+				</a>
+				<a href="#main">
+					<button class="main__element">LOG OUT</button>
+				</a>
+			</fest:when>
+			<fest:otherwise>
+				<a href="#login">
+					<button class="main__element">LOG IN</button>
+				</a>
+			</fest:otherwise>
+		</fest:choose>
 	</fieldset>
 </fest:template>

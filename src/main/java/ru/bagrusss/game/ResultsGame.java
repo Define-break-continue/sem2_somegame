@@ -15,4 +15,6 @@ public interface ResultsGame extends BaseInterface {
     boolean saveResults(List<ScoreDAO.Score> results);
 
     ScoreDataSet getInfo(long userId);
+
+    List<ScoreDataSet> getBestGamers(long count);
 }

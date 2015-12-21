@@ -9,8 +9,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.logging.Level;
 
-@SuppressWarnings("all")
+@SuppressWarnings({"TooBroadScope", "UnusedAssignment"})
 public class SignUp extends BaseServlet {
 
     public static final String URL = "/signup/";
@@ -21,7 +22,7 @@ public class SignUp extends BaseServlet {
         try {
             json = mGson.fromJson(req.getReader(), JsonObject.class);
         } catch (JsonSyntaxException e) {
-            e.printStackTrace();
+            log.log(Level.SEVERE, e.getClass().getName(), e);
             Errors.errorInvalidJson(resp);
             return;
         }
@@ -35,6 +36,7 @@ public class SignUp extends BaseServlet {
             pass2 = json.remove(PASSWORD2).getAsString();
             type = json.get(TYPE).getAsString();
         } catch (NullPointerException e) {
+            log.log(Level.SEVERE, e.getClass().getName(), e);
             Errors.errorAPI(resp, Errors.CODE_INVALID_REQUEST, Errors.MESSAGE_INVALID_REQUEST);
             return;
         }
@@ -46,6 +48,7 @@ public class SignUp extends BaseServlet {
         long id = mAccountService.registerUser(email, user);
         user.setId(id);
         if (id != 0) {
+            log.log(Level.INFO, "Registered user: id " + id + " email " + user.getEmail());
             json.addProperty(ID, id);
             Errors.correct(resp, json);
         } else Errors.errorAPI(resp, Errors.CODE_USER_ALREADY_EXISTS, Errors.MESSAGE_USER_ALREADY_EXISTS);

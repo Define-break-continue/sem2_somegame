@@ -25,19 +25,24 @@ public final class ServiceDB implements AccountService, ResultsGame {
     private UserDAO mUserDAO;
     private AdminDAO mAdminDAO;
     private ScoreDAO mScoreDAO;
-
+    private final String className = getClass().getName();
     private final Map<String, UserDataSet> mSessions = new HashMap<>();
 
-
-    private final Logger dbLogger = Logger.getLogger(getClass().getCanonicalName());
+    public static final byte DB_CONFIGS_ERROR = 4;
+    private final Logger log = Logger.getLogger(getClass().getCanonicalName());
 
     public ServiceDB() {
         try {
             mUserDAO = new UserDAO();
+            mUserDAO.createUserTable();
             mAdminDAO = new AdminDAO();
+            mAdminDAO.createAdminTable();
             mScoreDAO = new ScoreDAO();
+            mScoreDAO.createScoreTable();
+            log.log(Level.INFO, className + " successfully initialized!");
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.log(Level.SEVERE, className, e);
+            System.exit(DB_CONFIGS_ERROR);
         }
     }
 
@@ -55,9 +60,9 @@ public final class ServiceDB implements AccountService, ResultsGame {
         try {
             return mAdminDAO.isAdmin(email);
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.log(Level.SEVERE, className, e);
+            return false;
         }
-        return false;
     }
 
     @Override
@@ -65,7 +70,7 @@ public final class ServiceDB implements AccountService, ResultsGame {
         try {
             return mUserDAO.insertUser(user);
         } catch (SQLException e) {
-            dbLogger.log(Level.SEVERE, e.getMessage());
+            log.log(Level.SEVERE, e.getMessage());
         }
         return 0;
     }
@@ -86,7 +91,7 @@ public final class ServiceDB implements AccountService, ResultsGame {
         try {
             return mUserDAO.getUser(email, null);
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.log(Level.SEVERE, className, e);
             return null;
         }
     }
@@ -97,7 +102,7 @@ public final class ServiceDB implements AccountService, ResultsGame {
         try {
             return mUserDAO.getUser(email, password);
         } catch (SQLException e) {
-            dbLogger.log(Level.SEVERE, e.getMessage());
+            log.log(Level.SEVERE, e.getMessage());
             return null;
         }
     }
@@ -118,7 +123,7 @@ public final class ServiceDB implements AccountService, ResultsGame {
         try {
             return mUserDAO.getUserCount();
         } catch (SQLException e) {
-            dbLogger.log(Level.SEVERE, e.getMessage());
+            log.log(Level.SEVERE, className, e);
         }
         return 0;
     }
@@ -129,18 +134,28 @@ public final class ServiceDB implements AccountService, ResultsGame {
         try {
             return mScoreDAO.saveResults(results);
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.log(Level.SEVERE, className, e);
             return false;
         }
     }
 
-    @Nullable
     @Override
     public ScoreDataSet getInfo(long userId) {
         try {
             return mScoreDAO.getUserScore(userId);
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.log(Level.SEVERE, className, e);
+            return new ScoreDataSet(userId, 0, 0, 0);
+        }
+    }
+
+    @Nullable
+    @Override
+    public List<ScoreDataSet> getBestGamers(long count) {
+        try {
+            return mScoreDAO.getBest(count);
+        } catch (SQLException e) {
+            log.log(Level.SEVERE, className, e);
             return null;
         }
     }

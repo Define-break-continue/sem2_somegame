@@ -12,7 +12,9 @@ import java.util.logging.Logger;
 /**
  * Created by vladislav
  */
-@SuppressWarnings("all")
+
+
+@SuppressWarnings("ConstantNamingConvention")
 public class BaseServlet extends HttpServlet {
 
     protected static final String PASSWORD1 = "password1";
@@ -22,10 +24,13 @@ public class BaseServlet extends HttpServlet {
     protected static final String TYPE = "tp";
     protected static final String ID = "id";
 
+    public static final String JSON_TYPE = "text/html; charset=utf-8";
+
     protected final Gson mGson = Resourses.GSON;
-    protected Logger mLogger = Logger.getLogger(this.getClass().getCanonicalName());
+    protected final Logger log = Logger.getLogger(getClass().getCanonicalName());
     protected final Context mContext = Main.getAppContext();
     protected final AccountService mAccountService = (AccountService) mContext.get(AccountService.class);
 
     public static final String DEFAULT_ENCODING = "UTF-8";
+
 }

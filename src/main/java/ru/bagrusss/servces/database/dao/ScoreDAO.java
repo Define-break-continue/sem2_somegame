@@ -5,23 +5,28 @@ import ru.bagrusss.servces.database.dataset.ScoreDataSet;
 import ru.bagrusss.servces.database.executor.Executor;
 
 import java.sql.SQLException;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
  * Created by vladislav
  */
-@SuppressWarnings("all")
+
+@SuppressWarnings({"InstanceVariableNamingConvention",
+        "StringBufferReplaceableByString"})
 public class ScoreDAO {
 
-    private Executor mExecutor = new Executor();
+    private final Executor mExecutor = new Executor();
     public static final String TABLE_STATISTICS = " `Score` ";
 
+    @SuppressWarnings({"CanBeFinal", "InnerClassMayBeStatic"})
     public class Score {
 
         private boolean isWin;
         private long score;
         private long id;
 
+        @SuppressWarnings("unused")
         public Score(long id, boolean isWin, long score) {
             this.isWin = isWin;
             this.score = score;
@@ -42,29 +47,35 @@ public class ScoreDAO {
         }
     }
 
-    public ScoreDAO() throws SQLException {
+    public void createScoreTable() throws SQLException {
         StringBuilder sql = new StringBuilder("CREATE TABLE IF NOT EXISTS")
                 .append(TABLE_STATISTICS)
                 .append("(`user_id` INT, ")
                 .append("`games` INT UNSIGNED DEFAULT 0, ")
                 .append("`wins` INT UNSIGNED DEFAULT 0, ")
                 .append("`score` INT UNSIGNED DEFAULT 0, ")
-                .append("PRIMARY KEY (`user_id`)) ")
+                .append("PRIMARY KEY (`user_id`), ")
+                .append("INDEX idx_score (`score`)) ")
                 .append("DEFAULT CHARACTER SET = utf8");
         mExecutor.runUpdate(sql.toString());
     }
 
-    @Nullable
     public ScoreDataSet getUserScore(long id) throws SQLException {
+        ScoreDataSet empty = new ScoreDataSet(id, 0, 0, 0);
         if (new UserDAO().getUserById(id) == null)
-            return null;
+            return empty;
         StringBuilder sql = new StringBuilder()
                 .append("SELECT *, `games`-`wins` AS `lose` FROM")
                 .append(TABLE_STATISTICS).append("WHERE ")
                 .append("`user_id`=").append(id);
-        return mExecutor.runTypedQuery(sql.toString(),
-                rs -> rs.next() ? new ScoreDataSet(id, rs.getLong(2),
-                        rs.getLong(3), rs.getLong(4)) : createUserScore(id));
+        return mExecutor.runTypedQuery(sql.toString(), rs -> {
+            if (rs.next())
+                return new ScoreDataSet(id, rs.getLong(2), rs.getLong(3), rs.getLong(4));
+            else {
+                insertUserScore(id);
+                return empty;
+            }
+        });
     }
 
     public boolean updateUserScore(long id, boolean isWin, long score) throws SQLException {
@@ -77,13 +88,12 @@ public class ScoreDAO {
         return mExecutor.runUpdate(sql.toString()) > 0;
     }
 
-    @Nullable
-    private ScoreDataSet createUserScore(long id) throws SQLException {
+
+    private void insertUserScore(long id) throws SQLException {
         StringBuilder sql = new StringBuilder("INSERT IGNORE INTO")
                 .append(TABLE_STATISTICS).append("(`user_id`) ")
                 .append("VALUES (").append(id).append(')');
-        return mExecutor.runUpdate(sql.toString(),
-                rs -> rs.next() ? new ScoreDataSet(rs.getLong(1), 0, 0, 0) : null);
+        mExecutor.runUpdate(sql.toString());
     }
 
     public boolean saveResults(List<Score> scores) throws SQLException {
@@ -92,6 +102,23 @@ public class ScoreDAO {
                 return false;
         }
         return true;
+    }
+
+    @Nullable
+    public List<ScoreDataSet> getBest(long count) throws SQLException {
+        if (count < 1)
+            return null;
+        StringBuilder sql = new StringBuilder("SELECT *, `games`-`wins` lose FROM")
+                .append(TABLE_STATISTICS).append("ORDER BY `score` LIMIT")
+                .append(count);
+        return mExecutor.runTypedQuery(sql.toString(), rs -> {
+            List<ScoreDataSet> res = new LinkedList<>();
+            while (rs.next()) {
+                res.add(new ScoreDataSet(rs.getLong(1), rs.getLong(2),
+                        rs.getLong(3), rs.getLong(4)));
+            }
+            return res;
+        });
     }
 
 }

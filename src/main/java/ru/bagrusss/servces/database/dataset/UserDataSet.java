@@ -9,6 +9,15 @@ public class UserDataSet {
 
     private String password;
     private String email;
+
+    public String getFirstname() {
+        return firstname;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
     private String firstname;
     private String lastname;
     private long id;

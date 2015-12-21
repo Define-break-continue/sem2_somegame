@@ -19,7 +19,7 @@ public class Admin extends BaseServlet {
 
     @Override
     public void doGet(@NotNull HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.setContentType("text/html; charset=utf-8");
+        resp.setContentType(JSON_TYPE);
         resp.setStatus(HttpServletResponse.SC_OK);
         String timeString = req.getParameter("shutdown");
         if (timeString != null) {

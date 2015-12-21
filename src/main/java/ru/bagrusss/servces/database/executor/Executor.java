@@ -8,12 +8,13 @@ import java.util.List;
 /**
  * Created by vladislav
  */
+
 @SuppressWarnings("unused")
 public class Executor {
 
     private final ConnectionPool mConnectionPool = ConnectionPool.getInstance();
 
-    @Nullable
+
     public <T> T runTypedQuery(String sql, TResultHandler<T> tHandler) throws SQLException {
         try (Connection connection = mConnectionPool.getConnection();
              Statement statement = connection.createStatement();
@@ -29,17 +30,15 @@ public class Executor {
         }
     }
 
-    @Nullable
+
     public <T> T runUpdate(String sql, TResultHandler<T> handler) throws SQLException {
         try (Connection connection = mConnectionPool.getConnection();
              Statement statement = connection.createStatement()) {
             statement.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
             try (ResultSet resultSet = statement.getGeneratedKeys()) {
-                if (handler != null)
-                    return handler.handle(resultSet);
+                return handler.handle(resultSet);
             }
         }
-        return null;
     }
 
     @Nullable

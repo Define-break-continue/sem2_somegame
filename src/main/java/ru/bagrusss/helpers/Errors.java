@@ -10,20 +10,21 @@ import java.io.IOException;
 /**
  * Created by vladislav
  */
+
 @SuppressWarnings("unused")
 public class Errors {
-    public static final byte CODE_OK = 0; // - OK.
-    public static final byte CODE_CANT_START_GAME = 1; //- невозможно запустить игру.
-    public static final byte CODE_LOW_RULLES = 3;//    - не достаточно прав.
+    public static final byte CODE_OK = 0;
+    public static final byte CODE_CANT_START_GAME = 1;
+    public static final byte CODE_LOW_RULLES = 3;
     public static final byte CODE_USER_NOT_EXISTS = 4;
-    public static final byte CODE_USER_ALREADY_EXISTS = 5;// - пользователь уже существует.
-    public static final byte CODE_INVALID_REQUEST = 6;// - некорректные параметры.
-    public static final byte CODE_INVALID_JSON = 7; //- невалидный JSON.
-    public static final byte CODE_PASSWORDS_ERROR = 8; //- пароли не совпадают.
-    public static final byte CODE_ROOM_PLACE = 11;// - место в комнате закончилось.
-    public static final byte CODE_ROOM_NOT_EXISTS = 12; //- комнаты не существует.
-    public static final byte CODE_ROOM_NOT_CREATED = 13; //- невозможно создать комнату.
-    public static final byte CODE_ROOM_MORE_ONE = 14; //- невозможно находиться более чем в одной комнате
+    public static final byte CODE_USER_ALREADY_EXISTS = 5;
+    public static final byte CODE_INVALID_REQUEST = 6;
+    public static final byte CODE_INVALID_JSON = 7;
+    public static final byte CODE_PASSWORDS_ERROR = 8;
+    public static final byte CODE_ROOM_PLACE = 11;
+    public static final byte CODE_ROOM_NOT_EXISTS = 12;
+    public static final byte CODE_ROOM_NOT_CREATED = 13;
+    public static final byte CODE_ROOM_MORE_ONE = 14;
 
     public static final String MESSAGE_CANT_START_GAME = "Невозможно запустить игру";
     public static final String MESSAGE_LOW_RULLES = "Не достаточно прав";
@@ -38,12 +39,14 @@ public class Errors {
     public static final String MESSAGE_ROOM_MORE_ONE = "Невозможно находиться более чем в одной комнате";
 
     private static final String RESPONSE = "response";
+    private static final String CODE = "code";
+
 
     public static void correct(HttpServletResponse rsp, JsonObject resp) throws IOException {
         rsp.setStatus(HttpServletResponse.SC_OK);
-        rsp.setContentType("application/json; charset=utf-8");
+        rsp.setContentType(BaseServlet.JSON_TYPE);
         JsonObject response = new JsonObject();
-        response.addProperty("code", CODE_OK);
+        response.addProperty(CODE, CODE_OK);
         response.add(RESPONSE, resp);
         rsp.getWriter().write(response.toString());
     }
@@ -64,10 +67,10 @@ public class Errors {
 
     public static void errorAPI(HttpServletResponse rsp, byte code, String msg) throws IOException {
         rsp.setCharacterEncoding(BaseServlet.DEFAULT_ENCODING);
-        rsp.setContentType("application/json; charset=utf-8");
+        rsp.setContentType(BaseServlet.JSON_TYPE);
         rsp.setStatus(HttpServletResponse.SC_OK);
         JsonObject response = new JsonObject();
-        response.addProperty("code", code);
+        response.addProperty(CODE, code);
         response.addProperty(RESPONSE, msg);
         rsp.getWriter().write(response.toString());
     }

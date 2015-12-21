@@ -27,6 +27,8 @@ public final class ConnectionPool {
     public static final String DB_CONFIGS = Main.RESOURCES_PATH + "//.cfg//db.json";
     private final Logger dbLogger = Logger.getLogger(getClass().getCanonicalName());
 
+    public static final byte DB_CONFIGS_ERROR = 4;
+
     @SuppressWarnings("ALL")
     private class ConfigsDB {
         private String pref;
@@ -49,17 +51,18 @@ public final class ConnectionPool {
             conf = Resourses.readResourses(DB_CONFIGS, ConfigsDB.class);
         } catch (IOException e) {
             dbLogger.log(Level.SEVERE, e.getMessage());
-            System.exit(Main.DB_CONFIGS_ERROR);
+            System.exit(DB_CONFIGS_ERROR);
         }
         mBasicDataSource = new BasicDataSource();
         mBasicDataSource.setDriverClassName(conf.driver);
         mBasicDataSource.setUsername(conf.user);
         mBasicDataSource.setPassword(conf.password);
-        mBasicDataSource.setUrl(buildURL(conf));
+        mBasicDataSource.setUrl(this.buildURL(conf));
 
         mBasicDataSource.setMinIdle(conf.minConnections);
         mBasicDataSource.setMaxIdle(conf.maxConnections);
         mBasicDataSource.setMaxOpenPreparedStatements(conf.maxPreparedStatements);
+        dbLogger.log(Level.INFO, "Connection Pool initialized from settings");
     }
 
     static ConnectionPool getInstance() {
