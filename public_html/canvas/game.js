@@ -5,7 +5,7 @@
  *
  *
  * -- Public functions:
- * gamescene()
+ * scene()
  * addPacman( player, column, row, angle )
  * remPacman( pacman )
  * pacmanMove( pacman, direction[, eaten ] )
@@ -23,6 +23,8 @@ var FieldDrawSettings = {
 	lineWidth : 1,
 	lineColor : 'black',
 	showGrid : false,
+	canvasHeight: (window.innerHeight - 10),
+	canvasWidth: (window.innerHeight - 10),
 }
 
 var PacmanDrawSettings = {
@@ -42,9 +44,10 @@ var PacmanModelSettings = {
 function BlockType( imgClass, height, width ) {
 	try {
 		this.img = document.getElementsByClassName( imgClass )[0];
+		if( ! this.img ) throw { name: 'Block type not initialised', message: 'No such class: "'+imgClass+'"' };
 	}
 	catch(e) {
-		console.log('Cannot find image class '+imgClass+': '+e.name);
+		console.log('Cannot find image class '+imgClass+': '+e.name+' : '+e.message);
 		return;
 	}
 	if( height )
@@ -57,14 +60,16 @@ function BlockType( imgClass, height, width ) {
 		this.width = FieldDrawSettings.columnWidth;
 }
 
-function gamescene( forecanvas, backcanvas ) {
+function scene( forecanvas, backcanvas ) {
 	/*
 	 * starts drawing
 	 */
 	canvasF = forecanvas;
 	contextF = canvasF.getContext('2d');
-	canvasF.width =  window.innerWidth - 10;
-	canvasF.height = window.innerHeight - 10;
+	canvasF.width =  FieldDrawSettings.canvasWidth;
+	canvasF.height = FieldDrawSettings.canvasHeight;
+	canvasB.width =  FieldDrawSettings.canvasWidth;
+	canvasB.height = FieldDrawSettings.canvasHeight;
 	canvasB = backcanvas;
 	contextB = canvasB.getContext('2d');
 	blockTypes = {
