@@ -1,6 +1,15 @@
 <fest:template xmlns:fest="http://fest.mail.ru" context_name="json">
-    <canvas class="game__canvas game__canvas-fore js-game-canvas-front">Canvas not supported!</canvas>
-    <canvas class="game__canvas game__canvas-back js-game-canvas-back"></canvas>
+    <div class="game__canvas">
+        <canvas class="game__canvas game__canvas-fore js-game-canvas-front">Canvas not supported!</canvas>
+    </div>
+    <div class="game__canvas">
+        <canvas class="game__canvas game__canvas-back js-game-canvas-back"></canvas>
+    </div>
+    <img class='img1' style="visibility:hidden" src='pic/img1.png'/>
+    <img class='img2' style="visibility:hidden" src='pic/img2.png'/>
+    <img class='img3' style="visibility:hidden" src='pic/img3.png'/>
+    <img class='img4' style="visibility:hidden" src='pic/img4.png'/>
+    <img class='img5' style="visibility:hidden" src='pic/img5.png'/>
     <div class="game__message">
         GET READY!!!
     </div>

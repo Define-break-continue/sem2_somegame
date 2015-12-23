@@ -9,17 +9,17 @@ define ( [
 ) {
     var View =  Backbone.View.extend({
         template: tmpl,
-        size: 25,
 
         initialize: function ( options ) {
             this.el = $( '#page' );
             this.setElement('#page');
         },
         render: function () {
+        alert( gameCanvas );
             this.$el.html( this.template(  ) );
             this.$foreCanvas = this.$( '.game__canvas-fore' )[0];
             this.$backCanvas = this.$( '.game__canvas-back' )[0];
-            gamescene( this.$foreCanvas, this.$backCanvas );
+            gameCanvas( this.$foreCanvas, this.$backCanvas );
             return this;
         },
         show: function () {

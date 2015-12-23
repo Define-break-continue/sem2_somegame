@@ -29,7 +29,7 @@ define ( [
             ballColors = ['red', $('.main__header').css('color')];
             if ( !this.ballsFlag ) {
             	$('#balls-control').html( this.ballsControl() );
-            	scene();
+            	balls();
             	this.ballsFlag = true;
             }
             return this;
