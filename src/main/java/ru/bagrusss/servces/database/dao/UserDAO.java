@@ -16,7 +16,7 @@ import java.sql.SQLException;
  * Created by vladislav
  */
 
-@SuppressWarnings({"unused", "StringBufferReplaceableByString"})
+@SuppressWarnings({"StringBufferReplaceableByString"})
 public class UserDAO {
 
     private final Executor mExecutor;
@@ -108,7 +108,6 @@ public class UserDAO {
         return mExecutor.runUpdate(sql.toString()) > 0;
     }
 
-    @Deprecated
     public void deleteAll() throws SQLException {
         mExecutor.runUpdate("DELETE FROM " + TABLE_USER);
     }

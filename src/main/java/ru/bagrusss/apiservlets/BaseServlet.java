@@ -24,7 +24,7 @@ public class BaseServlet extends HttpServlet {
     protected static final String TYPE = "tp";
     protected static final String ID = "id";
 
-    public static final String JSON_TYPE = "text/html; charset=utf-8";
+    public static final String JSON_TYPE = "application/json; charset=utf-8";
 
     protected final Gson mGson = Resourses.GSON;
     protected final Logger log = Logger.getLogger(getClass().getCanonicalName());

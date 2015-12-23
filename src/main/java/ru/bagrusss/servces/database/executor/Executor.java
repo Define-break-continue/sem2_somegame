@@ -1,16 +1,16 @@
 package ru.bagrusss.servces.database.executor;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-import java.sql.*;
-import java.util.List;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 /**
  * Created by vladislav
  */
 
-@SuppressWarnings("unused")
 public class Executor {
 
     public Executor(String confpath) {
@@ -34,7 +34,6 @@ public class Executor {
         }
     }
 
-
     public <T> T runUpdate(@NotNull String sql, @NotNull TResultHandler<T> handler) throws SQLException {
         try (Connection connection = mConnectionPool.getConnection();
              Statement statement = connection.createStatement()) {
@@ -44,6 +43,5 @@ public class Executor {
             }
         }
     }
-
 
 }

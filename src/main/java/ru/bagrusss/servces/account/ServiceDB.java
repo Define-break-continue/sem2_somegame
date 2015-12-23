@@ -134,7 +134,6 @@ public final class ServiceDB implements AccountService, ResultsGame {
         return 0;
     }
 
-
     @Override
     public boolean saveResults(List<ScoreDAO.Score> results) {
         try {

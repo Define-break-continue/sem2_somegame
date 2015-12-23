@@ -8,6 +8,8 @@ import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import ru.bagrusss.apiservlets.*;
+import ru.bagrusss.game.GameMechanics;
+import ru.bagrusss.game.GameMechanicsService;
 import ru.bagrusss.game.ResultsGame;
 import ru.bagrusss.helpers.Resourses;
 import ru.bagrusss.servces.account.AccountService;
@@ -62,6 +64,7 @@ public class Main {
             ServiceDB db = new ServiceDB(Main.RESOURCES_PATH + "/.cfg/db.json");
             APP_CONTEXT.add(AccountService.class, db);
             APP_CONTEXT.add(ResultsGame.class, db);
+            APP_CONTEXT.add(GameMechanicsService.class, new GameMechanics());
         } catch (Exception e) {
             LOG.log(Level.SEVERE, Main.class.getName(), e);
             System.exit(INIT_ERROR);
