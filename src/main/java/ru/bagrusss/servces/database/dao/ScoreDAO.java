@@ -116,14 +116,16 @@ public class ScoreDAO {
     public List<ScoreDataSet> getBest(long count) throws SQLException {
         if (count < 1)
             return null;
-        StringBuilder sql = new StringBuilder("SELECT * FROM")
-                .append(TABLE_STATISTICS).append("ORDER BY `score` LIMIT ")
+        StringBuilder sql = new StringBuilder("SELECT s.*, u.email FROM")
+                .append(TABLE_STATISTICS).append("s JOIN").append(UserDAO.TABLE_USER)
+                .append("u ").append("ON u.id=s.user_id ")
+                .append("ORDER BY `score` LIMIT ")
                 .append(count);
         return mExecutor.runTypedQuery(sql.toString(), rs -> {
             List<ScoreDataSet> res = new LinkedList<>();
             while (rs.next()) {
                 res.add(new ScoreDataSet(rs.getLong(1), rs.getLong(2),
-                        rs.getLong(3), rs.getLong(4)));
+                        rs.getLong(3), rs.getLong(4)).setEmail(rs.getString(5)));
             }
             return res;
         });

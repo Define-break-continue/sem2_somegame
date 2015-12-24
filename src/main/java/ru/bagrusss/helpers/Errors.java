@@ -1,5 +1,6 @@
 package ru.bagrusss.helpers;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import org.jetbrains.annotations.NotNull;
 import ru.bagrusss.apiservlets.BaseServlet;
@@ -54,11 +55,21 @@ public class Errors {
     }
 
     public static void correct(HttpServletResponse rsp, String msg) throws IOException {
-        rsp.setStatus(HttpServletResponse.SC_OK);
         rsp.setContentType(BaseServlet.JSON_TYPE);
+        rsp.setStatus(HttpServletResponse.SC_OK);
         JsonObject response = new JsonObject();
         response.addProperty(CODE, CODE_OK);
         response.addProperty(RESPONSE, msg);
+        rsp.getWriter().write(response.toString());
+    }
+
+    public static void correct(HttpServletResponse rsp, JsonArray ja) throws IOException {
+        rsp.setStatus(HttpServletResponse.SC_OK);
+        JsonObject response = new JsonObject();
+        rsp.setContentType(BaseServlet.JSON_TYPE);
+        response.addProperty(CODE, CODE_OK);
+        response.add(RESPONSE, ja);
+        rsp.getWriter().write(response.toString());
     }
 
     public static void error404(HttpServletResponse rsp, @NotNull String msg) throws IOException {

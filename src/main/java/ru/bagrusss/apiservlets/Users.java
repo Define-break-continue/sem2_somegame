@@ -7,7 +7,6 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @SuppressWarnings("unused")
@@ -21,15 +20,10 @@ public class Users extends BaseServlet {
     private final String urlPattern = "/([2][012])(/)?";
     private final Pattern pattern = Pattern.compile(urlPattern);
 
-    byte getMethod(String url) {
-        Matcher matcher = pattern.matcher(url);
-        return matcher.find() ? Byte.valueOf(matcher.group(1)) : 0;
-    }
-
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String path = req.getPathInfo();
-        byte method = getMethod(path);
+        byte method = getMethod(path, pattern);
         switch (method) {
             case METHOD_UPDATE:
 
@@ -50,7 +44,7 @@ public class Users extends BaseServlet {
                 }
                 break;
             default:
-                Errors.errorAPI(resp, Errors.CODE_INVALID_REQUEST, "Метод не существует!");
+                Errors.error404(resp, "Not found");
         }
     }
 }

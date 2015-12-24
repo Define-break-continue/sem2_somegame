@@ -17,8 +17,13 @@ public class GameField {
     private byte lastX;
     private byte lastY;
 
-    private static final int STATE_WALL = 1000;
-    private static final int STATE_EMPTY = 0;
+    private static final int FIRST_8_BIT = 0XFF;
+    private static final int SECOND_8_BIT = 0XFF << 8;
+    private static final int THIRD_8_BIT = 0XFF << 16;
+    private static final int FOURTH_8_BIT = 0XFF << 24;
+
+    private static final int WALL = 0X10000;
+    private static final int EMPTY = 0;
 
     @SuppressWarnings("InstanceVariableNamingConvention")
     public static class Point implements Cloneable {
@@ -73,21 +78,25 @@ public class GameField {
             }
             int pointState = getFieldValue(newPoint);
             switch (pointState) {
-                case STATE_EMPTY:
+                case EMPTY:
                     updateField(newPoint, getFieldValue(oldPoint));
                     updatePoint(oldPoint, newPoint);
-                    movement.append(direction).append(';');
+                    movement.append(direction);
                     break;
-                case STATE_WALL:
-                    movement.append(';');
+                case WALL:
+
                     break;
                 default:
                     if (pointState > 0) {
+                        int gmId = (pointState & SECOND_8_BIT) >> 8;
+                        movement.append(direction)
+                                .append('e').append(gmId).append(',')
+                                .append((byte) (pointState & FIRST_8_BIT));
                         updateField(newPoint, getFieldValue(oldPoint));
                         updatePoint(oldPoint, newPoint);
-
                     }
             }
+            movement.append(';');
         }
         listener.onPackmansMoved(gamerId, movement.toString());
     }

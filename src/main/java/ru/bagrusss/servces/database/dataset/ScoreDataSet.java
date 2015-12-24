@@ -12,11 +12,18 @@ public class ScoreDataSet {
 
     private long lose;
 
+    private String email;
+
     public ScoreDataSet(long id, long games, long wins, long score) {
         this.userId = id;
         this.games = games;
         this.wins = wins;
         this.lose = score;
+    }
+
+    public ScoreDataSet setEmail(String email) {
+        this.email = email;
+        return this;
     }
 
     public long getId() {
