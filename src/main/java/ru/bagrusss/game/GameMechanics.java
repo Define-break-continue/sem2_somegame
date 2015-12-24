@@ -1,7 +1,7 @@
 package ru.bagrusss.game;
 
 import ru.bagrusss.game.mechanics.field.GameField;
-import ru.bagrusss.game.mechanics.room.GameRoom;
+import ru.bagrusss.servces.database.dataset.UserDataSet;
 
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class GameMechanics implements GameMechanicsService {
 
-    ConcurrentHashMap<Byte, GameRoom> rooms = new ConcurrentHashMap<>();
+    private ConcurrentHashMap<Long, UserDataSet> mUsers;
 
     @Override
     public GameField getGameField(byte roomId) {
@@ -19,22 +19,38 @@ public class GameMechanics implements GameMechanicsService {
     }
 
     @Override
-    public boolean moveGamerUnits(byte roomId, byte gamerId, byte direction) {
+    public boolean joinToGame(UserDataSet user) {
         return false;
     }
 
     @Override
-    public long createRoom() {
+    public boolean leaveGame(long userId) {
+        return false;
+    }
+
+    @Override
+    public byte getPlacesCount() {
         return 0;
     }
 
     @Override
-    public GameRoom getRoom(byte id) {
-        return null;
+    public byte getStatus() {
+        return 0;
     }
 
     @Override
-    public int getCountRooms() {
-        return 0;
+    public void onPackmansMoved(byte gamerId, String coordinates) {
+
     }
+
+    @Override
+    public void onBonusGenerated(byte bonusId) {
+
+    }
+
+    @Override
+    public void onPointGenerated() {
+
+    }
+
 }

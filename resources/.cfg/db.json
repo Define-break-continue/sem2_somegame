@@ -1,0 +1,14 @@
+{
+  "pref": "jdbc",
+  "driver": "com.mysql.jdbc.Driver",
+  "datadase": "mysql",
+  "host": "localhost",
+  "port": "3306",
+  "base": "testdb",
+  "params": "characterEncoding=utf8",
+  "user": "test",
+  "password": "password",
+  "maxPreparedStatements": 100,
+  "minConnections": 4,
+  "maxConnections": 10
+}

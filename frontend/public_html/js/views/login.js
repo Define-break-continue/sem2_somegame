@@ -74,14 +74,50 @@ define ( [
         login: function( event ) {
             event.preventDefault();
 
+            var self = this;
+
             if ( !this.validate() ) return;
 
             this.model.set( { email: this.$email.val(), password: this.$password.val() } );
-            this.model.login( {
-                tp: 0,
-                email: this.$email.val(),
-                password: this.$password.val(),
+
+            this.model.fetch( {
+                data: JSON.stringify( {
+                    tp: 0,
+                    email: this.$email.val(),
+                    password: this.$password.val(),
+                } ),
+
+                success: function( model, data ) {
+                    self.model.clear();
+                    switch ( data.code ) {
+                        case 0:
+                            self.$errorMessage.html( '' );
+                            self.$errorMessage.html( 'Success!' );
+                            self.model.set( _.extend( data.response, { isLogged: true } ) );
+                            window.setTimeout( function() { Backbone.history.navigate( '#main', { trigger: true } ); }, 1000 );
+                            break;
+                        case 4:
+                        case 9:
+                            self.$errorMessage.html( 'Incorrect login or password!' );
+                            break;
+                        default:
+                            self.$errorMessage.html( 'Failed to send data to server. Sth is wrong =)' );
+                            break;
+                    }
+                },
+                error: function( model, data ) {
+                    self.model.clear();
+                    self.$errorMessage.html( 'Failed to send data to server. Sth is wrong =)' );
+                },
             } );
+
+
+
+
+
+
+
+            console.log('view');
             switch ( this.model.get( 'isSuccess' ) ) {
                 case 0:
                     this.$errorMessage.html( '' );

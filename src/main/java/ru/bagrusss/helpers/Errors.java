@@ -15,6 +15,7 @@ import java.io.IOException;
 public class Errors {
     public static final byte CODE_OK = 0;
     public static final byte CODE_CANT_START_GAME = 1;
+    public static final byte CODE_USER_AUTHORIZED = 2;
     public static final byte CODE_LOW_RULLES = 3;
     public static final byte CODE_USER_NOT_EXISTS = 4;
     public static final byte CODE_USER_ALREADY_EXISTS = 5;
@@ -27,6 +28,7 @@ public class Errors {
     public static final byte CODE_ROOM_MORE_ONE = 14;
 
     public static final String MESSAGE_CANT_START_GAME = "Невозможно запустить игру";
+    public static final String MESSAGE_USER_AUTHORIZED = "Пользователь уже авторизован";
     public static final String MESSAGE_LOW_RULLES = "Не достаточно прав";
     public static final String MESSAGE_USER_NOT_EXISTS = "Пользователь не найден";
     public static final String MESSAGE_USER_ALREADY_EXISTS = "Пользователь уже существует";
@@ -49,6 +51,14 @@ public class Errors {
         response.addProperty(CODE, CODE_OK);
         response.add(RESPONSE, resp);
         rsp.getWriter().write(response.toString());
+    }
+
+    public static void correct(HttpServletResponse rsp, String msg) throws IOException {
+        rsp.setStatus(HttpServletResponse.SC_OK);
+        rsp.setContentType(BaseServlet.JSON_TYPE);
+        JsonObject response = new JsonObject();
+        response.addProperty(CODE, CODE_OK);
+        response.addProperty(RESPONSE, msg);
     }
 
     public static void error404(HttpServletResponse rsp, @NotNull String msg) throws IOException {

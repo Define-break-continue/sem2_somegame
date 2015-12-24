@@ -1,23 +1,25 @@
 package ru.bagrusss.game;
 
+import ru.bagrusss.game.mechanics.field.EventsListener;
 import ru.bagrusss.game.mechanics.field.GameField;
-import ru.bagrusss.game.mechanics.room.GameRoom;
 import ru.bagrusss.helpers.BaseInterface;
+import ru.bagrusss.servces.database.dataset.UserDataSet;
 
 /**
- * Created by vladislav on 23.12.15.
+ * Created by vladislav
  */
+
 @SuppressWarnings("unused")
-public interface GameMechanicsService extends BaseInterface {
+public interface GameMechanicsService extends BaseInterface, EventsListener {
 
     GameField getGameField(byte roomId);
 
-    boolean moveGamerUnits(byte roomId, byte gamerId, byte direction);
+    boolean joinToGame(UserDataSet user);
 
-    long createRoom();
+    boolean leaveGame(long userId);
 
-    GameRoom getRoom(byte id);
+    byte getPlacesCount();
 
-    int getCountRooms();
+    byte getStatus();
 
 }

@@ -7,6 +7,8 @@ import ru.bagrusss.main.Main;
 import ru.bagrusss.servces.account.AccountService;
 
 import javax.servlet.http.HttpServlet;
+import java.math.BigInteger;
+import java.security.SecureRandom;
 import java.util.logging.Logger;
 
 /**
@@ -23,6 +25,7 @@ public class BaseServlet extends HttpServlet {
     protected static final String EMAIL = "email";
     protected static final String TYPE = "tp";
     protected static final String ID = "id";
+    protected static final String ACCESS_TOKEN = "access_token";
 
     public static final String JSON_TYPE = "application/json; charset=utf-8";
 
@@ -32,5 +35,14 @@ public class BaseServlet extends HttpServlet {
     protected final AccountService mAccountService = (AccountService) mContext.get(AccountService.class);
 
     public static final String DEFAULT_ENCODING = "UTF-8";
+
+    protected final SecureRandom secureRandom = new SecureRandom();
+
+    private static final int KEYLENGTH = 40;
+    private static final int KEYNUMB = 128;
+
+    protected String generateKey() {
+        return new BigInteger(KEYNUMB, secureRandom).toString(KEYLENGTH);
+    }
 
 }

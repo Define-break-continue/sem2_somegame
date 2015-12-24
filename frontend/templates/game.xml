@@ -2,7 +2,7 @@
 <fest:include src="backbutton.xml" />
 <fest:include src="gamefield.xml" context_name="json" />
     <div class="game__message">
-        <p class="game__message_start">Hey! Prepare for the mosh!</p>
+
     </div>
 
     <div class="game__score">
@@ -10,7 +10,6 @@
     </div>
 
     <div class="game__message">
-        <p class="game__message_victory">Congratulations! You've ate'em all!</p>
-        <p class="game__message_failure">Sorry, you are not a winner =(</p>
+
     </div>
 </fest:template>

@@ -2,15 +2,14 @@ package ru.bagrusss.game.mechanics.field;
 
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentLinkedDeque;
 
 @SuppressWarnings("unused")
 public class GameField {
 
-    private static final byte DIRECTION_UP = 0;
-    private static final byte DIRECTION_RIGHT = 1;
-    private static final byte DIRECTION_DOWN = 2;
-    private static final byte DIRECTION_LEFT = 3;
+    private static final byte DIRECTION_UP = 3;
+    private static final byte DIRECTION_RIGHT = 0;
+    private static final byte DIRECTION_DOWN = 1;
+    private static final byte DIRECTION_LEFT = 2;
 
     private byte length;
     private byte height;
@@ -18,28 +17,27 @@ public class GameField {
     private byte lastX;
     private byte lastY;
 
+    private static final int STATE_WALL = 1000;
+    private static final int STATE_EMPTY = 0;
 
-    private final int oldXmask = 0xff;
-    private final int oldYmask = 0xff00;
-    private final int newXmask = 0xff0000;
-    private final int newYmask = 0xff000000;
+    @SuppressWarnings("InstanceVariableNamingConvention")
+    public static class Point implements Cloneable {
+        int x;
+        int y;
+    }
 
-    private final int oldY = 0x8;
-    private final int newX = 0x16;
-    private final int newY = 0x24;
+    private int[][] field;
 
-    private ConcurrentHashMap<Byte, List<Short>> mGamerUnits;
+    private ConcurrentHashMap<Byte, List<Point>> mGamerUnits;
 
     private EventsListener listener;
-
-    private ConcurrentLinkedDeque<Object> mGamerMoves;
 
     public GameField(byte length, byte height) {
         this.length = length;
         this.height = height;
+        field = new int[height][length];
         lastX = (byte) (length - 1);
         lastY = (byte) (height - 1);
-        mGamerMoves = new ConcurrentLinkedDeque<>();
         mGamerUnits = new ConcurrentHashMap<>();
     }
 
@@ -49,30 +47,70 @@ public class GameField {
     }
 
     public void moveUnits(byte gamerId, byte direction) {
-        List<Short> units = mGamerUnits.get(gamerId);
-        short toNew = 0;
-        byte move = 0;
-        for (short cor : units)
+        List<Point> units = mGamerUnits.get(gamerId);
+        Point newPoint = new Point();
+        StringBuilder movement = new StringBuilder();
+        for (Point oldPoint : units) {
             switch (direction) {
                 case DIRECTION_UP:
-                    toNew = (short) (cor - (1 << oldY));
+                    newPoint.x = oldPoint.x;
+                    newPoint.y = oldPoint.y - 1;
                     break;
                 case DIRECTION_RIGHT:
-                    toNew = (short) (cor + 1);
+                    newPoint.x = oldPoint.x + 1;
+                    newPoint.y = oldPoint.y;
                     break;
                 case DIRECTION_LEFT:
-                    toNew = (short) (cor - 1);
+                    newPoint.x = oldPoint.x - 1;
+                    newPoint.y = oldPoint.y;
                     break;
                 case DIRECTION_DOWN:
-                    toNew = (short) (cor + (1 << oldY));
+                    newPoint.x = oldPoint.x;
+                    newPoint.y = oldPoint.y + 1;
                     break;
                 default:
                     return;
             }
+            int pointState = getFieldValue(newPoint);
+            switch (pointState) {
+                case STATE_EMPTY:
+                    updateField(newPoint, getFieldValue(oldPoint));
+                    updatePoint(oldPoint, newPoint);
+                    movement.append(direction).append(';');
+                    break;
+                case STATE_WALL:
+                    movement.append(';');
+                    break;
+                default:
+                    if (pointState > 0) {
+                        updateField(newPoint, getFieldValue(oldPoint));
+                        updatePoint(oldPoint, newPoint);
 
+                    }
+            }
+        }
+        listener.onPackmansMoved(gamerId, movement.toString());
     }
 
-    private void move(short old, short tonew) {
-
+    private void updateField(int x, int y, int val) {
+        field[y > lastY ? 0 : y][x > lastX ? 0 : x] = val;
     }
+
+    private void updateField(Point p, int val) {
+        updateField(p.x, p.y, val);
+    }
+
+    private int getFieldValue(int x, int y) {
+        return field[y][x];
+    }
+
+    private int getFieldValue(Point p) {
+        return getFieldValue(p.x, p.y);
+    }
+
+    private void updatePoint(Point oldP, Point newP) {
+        oldP.x = newP.x;
+        oldP.y = newP.y;
+    }
+
 }

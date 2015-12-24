@@ -77,33 +77,47 @@ define ( [
         register: function( event ) {
             event.preventDefault();
 
+            var self = this;
+
             if ( !this.validate() ) return;
 
-            this.model.set( { email: this.$email.val(), password: this.$password1.val() } )
-            this.model.registration( {
-                tp: 0,
-                email: this.$email.val(),
-                password1: this.$password1.val(),
-                password2: this.$password2.val()
-            } );
+            this.model.set( { email: this.$email.val(), password: this.$password1.val() } );
 
-            switch ( this.model.get( 'isSuccess' ) ) {
-                case 0:
-                    this.$errorMessage.html( '' );
-                    this.model.set( { 'isLogged': true } );
-                    Backbone.history.navigate( '#main', { trigger: true } );
-                    break;
-                case 5:
-                    this.$errorMessage.html( 'There is already a user with this e-mail. Please choose another one!' );
-                    break;
-                case 8:
-                    this.$errorMessage.html( 'The input passwords are different!' );
-                    break;
-                default:
-                    this.$errorMessage.html( 'Failed to send data to server. Sth is wrong =)' );
-                    break;
-            }
-            return false;
+            this.model.save( null, {
+                data: JSON.stringify( {
+                    tp: 0,
+                    email: this.$email.val(),
+                    password1: this.$password1.val(),
+                    password2: this.$password2.val(),
+                } ),
+
+                success: function( model, data ) {
+                    self.model.clear();
+                    switch ( data.code ) {
+                        case 0:
+                            self.$errorMessage.html( '' );
+                            self.model.set( { 'isLogged': true } );
+                            self.$errorMessage.html( 'Success!' );
+                            self.$( '.popup__input' ).css( { 'disabled': 'true' } );
+                            window.setTimeout( function() { Backbone.history.navigate( '#main', { trigger: true } ); }, 1000 );
+                            self.user.set(_.extend(data.response, { logged_in: true }));
+                            break;
+                        case 5:
+                            self.$errorMessage.html( 'There is already a user with this e-mail. Please choose another one!' );
+                            break;
+                        case 8:
+                            self.$errorMessage.html( 'The input passwords are different!' );
+                            break;
+                        default:
+                            self.$errorMessage.html( 'Failed to send data to server. Sth is wrong =)' );
+                            break;
+                    }
+                },
+                error: function( model, data ) {
+                    self.model.clear();
+                    self.$errorMessage.html( 'Failed to send data to server. Sth is wrong =)' );
+                },
+            } );
         }
     } );
     return new View;
