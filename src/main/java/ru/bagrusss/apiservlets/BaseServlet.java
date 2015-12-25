@@ -1,7 +1,7 @@
 package ru.bagrusss.apiservlets;
 
 import com.google.gson.Gson;
-import ru.bagrusss.game.ResultsGame;
+import ru.bagrusss.game.mechanics.ResultsGame;
 import ru.bagrusss.helpers.Resourses;
 import ru.bagrusss.main.Context;
 import ru.bagrusss.main.Main;

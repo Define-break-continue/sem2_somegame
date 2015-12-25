@@ -7,10 +7,11 @@ import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
+import org.jetbrains.annotations.Nullable;
 import ru.bagrusss.apiservlets.*;
-import ru.bagrusss.game.GameMechanics;
-import ru.bagrusss.game.GameMechanicsService;
-import ru.bagrusss.game.ResultsGame;
+import ru.bagrusss.game.mechanics.GameMechanics;
+import ru.bagrusss.game.mechanics.GameMechanicsService;
+import ru.bagrusss.game.mechanics.ResultsGame;
 import ru.bagrusss.helpers.Resourses;
 import ru.bagrusss.servces.account.AccountService;
 import ru.bagrusss.servces.account.ServiceDB;
@@ -29,6 +30,7 @@ public class Main {
 
     public static final byte CONFIGS_ERROR = 3;
     public static final byte INIT_ERROR = 5;
+    public static final byte JETTY_ERROR = 10;
 
     private static final Context APP_CONTEXT = new Context();
     private static final Logger LOG = Logger.getLogger(Main.class.getCanonicalName());
@@ -55,10 +57,6 @@ public class Main {
         return APP_CONTEXT;
     }
 
-    public static JsonObject getServerConfigs() {
-        return CONFIGS.getConfs();
-    }
-
     private static void initContext() {
         try {
             ServiceDB db = new ServiceDB(Main.RESOURCES_PATH + "/.cfg/db.json");
@@ -68,6 +66,16 @@ public class Main {
         } catch (Exception e) {
             LOG.log(Level.SEVERE, Main.class.getName(), e);
             System.exit(INIT_ERROR);
+        }
+    }
+
+    @Nullable
+    public static JsonObject getFieldConfigs(String path) {
+        try {
+            return Resourses.readResourses(path, JsonObject.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
         }
     }
 
@@ -101,11 +109,13 @@ public class Main {
             try {
                 server.start();
             } catch (Exception e) {
-                e.printStackTrace();
+                LOG.log(Level.SEVERE, Main.class.getName(), e);
+                System.exit(JETTY_ERROR);
             }
             server.join();
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            LOG.log(Level.SEVERE, Main.class.getName(), e);
+            System.exit(JETTY_ERROR);
         }
     }
 }

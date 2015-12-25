@@ -10,7 +10,11 @@ public class ScoreDataSet {
     private long games;
     private long wins;
 
-    private long lose;
+    private long score;
+
+    public String getEmail() {
+        return email;
+    }
 
     private String email;
 
@@ -18,7 +22,7 @@ public class ScoreDataSet {
         this.userId = id;
         this.games = games;
         this.wins = wins;
-        this.lose = score;
+        this.score = score;
     }
 
     public ScoreDataSet setEmail(String email) {
@@ -50,30 +54,27 @@ public class ScoreDataSet {
         this.wins = wins;
     }
 
-    public long getLose() {
-        return lose;
+    public long getScore() {
+        return score;
     }
 
-    public void setLose(long lose) {
-        this.lose = lose;
+    public void setScore(long score) {
+        this.score = score;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
-        ScoreDataSet that = (ScoreDataSet) o;
-
-        return games == that.games && wins == that.wins && lose == that.lose;
-
+        ScoreDataSet scoreDataSet = (ScoreDataSet) o;
+        return games == scoreDataSet.games && wins == scoreDataSet.wins && score == scoreDataSet.score;
     }
 
     @Override
     public int hashCode() {
         int result = (int) (games ^ (games >>> 32));
         result = 31 * result + (int) (wins ^ (wins >>> 32));
-        result = 31 * result + (int) (lose ^ (lose >>> 32));
+        result = 31 * result + (int) (score ^ (score >>> 32));
         return result;
     }
 }

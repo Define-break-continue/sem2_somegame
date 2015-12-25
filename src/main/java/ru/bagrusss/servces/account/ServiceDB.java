@@ -2,7 +2,7 @@ package ru.bagrusss.servces.account;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import ru.bagrusss.game.ResultsGame;
+import ru.bagrusss.game.mechanics.ResultsGame;
 import ru.bagrusss.servces.database.dao.AdminDAO;
 import ru.bagrusss.servces.database.dao.ScoreDAO;
 import ru.bagrusss.servces.database.dao.UserDAO;

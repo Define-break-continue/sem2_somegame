@@ -46,7 +46,7 @@ public class Info extends BaseServlet {
 
                 break;
             default:
-                Errors.errorAPI(resp, Errors.CODE_INVALID_REQUEST, Errors.MESSAGE_INVALID_REQUEST);
+                Errors.error404(resp, "Not found");
         }
     }
 }
