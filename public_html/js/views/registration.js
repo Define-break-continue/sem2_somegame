@@ -12,9 +12,10 @@ define ( [
         model: new userModel(),
 
         events: {
-            'change .js-password2' : 'passwordChecker',
+            'input .js-password2' : 'passwordChecker',
             'change .js-password1' : 'passwordChecker',
             'change .js-email' : 'emailChecker',
+            'input .js-email' : 'setLocalStorage',
             'submit .js-registration-form' : 'register'
         },
 
@@ -23,6 +24,7 @@ define ( [
             this.setElement('#page');
         },
         render: function () {
+            this.$storage = window.localStorage;
             this.$el.html( this.template() );
             this.$email = this.$('.js-email');
             this.$password1 = this.$('.js-password1');
@@ -32,6 +34,10 @@ define ( [
         },
         show: function () {
             this.render();
+            if ( this.$storage.getItem('email') ) {
+                this.$email.val( this.$storage.getItem( 'email' ) );
+                this.emailChecker();
+            }
             this.$el.show();
         },
         hide: function () {
@@ -68,6 +74,10 @@ define ( [
                 this.$email.css('color', 'green');
                 return true;
             }
+        },
+
+        setLocalStorage: function() {
+            this.$storage.setItem( 'email', this.$email.val() );
         },
 
         validate: function () {

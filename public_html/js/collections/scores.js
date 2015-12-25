@@ -1,7 +1,7 @@
 define([
     'backbone',
     'models/player',
-    'sync/scores'
+    'sync/scoresSync'
 ], function(
     Backbone,
     PlayerModel,
