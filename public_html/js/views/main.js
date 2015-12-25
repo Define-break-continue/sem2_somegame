@@ -23,6 +23,7 @@ define ( [
             this.setElement('#page');
             this.ballsFlag = false;
             this.isLoggedIn = this.model.get( 'isLogged' );
+            this.$storage = window.localStorage;
         },
         render: function () {
             this.$el.html( this.template( { isLoggedIn: this.isLoggedIn } ) );
@@ -35,6 +36,7 @@ define ( [
             return this;
         },
         show: function () {
+            this.$storage.removeItem( 'email' );
             this.render();
             this.$el.show();
         },

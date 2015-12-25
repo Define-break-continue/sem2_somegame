@@ -110,6 +110,7 @@ define ( [
                             self.$errorMessage.html( 'Success!' );
                             self.$( '.popup__input' ).css( { 'disabled': 'true' } );
                             window.setTimeout( function() { Backbone.history.navigate( '#main', { trigger: true } ); }, 1000 );
+                            this.$storage.removeItem( 'email' );
                             self.model.set(_.extend(data.response, { isLogged: true }));
                             break;
                         case 5:

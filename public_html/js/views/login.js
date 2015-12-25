@@ -14,6 +14,7 @@ define ( [
         events: {
             'change .js-password' : 'passwordChecker',
             'change .js-login' : 'emailChecker',
+            'input .js-login' : 'setLocalStorage',
             'submit .js-login-form' : 'login'
         },
 
@@ -22,6 +23,7 @@ define ( [
             this.setElement('#page');
         },
         render: function () {
+            this.$storage = window.localStorage;
             this.$el.html( this.template() );
             this.$email = this.$('.js-login');
             this.$password = this.$('.js-password');
@@ -32,6 +34,10 @@ define ( [
         },
         show: function () {
             this.render();
+            if ( this.$storage.getItem('email') ) {
+                this.$email.val( this.$storage.getItem( 'email' ) );
+                this.emailChecker();
+            }
             this.$el.show();
         },
         hide: function () {
@@ -67,6 +73,10 @@ define ( [
             }
         },
 
+        setLocalStorage: function() {
+            this.$storage.setItem( 'email', this.$email.val() );
+        },
+
         validate: function () {
             return this.emailChecker() && this.passwordChecker();
         },
@@ -95,6 +105,7 @@ define ( [
                             self.$errorMessage.html( 'Success!' );
                             self.model.set( _.extend( data.response, { isLogged: true } ) );
                             window.setTimeout( function() { Backbone.history.navigate( '#main', { trigger: true } ); }, 1000 );
+                            this.$storage.removeItem( 'email' );
                             break;
                         case 2:
                             self.$errorMessage.html( 'The user is already logged in!' );
