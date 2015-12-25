@@ -9,16 +9,27 @@ define ( [
 ) {
     var View =  Backbone.View.extend({
         template: tmpl,
-        scores: ScoresCollection,
+        scores: new ScoresCollection(),
 
         initialize: function ( options ) {
             this.el = $( '#page' );
             this.setElement('#page');
         },
         render: function () {
-        console.log(this.scores.toJSON())
-            this.$el.html( this.template( this.scores.toJSON() ) );
-                this.$('body').append( this.el );
+            var self = this;
+            var rend = null;
+            this.scores.fetch(
+                {},
+                success: function( model, data ) {
+                    rend = self.scores.toJSON();
+                },
+                error: function( model, data ) {
+                    rend = { 'login': 'HOLY', 'score': 'SHOT' };
+                }
+            );
+
+            this.$el.html( this.template( rend ) );
+            this.$('body').append( this.el );
 //                i++;
 //            } );
             return this;

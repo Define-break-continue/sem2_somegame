@@ -532,6 +532,9 @@ define( [ 'backbone' ],
 		}
 
 		function scene() { // <<<---------------------------MAIN----FUNC-----------------
+
+			clrscr = objClear;
+
 			canvas = document.getElementById('myCanvas');
 			context = canvas.getContext('2d');
 			canvas.width = window.innerWidth;

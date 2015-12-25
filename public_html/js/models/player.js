@@ -20,6 +20,7 @@ define([
                 isAdmin: false,
                 isSuccess: 99,
                 isLogged: false,
+                playerId: null,
         },
 
 //        registration: function( data ) {

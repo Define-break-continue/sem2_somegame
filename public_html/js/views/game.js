@@ -1,11 +1,13 @@
 define ( [
     'backbone',
     'tmpl/game',
-    '../../canvas/game'
+    '../../canvas/game',
+    '../../canvas/balls'
 ], function (
     Backbone,
     tmpl,
-    gameCanvas
+    gameCanvas,
+    balls
 ) {
     var View =  Backbone.View.extend({
         template: tmpl,
@@ -15,8 +17,9 @@ define ( [
             this.setElement('#page');
         },
         render: function () {
-        alert( gameCanvas );
             this.$el.html( this.template(  ) );
+            $( '#balls-control' ).html( '' );
+            clrscr();
             this.$foreCanvas = this.$( '.game__canvas-fore' )[0];
             this.$backCanvas = this.$( '.game__canvas-back' )[0];
             gameCanvas( this.$foreCanvas, this.$backCanvas );

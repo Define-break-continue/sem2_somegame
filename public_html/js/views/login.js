@@ -96,6 +96,9 @@ define ( [
                             self.model.set( _.extend( data.response, { isLogged: true } ) );
                             window.setTimeout( function() { Backbone.history.navigate( '#main', { trigger: true } ); }, 1000 );
                             break;
+                        case 2:
+                            self.$errorMessage.html( 'The user is already logged in!' );
+                            break;
                         case 4:
                         case 9:
                             self.$errorMessage.html( 'Incorrect login or password!' );
@@ -110,29 +113,6 @@ define ( [
                     self.$errorMessage.html( 'Failed to send data to server. Sth is wrong =)' );
                 },
             } );
-
-
-
-
-
-
-
-            console.log('view');
-            switch ( this.model.get( 'isSuccess' ) ) {
-                case 0:
-                    this.$errorMessage.html( '' );
-                    this.model.set( { 'isLogged': true } );
-                    Backbone.history.navigate( '#main', { trigger: true } );
-                    break;
-                case 4:
-                case 9:
-                    this.$errorMessage.html( 'Incorrect login or password!' );
-                    break;
-                default:
-                    this.$errorMessage.html( 'Failed to send data to server. Sth is wrong =)' );
-                    break;
-            }
-            return false;
         },
     });
     return new View;

@@ -100,7 +100,7 @@ define ( [
                             self.$errorMessage.html( 'Success!' );
                             self.$( '.popup__input' ).css( { 'disabled': 'true' } );
                             window.setTimeout( function() { Backbone.history.navigate( '#main', { trigger: true } ); }, 1000 );
-                            self.user.set(_.extend(data.response, { logged_in: true }));
+                            self.model.set(_.extend(data.response, { isLogged: true }));
                             break;
                         case 5:
                             self.$errorMessage.html( 'There is already a user with this e-mail. Please choose another one!' );

@@ -27,7 +27,7 @@ define( [
                 params.data = options.data;
                 params.type = 'POST';
             } else {
-                params.url = '/stats/';
+                params.url = '/info';
                 params.type = 'GET';
             }
         }
