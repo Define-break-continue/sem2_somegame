@@ -22,12 +22,12 @@ public class GameFieldTest {
 
         @Override
         public void onPointEated(byte gamerId) {
-            System.out.println(gamerId +" eat point ");
+            System.out.println(gamerId + " eat point ");
         }
 
         @Override
         public void onPackmanEated(byte whoEatId) {
-            System.out.println(whoEatId +" eat pcm ");
+            System.out.println(whoEatId + " eat pcm ");
         }
 
         @Override
@@ -46,11 +46,11 @@ public class GameFieldTest {
         }
     });
 
-
     @Test
     public void testPrepareFieldToGame() throws Exception {
         List<Byte> ids = new ArrayList<>(2);
         ids.add((byte) 1);
+        ids.add((byte) 2);
         gameField.prepareFieldToGame(ids);
         byte id = 1;
         gameField.moveUnits(id, GameField.DIRECTION_UP);

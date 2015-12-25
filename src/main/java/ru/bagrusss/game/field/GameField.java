@@ -47,9 +47,10 @@ public class GameField {
 
     private static final int PACMAN_MASK = 0x0100FFFF;
     private static final int PACMAN_BIT = 0x01000000;
-    private static final int WALL_MASK = 0x0200FFFF;
-    private static final int POINT_MASK = 0x0300FFFF;
-    private static final int BONUS_MASK = 0x0400FFFF;
+
+    private static final int WALL = 0x2000000;
+    private static final int POINT = 0x3000000;
+    private static final int BONUS_MASK = 0x400FFFF;
     private static final int EMPTY = 0;
 
     private short maxPoints;
@@ -135,7 +136,7 @@ public class GameField {
         while (count > 0) {
             Point p = Generator.genetatePoint(0, lastX, 0, lastY);
             if (getFieldValue(p) == 0) {
-                updateFieldValue(p, POINT_MASK);
+                updateFieldValue(p, POINT);
                 --count;
             }
         }
@@ -183,10 +184,10 @@ public class GameField {
                         updatePoint(oldPoint, newPoint);
                         movement.append(direction);
                         break;
-                    case WALL_MASK:
+                    case WALL:
                         System.out.println("wall");
                         break;
-                    case POINT_MASK:
+                    case POINT:
                         updateFieldValue(newPoint, getFieldValue(oldPoint));
                         updatePoint(oldPoint, newPoint);
                         movement.append(direction).append('e');
@@ -203,7 +204,7 @@ public class GameField {
                             byte pcmId = (byte) (newPointState & FIRST_8_BIT);
                             if (gmId != gamerId) {
                                 movement.append(direction)
-                                        .append('e').append(gamerId).append(',')
+                                        .append('e').append(gmId).append(',')
                                         .append((byte) (newPointState & FIRST_8_BIT));
                                 updateFieldValue(newPoint, getFieldValue(oldPoint));
                                 updatePoint(oldPoint, newPoint);
@@ -211,11 +212,11 @@ public class GameField {
                                 //нет на поле
                                 pcm.x = -1;
                                 pcm.y = -1;
-                            } else System.out.println("уперся в своего " + movement);
-                            listener.onPointEated(gamerId);
+                                listener.onPackmanEated(gamerId);
+                            } else System.out.println("Уперся в своего " + movement);
                         }
                 }
-            } else System.out.println("Отрицательные координаты");
+            }
             movement.append(';');
         }
         listener.onPackmansMoved(gamerId, movement.toString());
