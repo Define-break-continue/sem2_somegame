@@ -22,7 +22,7 @@ define ( [
             clrscr();
             this.$foreCanvas = this.$( '.game__canvas-fore' )[0];
             this.$backCanvas = this.$( '.game__canvas-back' )[0];
-            gameCanvas( this.$foreCanvas, this.$backCanvas );
+            gameCanvas( this.$foreCanvas, this.$backCanvas, 'ws://localhost:8080/game/' );
             return this;
         },
         show: function () {
