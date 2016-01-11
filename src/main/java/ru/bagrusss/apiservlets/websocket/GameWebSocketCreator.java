@@ -31,7 +31,8 @@ public class GameWebSocketCreator implements WebSocketCreator {
         String key = cookie.getValue();
         UserDataSet usr = mAcService.getSession(key);
         assert usr != null;
-        return mGMService.hasPlaces() ? new GameWebSocket(usr, mGMService.generateGameId()) : null;
+        return mGMService.hasPlaces() && mGMService.getStatus() != GameMechanicsService.STATUS_PLAY ?
+                new GameWebSocket(usr, mGMService.generateGameId()) : null;
     }
 
 }

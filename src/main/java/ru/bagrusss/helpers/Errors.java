@@ -15,7 +15,8 @@ import java.io.IOException;
 @SuppressWarnings("unused")
 public class Errors {
     public static final byte CODE_OK = 0;
-    public static final byte CODE_CANT_START_GAME = 1;
+    public static final byte CODE_CANT_START_GAME = 15;
+    public static final byte CODE_WAIT = 1;
     public static final byte CODE_USER_AUTHORIZED = 2;
     public static final byte CODE_LOW_RULLES = 3;
     public static final byte CODE_USER_NOT_EXISTS = 4;

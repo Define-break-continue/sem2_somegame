@@ -1,8 +1,5 @@
 package ru.bagrusss.apiservlets.websocket;
 
-import com.google.gson.JsonObject;
-import ru.bagrusss.helpers.Errors;
-
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -11,42 +8,44 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class ServiceWS implements WebSocketService {
 
-
     private final ConcurrentHashMap<String, GameWebSocket> mUsers = new ConcurrentHashMap<>();
 
     @Override
     public void notifyMovement(int gamerId, String move) {
-        JsonObject resp = new JsonObject();
-        resp.addProperty("gamerId", gamerId);
-        resp.addProperty("move", move);
         for (GameWebSocket game : mUsers.values()) {
-            game.move(resp.toString());
+            game.moved(gamerId, move);
         }
     }
 
     @Override
-    public void notifyStartGame() {
+    public void notifyStartGame(long timeMS) {
+        for (GameWebSocket game : mUsers.values()) {
+            game.gameStared(timeMS);
+        }
+    }
 
+
+    @Override
+    public void notifyGameOver(int wId) {
+        for (GameWebSocket game : mUsers.values()) {
+            game.gameOver(wId);
+        }
     }
 
     @Override
-    public void notifyGetField() {
-
+    public void addUser(String email, GameWebSocket socket) {
+        for (GameWebSocket game : mUsers.values()) {
+            game.userJoined(email);
+        }
+        mUsers.put(email, socket);
     }
 
     @Override
-    public void notifyFinishGame(int wId) {
-
-    }
-
-    @Override
-    public void addUser(String session, GameWebSocket user) {
-        mUsers.put(session, user);
-    }
-
-    @Override
-    public void removeUser(String session) {
-        mUsers.remove(session);
+    public void removeUser(String email) {
+        mUsers.remove(email);
+        for (GameWebSocket game : mUsers.values()) {
+            game.userLeave(email);
+        }
     }
 
 }

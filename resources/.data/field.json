@@ -3,5 +3,31 @@
   "height": 20,
   "points": 120,
   "gamerPackmans": 5,
-  "walls": 20
+  "walls": 20,
+  "colors": [
+    {
+      "bg_color": "#9ACD32",
+      "ln_color": "#0"
+    },
+    {
+      "bg_color": "#FF8247",
+      "ln_color": "#0"
+    },
+    {
+      "bg_color": "#FF6C02",
+      "ln_color": "#0"
+    },
+    {
+      "bg_color": "#8B67A5",
+      "ln_color": "#0"
+    },
+    {
+      "bg_color": "#F9D62E",
+      "ln_color": "#0"
+    },
+    {
+      "bg_color": "#FFD300",
+      "ln_color": "#0"
+    }
+  ]
 }

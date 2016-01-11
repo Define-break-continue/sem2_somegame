@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.regex.Pattern;
 
-@SuppressWarnings("unused")
+
 public class Users extends BaseServlet {
 
     public static final String URL = "/user/*";

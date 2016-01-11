@@ -6,16 +6,13 @@ import ru.bagrusss.helpers.BaseInterface;
  * Created by vladislav
  */
 
-@SuppressWarnings("unused")
 public interface WebSocketService extends BaseInterface {
 
     void notifyMovement(int gamerId, String move);
 
-    void notifyStartGame();
+    void notifyStartGame(long gameTimeMS);
 
-    void notifyGetField();
-
-    void notifyFinishGame(int winnerId);
+    void notifyGameOver(int winnerId);
 
     void addUser(String email, GameWebSocket user);
 
