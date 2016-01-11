@@ -82,6 +82,8 @@ Url для обмена данными во время игры. Методы:
      `methodId` - 34
 * [gameOver](https://github.com/Define-break-continue/sem2_somegame/tree/protocol/docs/info/gameover.md)
      `methodId` - 35
+* [generateGameId](https://github.com/Define-break-continue/sem2_somegame/tree/protocol/docs/info/generateGameId.md)
+     `methodId` - 36
 
 
 ##/rooms
