@@ -15,6 +15,9 @@ import java.io.IOException;
 public class SignUpServlet extends HttpServlet {
     public static final String URL = "/signup";
     private final AccountServiceFake accountServiceFake;
+    public static final String PARAM_PASSWORD = "password";
+    public static final String PARAM_NAME = "name";
+    public static final String PARAM_EMAIL = "email";
 
     public SignUpServlet(AccountServiceFake accountServiceFake) {
         this.accountServiceFake = accountServiceFake;
@@ -28,9 +31,9 @@ public class SignUpServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String name = req.getParameter("name");
-        String email = req.getParameter("email");
-        String password = req.getParameter("password");
+        String name = req.getParameter(PARAM_NAME);
+        String email = req.getParameter(PARAM_EMAIL);
+        String password = req.getParameter(PARAM_PASSWORD);
         String result;
         String message;
         JSONObject response = new JSONObject();
