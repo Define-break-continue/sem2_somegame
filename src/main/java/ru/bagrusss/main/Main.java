@@ -48,7 +48,7 @@ public class Main {
             APP_CONTEXT.add(AccountService.class, db);
             APP_CONTEXT.add(ResultsGame.class, db);
             ServiceGM gm = new ServiceGM();
-            gm.confugure(RESOURCES_PATH + RESOURCES_PATH + "/.data/field.json");
+            gm.confugure(RESOURCES_PATH  + "/.data/field.json");
             APP_CONTEXT.add(GameMechanicsService.class, gm);
             APP_CONTEXT.add(WebSocketService.class, new ServiceWS());
         } catch (IOException | InitException e) {
