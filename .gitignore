@@ -1,2 +1,5 @@
 .idea/
 target/
+server.jar
+server.iml
+frontend

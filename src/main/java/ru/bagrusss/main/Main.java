@@ -8,9 +8,9 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.jetbrains.annotations.NotNull;
 import ru.bagrusss.administration.AdminPageServlet;
-import ru.bagrusss.frontend.SignInServlet;
-import ru.bagrusss.frontend.SignUpServlet;
-import ru.bagrusss.frontend.UserPageServlet;
+import ru.bagrusss.front.SignInServlet;
+import ru.bagrusss.front.SignUpServlet;
+import ru.bagrusss.front.UserPageServlet;
 import ru.bagrusss.servces.account.AccountServiceFake;
 
 public class Main {
