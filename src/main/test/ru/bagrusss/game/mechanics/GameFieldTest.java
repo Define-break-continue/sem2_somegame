@@ -3,7 +3,6 @@ package ru.bagrusss.game.mechanics;
 import org.junit.Test;
 import ru.bagrusss.game.field.EventsListener;
 import ru.bagrusss.game.field.GameField;
-import ru.bagrusss.main.Main;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,51 +13,43 @@ import java.util.List;
 
 public class GameFieldTest {
 
-    private GameField gameField = new GameField(Main.RESOURCES_PATH + "/.data/field.json", new EventsListener() {
-        @Override
-        public void onPackmansMoved(byte gamerId, String coordinates) {
-            System.out.println(gamerId + "  " + coordinates);
-        }
+    public static final int MAX_POINTS = 20;
+    public static final int MAX_WALLS = 11;
+    private GameField gameField = new GameField(10, 10, new MyEventsListener());
 
-        @Override
-        public void onPointEated(byte gamerId) {
-            System.out.println(gamerId + " eat point ");
-        }
-
-        @Override
-        public void onPackmanEated(byte whoEatId) {
-            System.out.println(whoEatId + " eat pcm ");
-        }
-
-        @Override
-        public void onBonusGenerated(byte bonusId, GameField.Point point) {
-
-        }
-
-        @Override
-        public void onPointGenerated(GameField.Point coordinate) {
-
-        }
-
-        @Override
-        public void onPackmanGenerated(byte gamerId, GameField.Point coordinate) {
-
-        }
-    });
 
     @Test
-    public void testPrepareFieldToGame() throws Exception {
-        List<Byte> ids = new ArrayList<>(2);
-        ids.add((byte) 1);
-        ids.add((byte) 2);
+    public void testPrepareFieldMoveUnits() throws Exception {
+        List<Integer> ids = new ArrayList<>(2);
+        ids.add(1);
+        ids.add(2);
+        ids.add(3);
+        ids.add(4);
+        ids.add(5);
+        gameField.setMaxPoints(MAX_POINTS);
+        gameField.setMaxWalls(MAX_WALLS);
         gameField.prepareFieldToGame(ids);
         byte id = 1;
         gameField.moveUnits(id, GameField.DIRECTION_UP);
     }
 
-    @Test
-    public void testMoveUnits() throws Exception {
+    private static class MyEventsListener implements EventsListener {
+
+
+        @Override
+        public void onPackmansMoved(int gamerId, String coordinates) {
+
+        }
+
+        @Override
+        public void onPointEated(int gamerId) {
+
+        }
+
+        @Override
+        public void onPackmanEated(int whoId) {
+
+        }
 
     }
-
 }

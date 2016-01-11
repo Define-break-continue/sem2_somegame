@@ -17,4 +17,5 @@ public interface ResultsGame extends BaseInterface {
     ScoreDataSet getInfo(long userId);
 
     List<ScoreDataSet> getBestGamers(long count);
+
 }

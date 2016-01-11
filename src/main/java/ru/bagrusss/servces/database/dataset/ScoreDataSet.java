@@ -11,11 +11,6 @@ public class ScoreDataSet {
     private long wins;
 
     private long score;
-
-    public String getEmail() {
-        return email;
-    }
-
     private String email;
 
     public ScoreDataSet(long id, long games, long wins, long score) {
@@ -23,6 +18,10 @@ public class ScoreDataSet {
         this.games = games;
         this.wins = wins;
         this.score = score;
+    }
+
+    public String getEmail() {
+        return email;
     }
 
     public ScoreDataSet setEmail(String email) {
@@ -72,9 +71,6 @@ public class ScoreDataSet {
 
     @Override
     public int hashCode() {
-        int result = (int) (games ^ (games >>> 32));
-        result = 31 * result + (int) (wins ^ (wins >>> 32));
-        result = 31 * result + (int) (score ^ (score >>> 32));
-        return result;
+        return (int) (games ^ (score >>> 32) + userId * wins);
     }
 }

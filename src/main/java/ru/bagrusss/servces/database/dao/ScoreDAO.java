@@ -24,12 +24,23 @@ public class ScoreDAO {
         this.mExecutor = mExecutor;
     }
 
-    @SuppressWarnings({"CanBeFinal", "InnerClassMayBeStatic"})
     public static class Score {
 
         private boolean isWin;
         private long score;
         private long id;
+
+        public void setWin(boolean win) {
+            isWin = win;
+        }
+
+        public void setScore(long score) {
+            this.score = score;
+        }
+
+        public void setId(long id) {
+            this.id = id;
+        }
 
         @SuppressWarnings("unused")
         public Score(long id, boolean isWin, long score) {

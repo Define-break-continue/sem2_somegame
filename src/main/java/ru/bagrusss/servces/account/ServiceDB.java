@@ -15,7 +15,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Created by vladislav
@@ -30,7 +29,7 @@ public final class ServiceDB implements AccountService, ResultsGame {
     private final Map<String, UserDataSet> mSessions = new HashMap<>();
 
     public static final byte DB_CONFIGS_ERROR = 4;
-    private final Logger log = Logger.getLogger(getClass().getCanonicalName());
+
 
     public ServiceDB(String path) {
         try {
@@ -40,9 +39,9 @@ public final class ServiceDB implements AccountService, ResultsGame {
             mAdminDAO.createAdminTable();
             mScoreDAO = new ScoreDAO(new Executor(path));
             mScoreDAO.createScoreTable();
-            log.log(Level.INFO, className + " successfully initialized!");
+            LOG.log(Level.INFO, className + " successfully initialized!");
         } catch (SQLException e) {
-            log.log(Level.SEVERE, className, e);
+            LOG.log(Level.SEVERE, className, e);
             System.exit(DB_CONFIGS_ERROR);
         }
     }
@@ -66,7 +65,7 @@ public final class ServiceDB implements AccountService, ResultsGame {
         try {
             return mAdminDAO.isAdmin(email);
         } catch (SQLException e) {
-            log.log(Level.INFO, "user " + email + " is not admin");
+            LOG.log(Level.INFO, "user " + email + " is not admin");
             return false;
         }
     }
@@ -76,7 +75,7 @@ public final class ServiceDB implements AccountService, ResultsGame {
         try {
             return mUserDAO.insertUser(user);
         } catch (SQLException e) {
-            log.log(Level.SEVERE, e.getMessage());
+            LOG.log(Level.SEVERE, e.getMessage());
         }
         return 0;
     }
@@ -97,7 +96,7 @@ public final class ServiceDB implements AccountService, ResultsGame {
         try {
             return mUserDAO.getUser(email, null);
         } catch (SQLException e) {
-            log.log(Level.INFO, "user " + email + " not exists!");
+            LOG.log(Level.INFO, "user " + email + " not exists!");
             return null;
         }
     }
@@ -108,7 +107,7 @@ public final class ServiceDB implements AccountService, ResultsGame {
         try {
             return mUserDAO.getUser(email, password);
         } catch (SQLException e) {
-            log.log(Level.INFO, "user " + email + " not exists!");
+            LOG.log(Level.INFO, "user " + email + " not exists!");
             return null;
         }
     }
@@ -129,7 +128,7 @@ public final class ServiceDB implements AccountService, ResultsGame {
         try {
             return mUserDAO.getUserCount();
         } catch (SQLException e) {
-            log.log(Level.SEVERE, className, e);
+            LOG.log(Level.SEVERE, className, e);
         }
         return 0;
     }
@@ -139,7 +138,7 @@ public final class ServiceDB implements AccountService, ResultsGame {
         try {
             return mScoreDAO.saveResults(results);
         } catch (SQLException e) {
-            log.log(Level.SEVERE, className, e);
+            LOG.log(Level.SEVERE, className, e);
             return false;
         }
     }
@@ -149,7 +148,7 @@ public final class ServiceDB implements AccountService, ResultsGame {
         try {
             return mScoreDAO.getUserScore(userId);
         } catch (SQLException e) {
-            log.log(Level.SEVERE, className, e);
+            LOG.log(Level.SEVERE, className, e);
             return new ScoreDataSet(userId, 0, 0, 0);
         }
     }
@@ -160,7 +159,7 @@ public final class ServiceDB implements AccountService, ResultsGame {
         try {
             return mScoreDAO.getBest(count);
         } catch (SQLException e) {
-            log.log(Level.SEVERE, className, e);
+            LOG.log(Level.SEVERE, className, e);
             return null;
         }
     }

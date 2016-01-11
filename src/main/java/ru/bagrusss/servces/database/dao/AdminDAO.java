@@ -3,7 +3,7 @@ package ru.bagrusss.servces.database.dao;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import org.jetbrains.annotations.NotNull;
-import ru.bagrusss.helpers.Resourses;
+import ru.bagrusss.helpers.Resources;
 import ru.bagrusss.main.Main;
 import ru.bagrusss.servces.database.dataset.AdminDataSet;
 import ru.bagrusss.servces.database.executor.Executor;
@@ -36,7 +36,7 @@ public class AdminDAO {
         mExecutor.runUpdate(sql.toString());
         JsonArray admins = null;
         try {
-            admins = Resourses.readResourses(Main.RESOURCES_PATH + "/.cfg/admins.json", JsonArray.class);
+            admins = Resources.readResourses(Main.RESOURCES_PATH + "/.cfg/admins.json", JsonArray.class);
         } catch (IOException e) {
             e.printStackTrace();
             System.exit(Main.CONFIGS_ERROR);

@@ -1,7 +1,7 @@
 {
-  "length": 4,
-  "height": 4,
-  "points": 0,
+  "length": 20,
+  "height": 20,
+  "points": 120,
   "gamerPackmans": 5,
-  "walls":10
+  "walls": 20
 }

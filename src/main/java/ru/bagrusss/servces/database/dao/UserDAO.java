@@ -4,7 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import ru.bagrusss.helpers.Resourses;
+import ru.bagrusss.helpers.Resources;
 import ru.bagrusss.main.Main;
 import ru.bagrusss.servces.database.dataset.UserDataSet;
 import ru.bagrusss.servces.database.executor.Executor;
@@ -42,7 +42,7 @@ public class UserDAO {
         mExecutor.runUpdate(sql.toString());
         JsonArray users = null;
         try {
-            users = Resourses.readResourses(Main.RESOURCES_PATH + "/.cfg/admins.json", JsonArray.class);
+            users = Resources.readResourses(Main.RESOURCES_PATH + "/.cfg/admins.json", JsonArray.class);
         } catch (IOException e) {
             e.printStackTrace();
             System.exit(Main.CONFIGS_ERROR);

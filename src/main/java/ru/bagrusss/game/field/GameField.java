@@ -2,7 +2,7 @@ package ru.bagrusss.game.field;
 
 import com.google.gson.JsonObject;
 import org.jetbrains.annotations.NotNull;
-import ru.bagrusss.helpers.Resourses;
+import ru.bagrusss.helpers.Resources;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -24,7 +24,8 @@ import java.util.logging.Logger;
  * Точка - 3й бит 4го разряда - 1, остальные разряды пусты
  */
 
-@SuppressWarnings("UNUSED")
+
+@SuppressWarnings({"OverlyComplexMethod", "unused"})
 public class GameField {
 
     public static final byte DIRECTION_UP = 3;
@@ -32,93 +33,102 @@ public class GameField {
     public static final byte DIRECTION_DOWN = 1;
     public static final byte DIRECTION_LEFT = 2;
 
+    public static final int MAX_FIELD_SQUARE = 10000;
+
     private static final Logger LOG = Logger.getLogger(GameField.class.getName());
-
-    private byte length;
-    private byte height;
-
-    private byte lastX;
-    private byte lastY;
-
     private static final int FIRST_8_BIT = 0XFF;
     private static final int SECOND_8_BIT = FIRST_8_BIT << 8;
-
     private static final int TO_SECOND_8_BIT = 8;
-
     private static final int PACMAN_MASK = 0x0100FFFF;
     private static final int PACMAN_BIT = 0x01000000;
-
     private static final int WALL = 0x2000000;
     private static final int POINT = 0x3000000;
-    private static final int BONUS_MASK = 0x400FFFF;
+    private static final int BONUS = 0x4000000;
     private static final int EMPTY = 0;
+    private int mLength;
+    private int mHeight;
+    private byte lastX;
+    private byte lastY;
+    private int mMaxPoints;
 
-    private short maxPoints;
-    private byte pacmans;
-    private byte walls;
-
-
-    /**
-     * без геттеров и сеттеров проще
-     */
-    @SuppressWarnings("InstanceVariableNamingConvention")
-    public static class Point {
-        int x;
-        int y;
-
-        @Override
-        public String toString() {
-            return x + "," + y;
-        }
+    public int getMaxPacmansForGamer() {
+        return mMaxPacmansForGamer;
     }
 
+    public void setMaxPacmansForGamer(int mMaxPacmansForGamer) {
+        this.mMaxPacmansForGamer = mMaxPacmansForGamer;
+    }
+
+    private int mMaxPacmansForGamer;
+    private int mMaxWalls;
+    private byte mGamersCount;
     private int[][] field;
+    private ConcurrentHashMap<Integer, List<Point>> mGamerIdUnits;
+    private EventsListener mListener;
 
-    private ConcurrentHashMap<Byte, List<Point>> mGamerUnits;
-
-    private EventsListener listener;
-
-    public GameField(String configs, @NotNull EventsListener listener) {
-        JsonObject mConfigs = getFieldConfigs(configs);
-        try {
-            this.length = mConfigs.get("length").getAsByte();
-            this.height = mConfigs.get("height").getAsByte();
-            maxPoints = mConfigs.get("points").getAsShort();
-            pacmans = mConfigs.get("gamerPackmans").getAsByte();
-            walls = mConfigs.get("walls").getAsByte();
-        } catch (NullPointerException e) {
-            LOG.log(Level.SEVERE, "Incorrect configs in file " + configs);
-        }
-        field = new int[height][length];
+    public GameField(int length, int height, @NotNull EventsListener listener) {
+        int square = length * height;
+        assert square > 4 && square <= MAX_FIELD_SQUARE;
+        field = new int[height & FIRST_8_BIT][length & FIRST_8_BIT];
+        mHeight = height;
+        mLength = length;
         lastX = (byte) (length - 1);
         lastY = (byte) (height - 1);
-        mGamerUnits = new ConcurrentHashMap<>();
-        this.listener = listener;
+        mGamerIdUnits = new ConcurrentHashMap<>();
+        this.mListener = listener;
+    }
+
+    public int getHeight() {
+        return mHeight;
+    }
+
+    public void setHeight(int mHeight) {
+        this.mHeight = mHeight;
+    }
+
+    public int getLength() {
+        return mLength;
+    }
+
+    public void setLength(int mLength) {
+        this.mLength = mLength;
+    }
+
+    public int getMaxPoints() {
+        return mMaxPoints;
+    }
+
+    public void setMaxPoints(int mMaxPoints) {
+        this.mMaxPoints = mMaxPoints;
+    }
+
+    public int getMaxWalls() {
+        return mMaxWalls;
+    }
+
+    public void setMaxWalls(int mMaxWalls) {
+        this.mMaxWalls = mMaxWalls;
     }
 
     public JsonObject getFieldConfigs(String path) {
         try {
-            return Resourses.readResourses(path, JsonObject.class);
+            return Resources.readResourses(path, JsonObject.class);
         } catch (IOException e) {
             LOG.log(Level.SEVERE, this.getClass().getName(), e);
             return new JsonObject();
         }
     }
 
-    public void prepareFieldToGame(@NotNull List<Byte> gamerIds) {
-        generateWalls(walls);
-        generatePoints(maxPoints);
+    public void prepareFieldToGame(@NotNull List<Integer> gamerIds) {
+        generateObject(WALL, mMaxWalls);
+        generateObject(POINT, mMaxPoints);
         generatePackmans(gamerIds);
     }
 
-    private void generateWalls(short count) {
-
-    }
-
-    private void generatePackmans(@NotNull List<Byte> gamerIds) {
-        for (byte gmId : gamerIds) {
-            byte remaindGeneratePcms = (byte) (pacmans - 1);
-            List<Point> packmans = new ArrayList<>(pacmans);
+    private void generatePackmans(@NotNull List<Integer> gamerIds) {
+        for (int gmId : gamerIds) {
+            int remaindGeneratePcms = (mMaxPacmansForGamer - 1);
+            List<Point> packmans = new ArrayList<>(mMaxPacmansForGamer);
             while (remaindGeneratePcms >= 0) {
                 Point p = Generator.genetatePoint(0, lastX, 0, lastY);
                 int val = getFieldValue(p);
@@ -128,22 +138,23 @@ public class GameField {
                     --remaindGeneratePcms;
                 }
             }
-            mGamerUnits.put(gmId, packmans);
+            mGamerIdUnits.put(gmId, packmans);
         }
     }
 
-    private void generatePoints(short count) {
+    private void generateObject(int what, int count) {
+        LOG.log(Level.INFO, "generate " + count + " предметов " + (what == WALL ? "стен" : "точек"));
         while (count > 0) {
             Point p = Generator.genetatePoint(0, lastX, 0, lastY);
             if (getFieldValue(p) == 0) {
-                updateFieldValue(p, POINT);
+                updateFieldValue(p, what);
                 --count;
             }
         }
     }
 
-    public void moveUnits(byte gamerId, byte direction) {
-        List<Point> units = mGamerUnits.get(gamerId);
+    public void moveUnits(int gamerId, byte direction) {
+        List<Point> units = mGamerIdUnits.get(gamerId);
         Point newPoint = new Point();
         StringBuilder movement = new StringBuilder();
         for (Point oldPoint : units) {
@@ -187,11 +198,14 @@ public class GameField {
                     case WALL:
                         System.out.println("wall");
                         break;
+                    case BONUS:
+
+                        break;
                     case POINT:
                         updateFieldValue(newPoint, getFieldValue(oldPoint));
                         updatePoint(oldPoint, newPoint);
                         movement.append(direction).append('e');
-                        listener.onPointEated(gamerId);
+                        mListener.onPointEated(gamerId);
                         break;
                     default:
                         if ((newPointState & PACMAN_MASK) > 0) {
@@ -200,30 +214,29 @@ public class GameField {
                            - gamerId 8-15 биты
                            - id пакмена 0-7 биты
                         */
-                            byte gmId = (byte) ((newPointState & SECOND_8_BIT) >> 8);
-                            byte pcmId = (byte) (newPointState & FIRST_8_BIT);
+                            int gmId = (newPointState & SECOND_8_BIT) >> 8;
+                            int pcmId = newPointState & FIRST_8_BIT;
                             if (gmId != gamerId) {
                                 movement.append(direction)
                                         .append('e').append(gmId).append(',')
-                                        .append((byte) (newPointState & FIRST_8_BIT));
+                                        .append(newPointState & FIRST_8_BIT);
                                 updateFieldValue(newPoint, getFieldValue(oldPoint));
                                 updatePoint(oldPoint, newPoint);
-                                Point pcm = mGamerUnits.get(gmId).get(pcmId);
+                                Point eated = mGamerIdUnits.get(gmId).get(pcmId);
                                 //нет на поле
-                                pcm.x = -1;
-                                pcm.y = -1;
-                                listener.onPackmanEated(gamerId);
+                                eated.x = -1;
+                                eated.y = -1;
+                                mListener.onPackmanEated(gamerId);
                             } else System.out.println("Уперся в своего " + movement);
                         }
                 }
             }
             movement.append(';');
         }
-        listener.onPackmansMoved(gamerId, movement.toString());
+        mListener.onPackmansMoved(gamerId, movement.toString());
     }
 
     private void updateFieldValue(int x, int y, int val) {
-        ;
         field[y][x] = val;
     }
 
@@ -242,6 +255,20 @@ public class GameField {
     private void updatePoint(Point oldP, Point newP) {
         oldP.x = newP.x;
         oldP.y = newP.y;
+    }
+
+    /**
+     * без геттеров и сеттеров меньше кода
+     */
+    @SuppressWarnings("InstanceVariableNamingConvention")
+    public static class Point {
+        int x;
+        int y;
+
+        @Override
+        public String toString() {
+            return x + "," + y;
+        }
     }
 
 }

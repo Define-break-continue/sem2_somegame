@@ -3,7 +3,7 @@ package ru.bagrusss.helpers;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import org.jetbrains.annotations.NotNull;
-import ru.bagrusss.apiservlets.BaseServlet;
+import ru.bagrusss.apiservlets.http.BaseServlet;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;

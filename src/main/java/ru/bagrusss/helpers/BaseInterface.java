@@ -1,8 +1,10 @@
 package ru.bagrusss.helpers;
 
+import java.util.logging.Logger;
+
 /**
- * Created by vladislav on 15.12.15.
+ * Created by vladislav
  */
 public interface BaseInterface {
-
+    Logger LOG = Logger.getLogger(BaseInterface.class.getCanonicalName());
 }

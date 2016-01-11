@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <title>Game</title>
+    <script type="text/javascript">
+        var ws;
+        init = function () {
+            ws = new WebSocket("ws://localhost:8080/game/");
+
+            ws.onopen = function (event) {
+
+            }
+
+            ws.onmessage = function (event) {
+                var data = JSON.parse(event.data);
+                if (data.status == "start") {
+                    document.getElementById("wait").style.display = "none";
+                    document.getElementById("gameplay").style.display = "block";
+                    document.getElementById("enemyName").innerHTML = data.enemyName;
+                }
+
+                if (data.status == "finish") {
+                    document.getElementById("gameOver").style.display = "block";
+                    document.getElementById("gameplay").style.display = "none";
+
+                    if (data.win)
+                        document.getElementById("win").innerHTML = "winner!";
+                    else
+                        document.getElementById("win").innerHTML = "loser!";
+                }
+
+                if (data.status == "increment" && data.name == "${myName}") {
+                    document.getElementById("myScore").innerHTML = data.score;
+                }
+
+                if (data.status == "increment" && data.name == document.getElementById("enemyName").innerHTML) {
+                    document.getElementById("enemyScore").innerHTML = data.score;
+                }
+            }
+
+            ws.onclose = function (event) {
+
+            }
+
+        }
+
+        function sendMessage() {
+            var message = {};
+            message.methodId = "move";
+            var params = {};
+            params.gamerId = 5;
+            params.direction = "3";
+            message.params = params;
+            var data = JSON.stringify(message);
+            ws.send(data);
+        }
+
+    </script>
+</head>
+<body onload="init()">
+<div id="body">
+    <div id="hello">
+        <p>Hello</p>
+    </div>
+    <div id="gameplay">
+        <form name="gamePlay" action="">
+            <input type="button" name="submit" value="Press" onclick="sendMessage()"/>
+        </form>
+    </div>
+
+</div>
+</body>
+</html>

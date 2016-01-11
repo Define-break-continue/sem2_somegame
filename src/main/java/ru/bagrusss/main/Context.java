@@ -1,6 +1,7 @@
 package ru.bagrusss.main;
 
 import ru.bagrusss.helpers.BaseInterface;
+import ru.bagrusss.helpers.InitException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,9 +14,9 @@ public class Context {
 
     private final Map<Class<? extends BaseInterface>, Object> services = new HashMap<>();
 
-    public void add(Class<? extends BaseInterface> cl, Object implementor) throws Exception {
+    public void add(Class<? extends BaseInterface> cl, Object implementor) throws InitException {
         if (services.containsKey(cl)) {
-            throw new Exception("Service " + cl.getName() + " already exists!");
+            throw new InitException("Service " + cl.getName() + " already exists!");
         }
         services.put(cl, implementor);
     }

@@ -72,6 +72,4 @@ public final class AccountServiceFake implements AccountService {
     public long getCountRegisteredUsers() {
         return mUsers.size();
     }
-
-
 }

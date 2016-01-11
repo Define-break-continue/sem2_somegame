@@ -2,7 +2,7 @@ package ru.bagrusss.servces.database.executor;
 
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.jetbrains.annotations.NotNull;
-import ru.bagrusss.helpers.Resourses;
+import ru.bagrusss.helpers.Resources;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -42,7 +42,7 @@ public final class ConnectionPool {
     private ConnectionPool(String path) {
         ConfigsDB conf = null;
         try {
-            conf = Resourses.readResourses(path, ConfigsDB.class);
+            conf = Resources.readResourses(path, ConfigsDB.class);
         } catch (IOException e) {
             LOG.log(Level.SEVERE, e.getMessage());
             System.exit(DB_CONFIGS_ERROR);
