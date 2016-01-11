@@ -1,0 +1,19 @@
+<fest:template xmlns:fest="http://fest.mail.ru" context_name="json">
+    <fest:include src="backbutton.xml" />
+    <fieldset class="stats">
+        <h1 class="stats__header">
+            User Statistics
+        </h1>
+        <table class="stats__table">
+            <tr class="stats__table__first-tr">
+                <td class="stats__table__left-td stats__table__first">Parameter</td><td class="stats__table__right-td stats__table__first">Value</td>
+                <fest:each iterate="json" index="i" value="data">
+                    <tr class="stats__table__usual-tr">
+                        <td class="stats__table__left-td"><fest:value>i</fest:value>:</td>
+                        <td class="stats__table__right-td"><fest:value>data</fest:value></td>
+                    </tr>
+                </fest:each>
+            </tr>
+        </table>
+    </fieldset>
+</fest:template>
