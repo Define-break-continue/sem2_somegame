@@ -13,50 +13,56 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.RETURNS_DEEP_STUBS;
+import static org.mockito.Mockito.when;
 
 /**
  * Created by vladislav
  */
 public class SignInServletTest {
 
-    final AccountServiceFake accounts = mock(AccountServiceFake.class, RETURNS_DEEP_STUBS);
+    final AccountServiceFake accounts = AccountServiceFake.getInstance();
     final HttpServletRequest request = Mockito.mock(HttpServletRequest.class, RETURNS_DEEP_STUBS);
     final HttpServletResponse response = Mockito.mock(HttpServletResponse.class);
 
     @Test
     @TestOnly
     public void testDoGet() throws IOException, ServletException {
-        when(request.getParameter("logout")).thenReturn("111").thenReturn(null);
+        when(request.getParameter("logout")).thenReturn("111").thenReturn("something");
         when(request.getSession().getId()).thenReturn("sess");
         SignInServlet signInServlet = new SignInServlet(accounts);
-        try (final StringWriter writer = new StringWriter()) {
+        UserProfile usr = new UserProfile("some", "somepass", "some@mail.ru");
+        accounts.addUser("user", usr);
+        accounts.addSession("sess", usr);
+        try (StringWriter writer = new StringWriter()) {
             when(response.getWriter()).thenReturn(new PrintWriter(writer));
             signInServlet.doGet(request, response);
-            assertTrue(writer.toString().contains("status"));
-            verify(accounts, times(1)).removeSession("sess");
+            assertEquals(accounts.getCountActivatedUsers(), 0);
             signInServlet.doGet(request, response);
-            assertTrue(writer.toString().contains("Login"));
+            assertFalse(accounts.removeSession("something"));
         }
     }
 
     @Test
     @TestOnly
     public void testDoPost() throws IOException, ServletException {
-        when(request.getParameter("name")).thenReturn("bagrusss").thenReturn(null);
-        when(request.getParameter("password")).thenReturn("somepass").thenReturn(null);
+        when(request.getParameter("name")).thenReturn("bagrusss").thenReturn("bagrusss").thenReturn("www");
+        when(request.getParameter("password")).thenReturn("somepass").thenReturn("somepass").thenReturn("sss");
+        when(request.getSession().getId()).thenReturn("sess");
         SignInServlet signInServlet = new SignInServlet(accounts);
+        UserProfile user = new UserProfile("bagrusss", "somepass", "bagrusss@gmail.com");
+        UserProfile user2 = new UserProfile("bag", "some", "bagrusss@mail.ru");
+        accounts.addUser("bagrusss", user);
+        accounts.addUser("bag", user2);
         try (final StringWriter writer = new StringWriter()) {
             when(response.getWriter()).thenReturn(new PrintWriter(writer));
-            UserProfile user = new UserProfile("bagrusss", "somepass", "bagrusss@gmail.com");
-            when(accounts.getUser("bagrusss")).thenReturn(user);
-            when(accounts.getUser(null)).thenReturn(null);
             signInServlet.doPost(request, response);
-            assertTrue(writer.toString().contains("OK"));
-            verify(accounts, times(1)).doSaveUser(eq(request), eq(user));
+            assertEquals(accounts.getCountActivatedUsers(), 1);
             signInServlet.doPost(request, response);
-            assertTrue(writer.toString().contains("FAIL"));
+            assertEquals(accounts.getCountActivatedUsers(), 1);
+            signInServlet.doPost(request, response);
+            assertEquals(accounts.getCountActivatedUsers(), 1);
         }
     }
 

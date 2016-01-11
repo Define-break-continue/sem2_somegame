@@ -5,14 +5,10 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.util.LinkedList;
 import java.util.List;
 
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 /**
  * Created by vladislav
@@ -87,20 +83,6 @@ public class AccountServiceFakeTest {
         for (UserProfile usr : mUsers) {
             assertTrue(mAccountService.removeSession(usr.toString()));
         }
-    }
-
-    @TestOnly
-    @Test
-    public void testDoSaveUser() throws Exception {
-        HttpSession mockSession = mock(HttpSession.class);
-        when(mockSession.getId()).thenReturn("somesession");
-
-        HttpServletRequest mock = mock(HttpServletRequest.class);
-        when(mock.getSession()).thenReturn(mockSession);
-        mAccountService.doSaveUser(mock, mUsers.get(0));
-        assertEquals(1, mAccountService.getCountActivatedUsers());
-        mAccountService.doSaveUser(mock, mUsers.get(0));
-        assertEquals(mAccountService.getCountActivatedUsers(), 1);
     }
 
     @TestOnly

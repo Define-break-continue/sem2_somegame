@@ -56,7 +56,7 @@ public class SignInServlet extends HttpServlet {
         String res;
         if (user != null) {
             if (user.getUserPassword().equals(password)){
-                accountServiceFake.doSaveUser(req, user);
+                accountServiceFake.addSession(req.getSession().getId(), user);
             }
             res = "OK";
         } else res = "FAIL";

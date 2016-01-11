@@ -13,8 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class SignUpServlet extends HttpServlet {
-    private final AccountServiceFake accountServiceFake;
     public static final String URL = "/signup";
+    private final AccountServiceFake accountServiceFake;
 
     public SignUpServlet(AccountServiceFake accountServiceFake) {
         this.accountServiceFake = accountServiceFake;
@@ -39,10 +39,10 @@ public class SignUpServlet extends HttpServlet {
             message = "Encorrect parameters";
         } else {
             UserProfile user = new UserProfile(name, password, email);
-            if (accountServiceFake.addUser(email, user)) {
+            if (accountServiceFake.addUser(name, user)) {
                 result = "OK";
                 message = "User successfuly created!";
-                accountServiceFake.doSaveUser(req, user);
+                accountServiceFake.addSession(req.getSession().getId(), user);
             } else {
                 result = "FAIL";
                 message = "User already exist! Try agan.";

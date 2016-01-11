@@ -1,5 +1,6 @@
 package ru.bagrusss.front;
 
+import org.junit.After;
 import org.junit.Test;
 import org.mockito.Mockito;
 import ru.bagrusss.servces.account.AccountServiceFake;
@@ -12,8 +13,10 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.RETURNS_DEEP_STUBS;
+import static org.mockito.Mockito.when;
 
 /**
  * Created by vladislav
@@ -21,7 +24,7 @@ import static org.mockito.Mockito.*;
 
 public class SignUpServletTest {
 
-    final AccountServiceFake accounts = mock(AccountServiceFake.class, RETURNS_DEEP_STUBS);
+    final AccountServiceFake accounts = AccountServiceFake.getInstance();
     final HttpServletRequest request = Mockito.mock(HttpServletRequest.class, RETURNS_DEEP_STUBS);
     final HttpServletResponse response = Mockito.mock(HttpServletResponse.class);
 
@@ -35,34 +38,39 @@ public class SignUpServletTest {
         }
     }
 
+    @After
+    public void clean() throws Exception {
+        accounts.removeAll();
+    }
+
+
     @Test
     public void testDoPost() throws IOException, ServletException {
+
+        when(request.getParameter("email"))
+                .thenReturn("bagrusss@gmail.com")
+                .thenReturn("bag@gmail.com")
+                .thenReturn(null);
+        when(request.getParameter("password"))
+                .thenReturn("somepass")
+                .thenReturn("some")
+                .thenReturn(null);
+        when(request.getParameter("name"))
+                .thenReturn("bagrusss")
+                .thenReturn("bag")
+                .thenReturn(null);
+        when(request.getSession().getId()).thenReturn("sess").thenReturn("sess");
+        UserProfile user = new UserProfile("bagrusss", "password", "bagrusss@gmail.com");
+        UserProfile user1 = new UserProfile("www", "somepa", "bagrus@mail.com");
+        accounts.addUser("bagrusss", user);
+        accounts.addUser("www", user1);
+        SignUpServlet signUpServlet = new SignUpServlet(accounts);
         try (final StringWriter writer = new StringWriter()) {
-            when(request.getParameter("email"))
-                    .thenReturn("bagrusss@gmail.com")
-                    .thenReturn("bagrusss@gmail.com")
-                    .thenReturn(null);
-            when(request.getParameter("password"))
-                    .thenReturn("somepass")
-                    .thenReturn("somepass")
-                    .thenReturn(null);
-            when(request.getParameter("name"))
-                    .thenReturn("bagrusss")
-                    .thenReturn("bagrusss")
-                    .thenReturn(null);
             when(response.getWriter()).thenReturn(new PrintWriter(writer));
-            UserProfile userProfile = new UserProfile("bagrusss", "somepass", "bagrusss@gmail.com");
-            SignUpServlet signUpServlet = new SignUpServlet(accounts);
-            when(accounts.addUser("bagrusss@gmail.com", userProfile)).thenReturn(true).thenReturn(false);
             signUpServlet.doPost(request, response);
-            verify(accounts, times(1)).doSaveUser(eq(request), eq(userProfile));
-            assertTrue(writer.toString().contains("OK"));
-            writer.flush();
+            assertEquals(accounts.getCountRegisteredUsers(), 2);
             signUpServlet.doPost(request, response);
-            assertTrue(writer.toString().contains("FAIL"));
-            writer.flush();
-            signUpServlet.doPost(request, response);
-            assertTrue(writer.toString().contains("FAIL"));
+            assertEquals(accounts.getCountRegisteredUsers(), 3);
         }
     }
 }

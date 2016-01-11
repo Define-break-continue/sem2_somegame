@@ -3,7 +3,6 @@ package ru.bagrusss.servces.account;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,6 +13,11 @@ public class AccountServiceFake implements AccountService {
     private final Map<String, UserProfile> mUsers;
     private final Map<String, UserProfile> mSessions;
 
+    private AccountServiceFake() {
+        mUsers = new HashMap<>();
+        mSessions = new HashMap<>();
+    }
+
     public static AccountServiceFake getInstance() {
         AccountServiceFake localInstance = mInstance;
         if (localInstance == null) {
@@ -23,11 +27,6 @@ public class AccountServiceFake implements AccountService {
             }
         }
         return localInstance;
-    }
-
-    private AccountServiceFake() {
-        mUsers = new HashMap<>();
-        mSessions = new HashMap<>();
     }
 
     @Override
@@ -75,8 +74,5 @@ public class AccountServiceFake implements AccountService {
         return mUsers.size();
     }
 
-    public void doSaveUser(@NotNull HttpServletRequest request, @NotNull UserProfile user) {
-        addSession(request.getSession().getId(), user);
-    }
 
 }
