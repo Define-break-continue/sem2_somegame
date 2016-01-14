@@ -1,7 +1,9 @@
 package ru.bagrusss.game.mechanics;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import org.apache.commons.lang3.StringUtils;
 import ru.bagrusss.apiservlets.websocket.WebSocketService;
 import ru.bagrusss.game.field.GameField;
 import ru.bagrusss.helpers.InitException;
@@ -15,6 +17,7 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.logging.Level;
 
 /**
  * Created by vladislav
@@ -31,8 +34,10 @@ public class ServiceGM implements GameMechanicsService {
     private static final String POINTS = "points";
     private static final String GAMER_PACKMANS = "gamerPackmans";
     private static final String WALLS = "walls";
-    private static final String COLOR = "color";
+    private static final String COLORS = "colors";
     private static final String UNITS = "packmans";
+    private static final String SEPARATOR = ";";
+
     private static final String INIT_MSG = "Incorrect colors count. See: \'resourses/.data/field.json\'";
 
     private final ConcurrentSkipListMap<Integer, UserDataSet> mGameIdUser;
@@ -69,7 +74,8 @@ public class ServiceGM implements GameMechanicsService {
             mMaxPoints = conf.get(POINTS).getAsShort();
             mMaxPacmans = conf.get(GAMER_PACKMANS).getAsByte();
             mMaxWalls = conf.get(WALLS).getAsByte();
-            JsonArray colors = conf.get(COLOR).getAsJsonArray();
+            JsonElement je = conf.get(COLORS);
+            JsonArray colors = je.getAsJsonArray();
             int size = colors.size();
             if (size < 5)
                 throw new InitException(INIT_MSG);
@@ -81,12 +87,13 @@ public class ServiceGM implements GameMechanicsService {
                 mUnitsColorsLine[i] = jo.get(LN_COLOR).getAsString();
             }
         } catch (NullPointerException e) {
+            LOG.log(Level.SEVERE, e.getMessage(), e);
             System.exit(Main.CONFIGS_ERROR);
         }
         mGameField = new GameField(mLength, mHeight, this);
         mGameField.setMaxWalls(mMaxWalls);
         mGameField.setMaxPoints(mMaxPoints);
-        mGameField.setMaxPacmansForGamer(mMaxPacmans);
+        mGameField.setMaxPacmansForGamers(mMaxPacmans);
     }
 
     @Override
@@ -99,12 +106,13 @@ public class ServiceGM implements GameMechanicsService {
             unit.addProperty(GAMER_ID, key);
             unit.addProperty(BG_COLOR, mUnitsColorsBody[key]);
             unit.addProperty(LN_COLOR, mUnitsColorsLine[key]);
-            unit.addProperty(UNITS, mGameField.getGamerUnits(key));
-            unit.addProperty(UNITS, mGameField.getGamerUnits(key));
+            unit.addProperty(UNITS, StringUtils.join(mGameField.getGamerUnits(key), SEPARATOR));
             units.add(unit);
         }
-        jsonObject.addProperty(POINTS, mGameField.getFieldObjects(GameField.POINT));
-        jsonObject.addProperty(WALLS, mGameField.getFieldObjects(GameField.WALL));
+        jsonObject.addProperty(POINTS,
+                StringUtils.join(mGameField.getFieldObjects(GameField.POINT), SEPARATOR));
+        jsonObject.addProperty(WALLS,
+                StringUtils.join(mGameField.getFieldObjects(GameField.WALL), SEPARATOR));
         return jsonObject;
     }
 

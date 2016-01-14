@@ -78,7 +78,7 @@ public class GameField implements BaseInterface {
         return mMaxPacmansForGamer;
     }
 
-    public void setMaxPacmansForGamer(int mMaxPacmansForGamer) {
+    public void setMaxPacmansForGamers(int mMaxPacmansForGamer) {
         this.mMaxPacmansForGamer = mMaxPacmansForGamer;
     }
 
@@ -123,12 +123,12 @@ public class GameField implements BaseInterface {
         }
     }
 
-    public String getFieldObjects(int what) {
-        return StringUtils.join(what == POINT ? mPoints : mWalls, ";");
+    public ConcurrentHashSet<Point> getFieldObjects(int what) {
+        return what == POINT ? mPoints : mWalls;
     }
 
-    public String getGamerUnits(int gmId) {
-        return StringUtils.join(mGamerIdUnits.get(gmId), ";");
+    public List<Point> getGamerUnits(int gmId) {
+        return mGamerIdUnits.get(gmId);
     }
 
     public void prepareFieldToGame(@NotNull List<Integer> gamerIds) {

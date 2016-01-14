@@ -6,6 +6,7 @@ package ru.bagrusss.helpers;
 public class InitException extends Exception {
     public static final String DEFAULT_MSG = "INCORRECT CONFIGS";
 
+    @SuppressWarnings("unused")
     public InitException() {
         super(DEFAULT_MSG);
     }

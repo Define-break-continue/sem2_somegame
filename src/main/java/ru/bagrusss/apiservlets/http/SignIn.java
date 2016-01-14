@@ -4,10 +4,10 @@ package ru.bagrusss.apiservlets.http;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import ru.bagrusss.helpers.Errors;
+import ru.bagrusss.main.Context;
 import ru.bagrusss.servces.database.dataset.UserDataSet;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -17,11 +17,14 @@ public class SignIn extends BaseServlet {
 
     public static final String URL = "/signin/";
 
+    public SignIn(Context context) {
+        super(context);
+    }
+
     @Override
     public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Cookie[] cookies = req.getCookies();
-        Cookie cookie = getCookieByName(cookies, ACCESS_TOKEN);
-        if (cookie != null && mAccountService.getSession(cookie.getValue()) != null) {
+        String sessionId = req.getSession().getId();
+        if (mAccountService.getSession(sessionId) != null) {
             Errors.errorAPI(resp, Errors.CODE_USER_AUTHORIZED, Errors.MESSAGE_USER_AUTHORIZED);
             return;
         }
@@ -43,10 +46,7 @@ public class SignIn extends BaseServlet {
         }
         UserDataSet user = mAccountService.getUser(email, password);
         if (user != null) {
-            String key = generateKey();
-            cookie = new Cookie(ACCESS_TOKEN, key);
-            mAccountService.addSession(key, user);
-            resp.addCookie(cookie);
+            mAccountService.addSession(sessionId, user);
             log.log(Level.INFO, "Authorize user: " + user.getEmail());
             params.addProperty(ID, user.getId());
             Errors.correct(resp, params);

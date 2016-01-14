@@ -54,7 +54,7 @@ public final class AccountServiceFake implements AccountService {
 
     @Override
     public UserDataSet getUser(@NotNull String email, @NotNull String password) {
-        return null;
+        return mUsers.get(email);
     }
 
     @Override

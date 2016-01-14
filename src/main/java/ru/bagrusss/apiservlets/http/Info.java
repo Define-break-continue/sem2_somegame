@@ -1,7 +1,9 @@
 package ru.bagrusss.apiservlets.http;
 
 import com.google.gson.JsonElement;
+import ru.bagrusss.game.mechanics.ResultsGame;
 import ru.bagrusss.helpers.Errors;
+import ru.bagrusss.main.Context;
 import ru.bagrusss.servces.database.dataset.ScoreDataSet;
 
 import javax.servlet.ServletException;
@@ -23,6 +25,13 @@ public class Info extends BaseServlet {
 
     private final String urlPattern = "/([1][01])(/)?";
     private final Pattern pattern = Pattern.compile(urlPattern);
+
+    private final ResultsGame mResultsGame;
+
+    public Info(Context context) {
+        super(context);
+        mResultsGame = (ResultsGame) context.get(ResultsGame.class);
+    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

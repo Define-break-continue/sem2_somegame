@@ -75,6 +75,7 @@ public class GameWebSocket {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        LOG.log(Level.INFO, "Game started. Game time " + GAME_TIME);
     }
 
     void gameOver(int winner) {

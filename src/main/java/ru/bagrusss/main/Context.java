@@ -24,4 +24,8 @@ public class Context {
     public Object get(Class<? extends BaseInterface> key) {
         return services.get(key);
     }
+
+    public void clear(){
+        services.clear();
+    }
 }

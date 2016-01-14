@@ -69,11 +69,11 @@ public class Main {
         LOG.log(Level.INFO, (MESSAGE_RUN + port + '\n'));
         Server server = new Server(port);
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
-        context.addServlet(new ServletHolder(new Admin()), Admin.URL);
-        context.addServlet(new ServletHolder(new SignIn()), SignIn.URL);
-        context.addServlet(new ServletHolder(new SignUp()), SignUp.URL);
-        context.addServlet(new ServletHolder(new Users()), Users.URL);
-        context.addServlet(new ServletHolder(new Info()), Info.URL);
+        context.addServlet(new ServletHolder(new Admin(APP_CONTEXT)), Admin.URL);
+        context.addServlet(new ServletHolder(new SignIn(APP_CONTEXT)), SignIn.URL);
+        context.addServlet(new ServletHolder(new SignUp(APP_CONTEXT)), SignUp.URL);
+        context.addServlet(new ServletHolder(new Users(APP_CONTEXT)), Users.URL);
+        context.addServlet(new ServletHolder(new Info(APP_CONTEXT)), Info.URL);
 
         context.addServlet(new ServletHolder(new GameServlet()), GameServlet.URL);
 

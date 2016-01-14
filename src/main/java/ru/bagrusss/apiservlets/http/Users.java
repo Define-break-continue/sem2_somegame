@@ -1,9 +1,9 @@
 package ru.bagrusss.apiservlets.http;
 
 import ru.bagrusss.helpers.Errors;
+import ru.bagrusss.main.Context;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -20,6 +20,10 @@ public class Users extends BaseServlet {
     private final String urlPattern = "/([2][012])(/)?";
     private final Pattern pattern = Pattern.compile(urlPattern);
 
+    public Users(Context context) {
+        super(context);
+    }
+
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String path = req.getPathInfo();
@@ -32,16 +36,11 @@ public class Users extends BaseServlet {
 
                 break;
             case METHOD_LOGOUT:
-                Cookie[] cookies = req.getCookies();
-                for (Cookie cookie : cookies) {
-                    if (cookie.getName().equals(ACCESS_TOKEN)) {
-                        if (mAccountService.removeSession(cookie.getValue())) {
-                            Errors.correct(resp, "OK");
-                            return;
-                        }
-                        Errors.errorAPI(resp, Errors.CODE_USER_NOT_EXISTS, Errors.MESSAGE_USER_NOT_EXISTS);
-                    }
+                if (mAccountService.removeSession(req.getSession().getId())) {
+                    Errors.correct(resp, "OK");
+                    return;
                 }
+                Errors.errorAPI(resp, Errors.CODE_USER_NOT_EXISTS, Errors.MESSAGE_USER_NOT_EXISTS);
                 break;
             default:
                 Errors.error404(resp, "Not found");

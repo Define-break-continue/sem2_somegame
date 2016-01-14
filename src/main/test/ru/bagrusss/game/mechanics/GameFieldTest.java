@@ -16,7 +16,7 @@ public class GameFieldTest {
 
     public static final int MAX_POINTS = 20;
     public static final int MAX_WALLS = 11;
-    static int pacs = 6;
+    static int pacs = 5;
 
     @Test
     public void testPrepareFieldMoveUnits() throws Exception {
@@ -25,7 +25,7 @@ public class GameFieldTest {
         GameField gameField = new GameField(10, 10, new MyEventsListener());
         gameField.setMaxPoints(MAX_POINTS);
         gameField.setMaxWalls(MAX_WALLS);
-        gameField.setMaxPacmansForGamer(pacs);
+        gameField.setMaxPacmansForGamers(pacs);
         gameField.prepareFieldToGame(ids);
         gameField.moveUnits(1, GameField.DIRECTION_UP);
     }

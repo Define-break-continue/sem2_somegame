@@ -19,7 +19,7 @@ public interface GameMechanicsService extends BaseInterface, EventsListener {
     int STATUS_WAIT = 0;
     int TIME_WAIT_GAME = 10000;
     int TIME_GAME = 150000;
-    int MIN_USERS_FOR_GAME = 3;
+    int MIN_USERS_FOR_GAME = 2;
 
     /**
      * Генерирует игровой id пользователя
