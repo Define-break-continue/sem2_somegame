@@ -38,12 +38,10 @@ public class Users extends BaseServlet {
             case METHOD_LOGOUT:
                 if (mAccountService.removeSession(req.getSession().getId())) {
                     Errors.correct(resp, "OK");
-                    return;
-                }
-                Errors.errorAPI(resp, Errors.CODE_USER_NOT_EXISTS, Errors.MESSAGE_USER_NOT_EXISTS);
-                break;
+                } else Errors.errorAPI(resp, Errors.CODE_USER_NOT_EXISTS, Errors.MESSAGE_USER_NOT_EXISTS);
+                return;
             default:
-                Errors.error404(resp, "Not found");
+                Errors.error404(resp, Errors.MESSAGE_NOT_FOUND);
         }
     }
 }

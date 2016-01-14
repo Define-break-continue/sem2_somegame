@@ -10,6 +10,7 @@ import ru.bagrusss.servces.database.dataset.UserDataSet;
  */
 
 
+@SuppressWarnings("unused")
 public interface GameMechanicsService extends BaseInterface, EventsListener {
 
     int PACKMAN_SCORE = 10;
@@ -25,10 +26,10 @@ public interface GameMechanicsService extends BaseInterface, EventsListener {
      * Генерирует игровой id пользователя
      *
      * @param user UserDataSet
-     * @return true если игра не начата и пользователь не присоединился
+     *
      */
 
-    boolean joinToGame(UserDataSet user, int gamerId);
+    void joinToGame(UserDataSet user, int gamerId);
 
     void leaveGame(int gamerId);
 

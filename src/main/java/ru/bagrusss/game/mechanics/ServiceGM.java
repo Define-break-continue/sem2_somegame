@@ -106,7 +106,7 @@ public class ServiceGM implements GameMechanicsService {
             unit.addProperty(GAMER_ID, key);
             unit.addProperty(BG_COLOR, mUnitsColorsBody[key]);
             unit.addProperty(LN_COLOR, mUnitsColorsLine[key]);
-            unit.addProperty(UNITS, StringUtils.join(mGameField.getGamerUnits(key), SEPARATOR));
+            unit.addProperty(UNITS, StringUtils.join(mGameField.getGamerUnitsById(key), SEPARATOR));
             units.add(unit);
         }
         jsonObject.addProperty(POINTS,
@@ -117,9 +117,9 @@ public class ServiceGM implements GameMechanicsService {
     }
 
     @Override
-    public boolean joinToGame(UserDataSet user, int gamerId) {
+    public void joinToGame(UserDataSet user, int gamerId) {
         if (mFreePlaces.get() - 1 == 0 && mStatus == STATUS_PLAY) {
-            return false;
+            return;
         }
         mGameIdUser.put(gamerId, user);
         ScoreDAO.Score score = new ScoreDAO.Score(gamerId, false, 0);
@@ -130,7 +130,6 @@ public class ServiceGM implements GameMechanicsService {
             startTimer(TIME_WAIT_GAME);
         }
         mFreePlaces.decrementAndGet();
-        return true;
     }
 
     private void startTimer(long ms) {
@@ -194,7 +193,7 @@ public class ServiceGM implements GameMechanicsService {
                 return score1 > score2 ? 1 : -1;
             });
         ScoreDAO.Score winScore = results.get(0);
-        winScore.setWin(true);
+        winScore.setWin();
         int winId = 0;
         for (Integer id : mGameIdScore.keySet()) {
             if (mGameIdScore.get(id).equals(winScore)) {

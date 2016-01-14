@@ -12,10 +12,10 @@ public class Generator {
         return RANDOM.nextInt(last - start + 1) + start;
     }
 
-    public static GameField.Point genetatePoint(int startX, int lastX, int startY, int lastY) {
-        GameField.Point point = new GameField.Point();
-        point.x = generateIntOnInterval(startX, lastX);
-        point.y = generateIntOnInterval(startY, lastY);
+    public static GameField.Point genetatePoint(int lastX, int lastY) {
+        GameField.Point point = new GameField.Point(0, 0);
+        point.x = generateIntOnInterval(0, lastX);
+        point.y = generateIntOnInterval(0, lastY);
         return point;
     }
 

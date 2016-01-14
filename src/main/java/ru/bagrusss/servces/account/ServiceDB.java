@@ -134,12 +134,11 @@ public final class ServiceDB implements AccountService, ResultsGame {
     }
 
     @Override
-    public boolean saveResults(List<ScoreDAO.Score> results) {
+    public void saveResults(List<ScoreDAO.Score> results) {
         try {
-            return mScoreDAO.saveResults(results);
+            mScoreDAO.saveResults(results);
         } catch (SQLException e) {
             LOG.log(Level.SEVERE, className, e);
-            return false;
         }
     }
 

@@ -41,6 +41,7 @@ public class Errors {
     public static final String MESSAGE_ROOM_NOT_EXISTS = "Комнаты не существует";
     public static final String MESSAGE_ROOM_NOT_CREATED = "Невозможно создать комнату";
     public static final String MESSAGE_ROOM_MORE_ONE = "Невозможно находиться более чем в одной комнате";
+    public static final String MESSAGE_NOT_FOUND = "Не найдено";
 
     private static final String RESPONSE = "response";
     private static final String CODE = "code";

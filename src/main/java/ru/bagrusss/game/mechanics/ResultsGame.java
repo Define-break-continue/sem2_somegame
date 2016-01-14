@@ -12,7 +12,7 @@ import java.util.List;
 @SuppressWarnings("unused")
 public interface ResultsGame extends BaseInterface {
 
-    boolean saveResults(List<ScoreDAO.Score> results);
+    void saveResults(List<ScoreDAO.Score> results);
 
     ScoreDataSet getInfo(long userId);
 

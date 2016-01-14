@@ -73,4 +73,14 @@ public class ScoreDataSet {
     public int hashCode() {
         return (int) (games ^ (score >>> 32) + userId * wins);
     }
+
+    @Override
+    public String toString() {
+        return "ScoreDataSet{" +
+                "score=" + score +
+                ", userId=" + userId +
+                ", games=" + games +
+                ", wins=" + wins +
+                '}';
+    }
 }

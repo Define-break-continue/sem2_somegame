@@ -27,7 +27,7 @@ public abstract class BaseServlet extends HttpServlet {
 
     public static final String JSON_TYPE = "application/json; charset=utf-8";
     public static final String DEFAULT_ENCODING = "UTF-8";
-    protected Gson mGson = Resources.GSON;
+    protected final Gson mGson = Resources.GSON;
     protected final Logger log = Logger.getLogger(getClass().getCanonicalName());
     protected final Context mContext;
     protected final AccountService mAccountService;

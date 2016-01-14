@@ -30,8 +30,8 @@ public class ScoreDAO {
         private long score;
         private long id;
 
-        public void setWin(boolean win) {
-            isWin = win;
+        public void setWin() {
+            isWin = true;
         }
 
         public void setScore(long score) {

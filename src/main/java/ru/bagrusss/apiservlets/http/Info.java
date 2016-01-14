@@ -43,7 +43,7 @@ public class Info extends BaseServlet {
                 try {
                     cnt = Long.valueOf(count);
                     if (cnt < 1)
-                        throw new NumberFormatException("Incorrect value of parameter 'count'");
+                        throw new NumberFormatException("Incorrect value of parameter 'count'" + count);
                 } catch (NullPointerException | NumberFormatException e) {
                     Errors.errorAPI(resp, Errors.CODE_INVALID_REQUEST, e.getMessage());
                 }
@@ -55,7 +55,7 @@ public class Info extends BaseServlet {
 
                 break;
             default:
-                Errors.error404(resp, "Not found");
+                Errors.error404(resp, Errors.MESSAGE_NOT_FOUND);
         }
     }
 }

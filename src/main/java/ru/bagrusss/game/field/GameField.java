@@ -1,7 +1,6 @@
 package ru.bagrusss.game.field;
 
 import com.google.gson.JsonObject;
-import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jetty.util.ConcurrentHashSet;
 import org.jetbrains.annotations.NotNull;
 import ru.bagrusss.helpers.BaseInterface;
@@ -53,7 +52,7 @@ public class GameField implements BaseInterface {
     private int mMaxPoints;
     private int mMaxPacmansForGamer;
     private int mMaxWalls;
-    private byte mGamersCount;
+
     private int[][] mField;
     private ConcurrentHashMap<Integer, List<Point>> mGamerIdUnits;
     private ConcurrentHashSet<Point> mPoints;
@@ -72,6 +71,15 @@ public class GameField implements BaseInterface {
         mPoints = new ConcurrentHashSet<>();
         mWalls = new ConcurrentHashSet<>();
         this.mListener = listener;
+    }
+
+    /**
+     * Used for test only
+     *
+     * @return gameField state with points, units, walls
+     */
+    public int[][] getField() {
+        return mField;
     }
 
     public int getMaxPacmansForGamer() {
@@ -127,13 +135,13 @@ public class GameField implements BaseInterface {
         return what == POINT ? mPoints : mWalls;
     }
 
-    public List<Point> getGamerUnits(int gmId) {
+    public List<Point> getGamerUnitsById(int gmId) {
         return mGamerIdUnits.get(gmId);
     }
 
     public void prepareFieldToGame(@NotNull List<Integer> gamerIds) {
-        generateObjects(WALL, mMaxWalls);
-        generateObjects(POINT, mMaxPoints);
+        generatePoints();
+        generateWalls(mMaxWalls);
         generatePackmans(gamerIds);
     }
 
@@ -143,9 +151,9 @@ public class GameField implements BaseInterface {
             int remaindGeneratePcms = (mMaxPacmansForGamer - 1);
             List<Point> packmans = new ArrayList<>(mMaxPacmansForGamer);
             while (remaindGeneratePcms >= 0) {
-                Point p = Generator.genetatePoint(0, lastX, 0, lastY);
+                Point p = Generator.genetatePoint(lastX, lastY);
                 int val = getFieldValue(p);
-                if (val == 0) {
+                if (val == EMPTY || val == POINT) {
                     updateFieldValue(p, (gmId << TO_SECOND_8_BIT) + remaindGeneratePcms + PACMAN_BIT);
                     packmans.add(p);
                     --remaindGeneratePcms;
@@ -155,26 +163,27 @@ public class GameField implements BaseInterface {
         }
     }
 
-    private void generateObjects(int what, int count) {
-        ConcurrentHashSet<Point> objects;
-        String msg;
-        if (what == WALL) {
-            objects = mWalls;
-            msg = "generate " + count + " предметов стен";
-
-        } else {
-            msg = "generate " + count + " предметов точек";
-            objects = mPoints;
-        }
-        while (count > 0) {
-            Point p = Generator.genetatePoint(0, lastX, 0, lastY);
-            if (getFieldValue(p) == 0) {
-                updateFieldValue(p, what);
-                objects.add(p);
-                --count;
+    private void generatePoints() {
+        for (int i = 0; i < mField.length; ++i) {
+            for (int j = 0; j < mField[0].length; ++j) {
+                Point p = new Point(j, i);
+                mField[i][j] = POINT;
+                mPoints.add(p);
             }
         }
-        LOG.log(Level.INFO, msg);
+        LOG.log(Level.INFO, "Generated points");
+    }
+
+    private void generateWalls(int count) {
+        while (count > 0) {
+            Point p = Generator.genetatePoint(lastX, lastY);
+            updateFieldValue(p, WALL);
+            mWalls.add(p);
+            mPoints.remove(p);
+            --count;
+
+        }
+        LOG.log(Level.INFO, "Generated " + count + " walls");
     }
 
     public void clearField() {
@@ -190,7 +199,7 @@ public class GameField implements BaseInterface {
 
     public void moveUnits(int gamerId, byte direction) {
         List<Point> units = mGamerIdUnits.get(gamerId);
-        Point newPoint = new Point();
+        Point newPoint = new Point(0, 0);
         StringBuilder movement = new StringBuilder();
         for (Point oldPoint : units) {
             //еще жив, попробуем его передвинуть
@@ -301,9 +310,29 @@ public class GameField implements BaseInterface {
         int x;
         int y;
 
+        public Point(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
+
         @Override
         public String toString() {
             return x + "," + y;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Point point = (Point) o;
+            return x == point.x && y == point.y;
+        }
+
+        @Override
+        public int hashCode() {
+            int result = x;
+            result = 31 * result + y;
+            return result;
         }
     }
 
